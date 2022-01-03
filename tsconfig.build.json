@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "sourceMap": true,
+    "noEmit": false,
+    "module": "amd",
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "outFile": "./lib/index.js"
+  },
+  "include": [
+    "./src/**/*.ts"
+  ]
+}
