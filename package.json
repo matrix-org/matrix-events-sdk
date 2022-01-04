@@ -15,13 +15,21 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json",
+    "clean": "rimraf lib",
+    "build": "yarn clean && yarn build:compile && yarn build:types",
+    "build:types": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
+    "build:compile": "babel -d lib --verbose --extensions \".ts\" src",
     "start": "tsc -p ./tsconfig.build.json -w",
     "test": "jest",
     "lint": "eslint src test && tsc --noEmit",
     "lint:fix": "eslint --fix src test"
   },
   "devDependencies": {
+    "@babel/cli": "^7.16.7",
+    "@babel/core": "^7.16.7",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
     "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
@@ -29,6 +37,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-matrix-org": "github:matrix-org/eslint-plugin-matrix-org#2306b3d4da4eba908b256014b979f1d3d43d2945",
     "jest": "^27.2.4",
+    "rimraf": "^3.0.2",
     "ts-jest": "^27.0.5",
     "typescript": "^4.5.4"
   }

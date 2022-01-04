@@ -14,15 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { UnstableValue } from "../NamespacedValue";
-import { M_MESSAGE_EVENT_CONTENT, MessageEvent } from "./MessageEvent";
+import { MessageEvent } from "./MessageEvent";
 import { IPartialEvent } from "../IPartialEvent";
+import { M_EMOTE, M_EMOTE_EVENT_CONTENT, M_HTML, M_TEXT } from "./message_types";
 
 // Emote events are just decorated message events
-
-export const M_EMOTE = new UnstableValue("m.emote", "org.matrix.msc1767.emote");
-export type M_EMOTE_EVENT = {[M_EMOTE.name]?: {}, [M_EMOTE.altName]?: {}};
-export type M_EMOTE_EVENT_CONTENT = M_MESSAGE_EVENT_CONTENT & M_EMOTE_EVENT;
 
 export class EmoteEvent extends MessageEvent {
     public constructor(wireFormat: IPartialEvent<M_EMOTE_EVENT_CONTENT>) {
@@ -31,5 +27,27 @@ export class EmoteEvent extends MessageEvent {
 
     public get isEmote(): boolean {
         return true; // override
+    }
+
+    public serialize(): IPartialEvent<object> {
+        const message = super.serialize();
+        (<any>message.content)['msgtype'] = "m.emote";
+        return message;
+    }
+
+    /**
+     * Creates a new EmoteEvent from text and HTML.
+     * @param {string} text The text.
+     * @param {string} html Optional HTML.
+     * @returns {MessageEvent} The representative message event.
+     */
+    public static from(text: string, html?: string): EmoteEvent {
+        return new EmoteEvent({
+            type: M_EMOTE.name,
+            content: {
+                [M_TEXT.name]: text,
+                [M_HTML.name]: html,
+            },
+        });
     }
 }

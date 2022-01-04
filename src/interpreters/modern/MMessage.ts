@@ -16,7 +16,8 @@ limitations under the License.
 
 import { IPartialEvent } from "../../IPartialEvent";
 import { Optional } from "../../types";
-import { M_MESSAGE_EVENT_CONTENT, MessageEvent } from "../../events/MessageEvent";
+import { MessageEvent } from "../../events/MessageEvent";
+import { M_MESSAGE_EVENT_CONTENT } from "../../events/message_types";
 
 export function parseMMessage(wireEvent: IPartialEvent<M_MESSAGE_EVENT_CONTENT>): Optional<MessageEvent> {
     // wow, such complex

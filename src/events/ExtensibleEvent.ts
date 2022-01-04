@@ -29,4 +29,11 @@ export abstract class ExtensibleEvent<TContent extends object = object> {
     public get wireContent(): TContent {
         return this.wireFormat.content;
     }
+
+    /**
+     * Serializes the event into a format which can be used to send the
+     * event to the room.
+     * @returns {IPartialEvent<object>} The serialized event.
+     */
+    public abstract serialize(): IPartialEvent<object>;
 }

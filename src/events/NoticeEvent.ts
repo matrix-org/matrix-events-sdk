@@ -14,15 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { UnstableValue } from "../NamespacedValue";
-import { M_MESSAGE_EVENT_CONTENT, MessageEvent } from "./MessageEvent";
+import { MessageEvent } from "./MessageEvent";
 import { IPartialEvent } from "../IPartialEvent";
+import { M_HTML, M_NOTICE, M_NOTICE_EVENT_CONTENT, M_TEXT } from "./message_types";
 
 // Notice events are just decorated message events
-
-export const M_NOTICE = new UnstableValue("m.notice", "org.matrix.msc1767.notice");
-export type M_NOTICE_EVENT = {[M_NOTICE.name]?: {}, [M_NOTICE.altName]?: {}};
-export type M_NOTICE_EVENT_CONTENT = M_MESSAGE_EVENT_CONTENT & M_NOTICE_EVENT;
 
 export class NoticeEvent extends MessageEvent {
     public constructor(wireFormat: IPartialEvent<M_NOTICE_EVENT_CONTENT>) {
@@ -31,5 +27,27 @@ export class NoticeEvent extends MessageEvent {
 
     public get isNotice(): boolean {
         return true; // override
+    }
+
+    public serialize(): IPartialEvent<object> {
+        const message = super.serialize();
+        (<any>message.content)['msgtype'] = "m.notice";
+        return message;
+    }
+
+    /**
+     * Creates a new NoticeEvent from text and HTML.
+     * @param {string} text The text.
+     * @param {string} html Optional HTML.
+     * @returns {MessageEvent} The representative message event.
+     */
+    public static from(text: string, html?: string): NoticeEvent {
+        return new NoticeEvent({
+            type: M_NOTICE.name,
+            content: {
+                [M_TEXT.name]: text,
+                [M_HTML.name]: html,
+            },
+        });
     }
 }

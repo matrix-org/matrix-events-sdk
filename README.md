@@ -57,4 +57,17 @@ ExtensibleEvents.unknownInterpretOrder.push("org.example.my_event_type");
 
 ## Usage: Making events
 
-TBD
+Most event objects have a `from` static function which takes common details of an event
+and returns an instance of that event for later serialization.
+
+```typescript
+import MessageEvent from "./MessageEvent";
+
+const userInput = "**hello**";
+const htmlInput = "<b>hello</b>"; // might be after running through a markdown processor
+
+const message = MessageEvent.from(userInput, htmlInput).serialize();
+
+// Finally, assuming your client instance is called `client`:
+client.sendEvent(message.type, message.content);
+```

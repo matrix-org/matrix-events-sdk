@@ -17,12 +17,12 @@ limitations under the License.
 import { IPartialEvent } from "./IPartialEvent";
 import { ExtensibleEvent } from "./events/ExtensibleEvent";
 import { Optional } from "./types";
-import { M_MESSAGE} from "./events/MessageEvent";
 import { NamespacedValue } from "./NamespacedValue";
 import { NamespacedMap } from "./NamespacedMap";
 import { InvalidEventError } from "./InvalidEventError";
 import { LEGACY_M_ROOM_MESSAGE, parseMRoomMessage } from "./interpreters/legacy/MRoomMessage";
 import { parseMMessage } from "./interpreters/modern/MMessage";
+import { M_MESSAGE } from "./events/message_types";
 
 export type EventInterpreter<TContentIn = object, TEvent extends ExtensibleEvent = ExtensibleEvent>
     = (wireEvent: IPartialEvent<TContentIn>) => Optional<TEvent>;

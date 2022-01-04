@@ -4,10 +4,10 @@
     "rootDir": "./src",
     "sourceMap": true,
     "noEmit": false,
-    "module": "amd",
+    "module": "commonjs",
     "emitDecoratorMetadata": true,
     "declaration": true,
-    "outFile": "./lib/index.js"
+    "outDir": "./lib"
   },
   "include": [
     "./src/**/*.ts"

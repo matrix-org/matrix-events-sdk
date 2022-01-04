@@ -16,57 +16,17 @@ limitations under the License.
 
 import { ExtensibleEvent } from "./ExtensibleEvent";
 import { IPartialEvent } from "../IPartialEvent";
-import { UnstableValue } from "../NamespacedValue";
-import { EitherAnd, isOptionalAString, isProvided, Optional } from "../types";
-import { M_EMOTE } from "./EmoteEvent";
-import { M_NOTICE } from "./NoticeEvent";
+import { isOptionalAString, isProvided, Optional } from "../types";
 import { InvalidEventError } from "../InvalidEventError";
-
-/**
- * The namespaced value for m.message
- */
-export const M_MESSAGE = new UnstableValue("m.message", "org.matrix.msc1767.message");
-
-/**
- * An m.message event rendering
- */
-export interface IMessageRendering {
-    body: string;
-    mimetype?: string;
-}
-
-/**
- * The content for an m.message event
- */
-export type M_MESSAGE_EVENT = EitherAnd<{ [M_MESSAGE.name]: IMessageRendering[] }, { [M_MESSAGE.altName]: IMessageRendering[] }>;
-
-/**
- * The namespaced value for m.text
- */
-export const M_TEXT = new UnstableValue("m.text", "org.matrix.msc1767.text");
-
-/**
- * The content for an m.text event
- */
-export type M_TEXT_EVENT = EitherAnd<{ [M_TEXT.name]: string }, { [M_TEXT.altName]: string }>;
-
-/**
- * The namespaced value for m.html
- */
-export const M_HTML = new UnstableValue("m.html", "org.matrix.msc1767.html");
-
-/**
- * The content for an m.html event
- */
-export type M_HTML_EVENT = EitherAnd<{ [M_HTML.name]: string }, { [M_HTML.altName]: string }>;
-
-/**
- * The content for an m.message, m.text, or m.html event
- */
-export type M_MESSAGE_EVENT_CONTENT =
-    | M_MESSAGE_EVENT
-    | M_TEXT_EVENT
-    | M_HTML_EVENT;
+import {
+    IMessageRendering,
+    M_EMOTE,
+    M_HTML,
+    M_MESSAGE,
+    M_MESSAGE_EVENT_CONTENT,
+    M_NOTICE,
+    M_TEXT,
+} from "./message_types";
 
 /**
  * Represents a message event. Message events are the simplest form of event with
@@ -116,7 +76,7 @@ export class MessageEvent extends ExtensibleEvent<M_MESSAGE_EVENT_CONTENT> {
             if (!text) throw new InvalidEventError("m.message is missing a plain text representation");
 
             this.text = text.body;
-            this.html = html.body;
+            this.html = html?.body;
             this.renderings = mmessage;
         } else if (isOptionalAString(mtext)) {
             this.text = mtext;
@@ -148,5 +108,34 @@ export class MessageEvent extends ExtensibleEvent<M_MESSAGE_EVENT_CONTENT> {
      */
     public get isNotice(): boolean {
         return M_NOTICE.matches(this.wireFormat.type) || isProvided(M_NOTICE.findIn(this.wireFormat.content));
+    }
+
+    public serialize(): IPartialEvent<object> {
+        return {
+            type: "m.room.message",
+            content: {
+                [M_MESSAGE.name]: this.renderings,
+                body: this.text,
+                msgtype: "m.text",
+                format: this.html ? "org.matrix.custom.html" : undefined,
+                formatted_body: this.html ?? undefined,
+            },
+        };
+    }
+
+    /**
+     * Creates a new MessageEvent from text and HTML.
+     * @param {string} text The text.
+     * @param {string} html Optional HTML.
+     * @returns {MessageEvent} The representative message event.
+     */
+    public static from(text: string, html?: string): MessageEvent {
+        return new MessageEvent({
+            type: M_MESSAGE.name,
+            content: {
+                [M_TEXT.name]: text,
+                [M_HTML.name]: html,
+            },
+        });
     }
 }
