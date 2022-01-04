@@ -14,10 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { doThing } from "../src";
+export type Optional<T> = T | null | undefined;
 
-describe('index', () => {
-    it('should return 42', () => {
-        expect(doThing()).toEqual(42);
-    });
-});
+export function isOptionalAString(s: Optional<string>): boolean {
+    return s === null || s === undefined || (typeof s) === 'string';
+}
+
+export function isProvided<T>(s: Optional<T>): boolean {
+    return s !== null && s !== undefined;
+}
+
+export type EitherAnd<T1, T2> = (T1 & T2) | T1 | T2;

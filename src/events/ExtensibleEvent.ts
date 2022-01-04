@@ -14,6 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export function doThing(): number {
-    return 42;
+import { IPartialEvent } from "../IPartialEvent";
+
+/**
+ * Represents an Extensible Event in Matrix.
+ */
+export abstract class ExtensibleEvent<TContent extends object = object> {
+    protected constructor(public readonly wireFormat: IPartialEvent<TContent>) {
+    }
+
+    /**
+     * Shortcut to wireFormat.content
+     */
+    public get wireContent(): TContent {
+        return this.wireFormat.content;
+    }
 }
