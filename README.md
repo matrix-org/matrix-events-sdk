@@ -6,8 +6,6 @@ JS/TS SDK for handling (extensible) events in Matrix
 ## Usage: Parsing events
 
 ```typescript
-import { ExtensibleEvents } from "./ExtensibleEvents";
-
 const parsed = ExtensibleEvents.parse({
     type: "m.room.message",
     content: {
@@ -24,12 +22,6 @@ if (parsed) {
 If you would like to register your own handling of events, use the following:
 
 ```typescript
-import { ExtensibleEvent } from "./ExtensibleEvent";
-import { IPartialEvent } from "./IPartialEvent";
-import { ExtensibleEvents } from "./ExtensibleEvents";
-import MessageEvent, { M_MESSAGE_EVENT_CONTENT, M_TEXT_EVENT } from "./MessageEvent";
-import { Optional } from "./types";
-
 type MyContent = M_MESSAGE_EVENT_CONTENT & {
     field: string;
 };
@@ -61,8 +53,6 @@ Most event objects have a `from` static function which takes common details of a
 and returns an instance of that event for later serialization.
 
 ```typescript
-import MessageEvent from "./MessageEvent";
-
 const userInput = "**hello**";
 const htmlInput = "<b>hello</b>"; // might be after running through a markdown processor
 
