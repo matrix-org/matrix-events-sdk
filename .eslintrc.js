@@ -2,30 +2,15 @@ module.exports = {
     plugins: [
         "matrix-org",
     ],
+    extends: [
+        "plugin:matrix-org/babel",
+    ],
     env: {
         browser: true,
         node: true,
     },
     rules: {
-        "no-var": ["warn"],
-        "prefer-rest-params": ["warn"],
-        "prefer-spread": ["warn"],
-        "one-var": ["warn"],
-        "padded-blocks": ["warn"],
-        "no-extend-native": ["warn"],
-        "camelcase": ["warn"],
-        "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
-        "space-before-function-paren": ["error", {
-            "anonymous": "never",
-            "named": "never",
-            "asyncArrow": "always",
-        }],
-        "arrow-parens": "off",
-        "prefer-promise-reject-errors": "off",
-        "quotes": "off",
-        "indent": "off",
-        "no-constant-condition": "off",
-        "no-async-promise-executor": "off",
+        // No specific rules
     },
     overrides: [{
         files: [
@@ -41,9 +26,19 @@ module.exports = {
             // We're okay being explicit at the moment
             "@typescript-eslint/no-empty-interface": "off",
 
+            // Turn off things we're not concerned about here
             "quotes": "off",
-            // We use a `logger` intermediary module
-            "no-console": "error",
+            "object-curly-spacing": "off",
+            "array-bracket-spacing": "off",
+            "quote-props": "off", // "be sensible"
+            "@typescript-eslint/no-explicit-any": "off", // handled at review time
+
+            // We want to go a bit long for clarity
+            "max-len": ["error", {"code": 160}],
+
+            // Casing is something we'll resolve at review time
+            "camelcase": "off",
+            "@typescript-eslint/naming-convention": "off",
         },
     }],
 };
