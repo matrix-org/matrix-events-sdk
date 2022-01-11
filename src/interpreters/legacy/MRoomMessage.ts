@@ -20,10 +20,10 @@ import { ExtensibleEvent } from "../../events/ExtensibleEvent";
 import { MessageEvent } from "../../events/MessageEvent";
 import { NoticeEvent } from "../../events/NoticeEvent";
 import { EmoteEvent } from "../../events/EmoteEvent";
-import { StableValue } from "../../NamespacedValue";
+import { NamespacedValue } from "../../NamespacedValue";
 import { M_HTML, M_MESSAGE, M_MESSAGE_EVENT_CONTENT, M_TEXT } from "../../events/message_types";
 
-export const LEGACY_M_ROOM_MESSAGE = new StableValue("m.room.message");
+export const LEGACY_M_ROOM_MESSAGE = new NamespacedValue("m.room.message");
 
 export interface IPartialLegacyContent {
     body: string;

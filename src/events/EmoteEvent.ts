@@ -20,6 +20,10 @@ import { M_EMOTE, M_EMOTE_EVENT_CONTENT, M_HTML, M_TEXT } from "./message_types"
 
 // Emote events are just decorated message events
 
+/**
+ * Represents an emote. This is essentially a MessageEvent with
+ * emote characteristics considered.
+ */
 export class EmoteEvent extends MessageEvent {
     public constructor(wireFormat: IPartialEvent<M_EMOTE_EVENT_CONTENT>) {
         super(wireFormat);

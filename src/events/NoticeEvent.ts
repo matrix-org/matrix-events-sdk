@@ -20,6 +20,10 @@ import { M_HTML, M_NOTICE, M_NOTICE_EVENT_CONTENT, M_TEXT } from "./message_type
 
 // Notice events are just decorated message events
 
+/**
+ * Represents a notice. This is essentially a MessageEvent with
+ * notice characteristics considered.
+ */
 export class NoticeEvent extends MessageEvent {
     public constructor(wireFormat: IPartialEvent<M_NOTICE_EVENT_CONTENT>) {
         super(wireFormat);

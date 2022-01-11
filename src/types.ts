@@ -14,14 +14,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+ * Represents an optional type: can either be T or a falsy value.
+ */
 export type Optional<T> = T | null | undefined;
 
+/**
+ * Determines if the given optional string is a defined string.
+ * @param {Optional<string>} s The input string.
+ * @returns {boolean} True if the input is a defined string.
+ */
 export function isOptionalAString(s: Optional<string>): boolean {
-    return s === null || s === undefined || (typeof s) === 'string';
+    return isProvided(s) && (typeof s) === 'string';
 }
 
+/**
+ * Determines if the given optional was provided a value.
+ * @param {Optional<T>} s The optional to test.
+ * @returns {boolean} True if the value is defined.
+ */
 export function isProvided<T>(s: Optional<T>): boolean {
     return s !== null && s !== undefined;
 }
 
+/**
+ * Represents either just T1, just T2, or T1 and T2 mixed.
+ */
 export type EitherAnd<T1, T2> = (T1 & T2) | T1 | T2;

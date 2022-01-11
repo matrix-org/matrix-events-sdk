@@ -44,7 +44,7 @@ export class NamespacedValue<S extends string, U extends string> {
     }
 
     public matches(val: string): boolean {
-        return this.name === val || this.altName === val;
+        return (!!this.name && this.name === val) || (!!this.altName && this.altName === val);
     }
 
     // this desperately wants https://github.com/microsoft/TypeScript/pull/26349 at the top level of the class
@@ -91,15 +91,5 @@ export class UnstableValue<S extends string, U extends string> extends Namespace
 
     public get altName(): S {
         return this.stable;
-    }
-}
-
-/**
- * Represents a statically stable value. When asking for unstable values of this class
- * the stable values will be returned instead.
- */
-export class StableValue<S extends string> extends NamespacedValue<S, S> {
-    public constructor(stable: S) {
-        super(stable, stable);
     }
 }

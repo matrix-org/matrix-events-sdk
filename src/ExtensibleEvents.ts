@@ -22,7 +22,7 @@ import { NamespacedMap } from "./NamespacedMap";
 import { InvalidEventError } from "./InvalidEventError";
 import { LEGACY_M_ROOM_MESSAGE, parseMRoomMessage } from "./interpreters/legacy/MRoomMessage";
 import { parseMMessage } from "./interpreters/modern/MMessage";
-import { M_MESSAGE } from "./events/message_types";
+import { M_EMOTE, M_MESSAGE, M_NOTICE } from "./events/message_types";
 
 export type EventInterpreter<TContentIn = object, TEvent extends ExtensibleEvent = ExtensibleEvent>
     = (wireEvent: IPartialEvent<TContentIn>) => Optional<TEvent>;
@@ -36,8 +36,11 @@ export class ExtensibleEvents {
     private static _defaultInstance: ExtensibleEvents = new ExtensibleEvents();
 
     private interpreters = new NamespacedMap<EventInterpreter>([
+        // Remember to add your unit test when adding to this! ("known events" test description)
         [LEGACY_M_ROOM_MESSAGE, parseMRoomMessage],
         [M_MESSAGE, parseMMessage],
+        [M_EMOTE, parseMMessage],
+        [M_NOTICE, parseMMessage],
     ]);
 
     private _unknownInterpretOrder: NamespacedValue<string, string>[] = [
