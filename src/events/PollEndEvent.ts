@@ -18,7 +18,6 @@ import { ExtensibleEvent } from "./ExtensibleEvent";
 import { M_POLL_END_EVENT_CONTENT, M_POLL_END } from "./poll_types";
 import { IPartialEvent } from "../IPartialEvent";
 import { InvalidEventError } from "../InvalidEventError";
-import { PollStartEvent } from "./PollStartEvent";
 import { REFERENCE_RELATION } from "./relationship_types";
 import { MessageEvent } from "./MessageEvent";
 import { M_TEXT } from "./message_types";

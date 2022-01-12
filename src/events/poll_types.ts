@@ -48,10 +48,10 @@ export const M_POLL_START = new UnstableValue("m.poll.start", "org.matrix.msc338
  * The m.poll.start type within event content
  */
 export type M_POLL_START_SUBTYPE = {
-    question: M_MESSAGE_EVENT_CONTENT,
+    question: M_MESSAGE_EVENT_CONTENT;
     kind: POLL_KIND;
     max_selections?: number; // default 1, always positive
-    answers: POLL_ANSWER[],
+    answers: POLL_ANSWER[];
 };
 
 /**
