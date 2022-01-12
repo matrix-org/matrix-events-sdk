@@ -29,9 +29,9 @@ type MyContent = M_MESSAGE_EVENT_CONTENT & {
 class MyEvent extends MessageEvent {
     public readonly field: string;
     
-    constructor(wireFormat: IPartialEvent<IMyParsedContent>) {
+    constructor(wireFormat: IPartialEvent<MyContent>) {
         // Parse the text bit of the event
-        super(wireFormat as unknown as IPartialEvent<M_MESSAGE_EVENT_CONTENT>);
+        super(wireFormat);
         
         this.field = wireFormat.content?.field;
     }
