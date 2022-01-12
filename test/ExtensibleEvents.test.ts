@@ -24,9 +24,20 @@ import {
     M_MESSAGE,
     M_MESSAGE_EVENT_CONTENT,
     M_NOTICE,
+    M_POLL_END,
+    M_POLL_END_EVENT_CONTENT,
+    M_POLL_KIND_DISCLOSED,
+    M_POLL_RESPONSE,
+    M_POLL_RESPONSE_EVENT_CONTENT,
+    M_POLL_START,
+    M_POLL_START_EVENT_CONTENT,
     M_TEXT,
     MessageEvent,
     NoticeEvent,
+    PollEndEvent,
+    PollResponseEvent,
+    PollStartEvent,
+    REFERENCE_RELATION,
     UnstableValue,
 } from "../src";
 
@@ -182,6 +193,63 @@ describe('ExtensibleEvents', () => {
             const message = (new ExtensibleEvents()).parse(input);
             expect(message).toBeDefined();
             expect(message instanceof NoticeEvent).toBe(true);
+        });
+
+        it('should parse m.poll.start events', () => {
+            const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
+                type: M_POLL_START.name,
+                content: {
+                    [M_TEXT.name]: "FALLBACK Question here",
+                    [M_POLL_START.name]: {
+                        question: {[M_TEXT.name]: "Question here"},
+                        kind: M_POLL_KIND_DISCLOSED.name,
+                        max_selections: 1,
+                        answers: [
+                            {id: "one", [M_TEXT.name]: "ONE"},
+                            {id: "two", [M_TEXT.name]: "TWO"},
+                            {id: "thr", [M_TEXT.name]: "THR"},
+                        ],
+                    },
+                },
+            };
+            const poll = (new ExtensibleEvents()).parse(input);
+            expect(poll).toBeDefined();
+            expect(poll instanceof PollStartEvent).toBe(true);
+        });
+
+        it('should parse m.poll.response events', () => {
+            const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
+                type: M_POLL_RESPONSE.name,
+                content: {
+                    "m.relates_to": {
+                        rel_type: REFERENCE_RELATION.name,
+                        event_id: "$poll",
+                    },
+                    [M_POLL_RESPONSE.name]: {
+                        answers: ["one"],
+                    },
+                },
+            };
+            const poll = (new ExtensibleEvents()).parse(input);
+            expect(poll).toBeDefined();
+            expect(poll instanceof PollResponseEvent).toBe(true);
+        });
+
+        it('should parse m.poll.end events', () => {
+            const input: IPartialEvent<M_POLL_END_EVENT_CONTENT> = {
+                type: M_POLL_END.name,
+                content: {
+                    "m.relates_to": {
+                        rel_type: REFERENCE_RELATION.name,
+                        event_id: "$poll",
+                    },
+                    [M_TEXT.name]: "FALLBACK Closure notice here",
+                    [M_POLL_END.name]: { },
+                },
+            };
+            const poll = (new ExtensibleEvents()).parse(input);
+            expect(poll).toBeDefined();
+            expect(poll instanceof PollEndEvent).toBe(true);
         });
     });
 });
