@@ -77,7 +77,7 @@ describe('PollAnswerSubevent', () => {
             expect(serialized.type).toBe("org.matrix.sdk.poll.answer");
             expect(serialized.content).toMatchObject({
                 id: "one",
-                [M_MESSAGE.name]: expect.any(Array), // tested by MessageEvent
+                [M_TEXT.name]: expect.any(String), // tested by MessageEvent
             });
         });
     });
@@ -291,15 +291,15 @@ describe('PollStartEvent', () => {
                 [M_TEXT.name]: "Question here\n1. A\n2. B\n3. C",
                 [M_POLL_START.name]: {
                     question: {
-                        [M_MESSAGE.name]: expect.any(Array), // tested by MessageEvent tests
+                        [M_TEXT.name]: expect.any(String), // tested by MessageEvent tests
                     },
                     kind: M_POLL_KIND_DISCLOSED.name,
                     max_selections: 2,
                     answers: [
-                        // M_MESSAGE tested by MessageEvent tests
-                        {id: "1-A", [M_MESSAGE.name]: expect.any(Array)},
-                        {id: "2-B", [M_MESSAGE.name]: expect.any(Array)},
-                        {id: "3-C", [M_MESSAGE.name]: expect.any(Array)},
+                        // M_TEXT tested by MessageEvent tests
+                        {id: "1-A", [M_TEXT.name]: expect.any(String)},
+                        {id: "2-B", [M_TEXT.name]: expect.any(String)},
+                        {id: "3-C", [M_TEXT.name]: expect.any(String)},
                     ],
                 },
             });
@@ -322,15 +322,15 @@ describe('PollStartEvent', () => {
                 [M_TEXT.name]: "Question here\n1. A\n2. B\n3. C",
                 [M_POLL_START.name]: {
                     question: {
-                        [M_MESSAGE.name]: expect.any(Array), // tested by MessageEvent tests
+                        [M_TEXT.name]: expect.any(String), // tested by MessageEvent tests
                     },
                     kind: "org.example.poll.kind",
                     max_selections: 2,
                     answers: [
                         // M_MESSAGE tested by MessageEvent tests
-                        {id: "1-A", [M_MESSAGE.name]: expect.any(Array)},
-                        {id: "2-B", [M_MESSAGE.name]: expect.any(Array)},
-                        {id: "3-C", [M_MESSAGE.name]: expect.any(Array)},
+                        {id: "1-A", [M_TEXT.name]: expect.any(String)},
+                        {id: "2-B", [M_TEXT.name]: expect.any(String)},
+                        {id: "3-C", [M_TEXT.name]: expect.any(String)},
                     ],
                 },
             });

@@ -103,7 +103,7 @@ describe('PollEndEvent', () => {
                     event_id: "$poll",
                 },
                 [M_POLL_END.name]: {},
-                [M_MESSAGE.name]: expect.any(Array), // tested by MessageEvent tests
+                [M_TEXT.name]: expect.any(String), // tested by MessageEvent tests
             });
         });
     });

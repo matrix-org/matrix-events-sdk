@@ -56,7 +56,7 @@ export class PollAnswerSubevent extends MessageEvent {
             type: "org.matrix.sdk.poll.answer",
             content: {
                 id: this.id,
-                [M_MESSAGE.name]: this.renderings,
+                ...this.serializeMMessageOnly(),
             },
         };
     }

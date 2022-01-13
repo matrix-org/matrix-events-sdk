@@ -222,9 +222,7 @@ describe('EmoteEvent', () => {
             const serialized = message.serialize();
             expect(serialized.type).toBe("m.room.message");
             expect(serialized.content).toMatchObject({
-                [M_MESSAGE.name]: [
-                    {body: "Text here", mimetype: "text/plain"},
-                ],
+                [M_TEXT.name]: "Text here",
                 body: "Text here",
                 msgtype: "m.emote",
                 format: undefined,

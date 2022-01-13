@@ -110,11 +110,29 @@ export class MessageEvent extends ExtensibleEvent<M_MESSAGE_EVENT_CONTENT> {
         return M_NOTICE.matches(this.wireFormat.type) || isProvided(M_NOTICE.findIn(this.wireFormat.content));
     }
 
+    protected serializeMMessageOnly(): M_MESSAGE_EVENT_CONTENT {
+        let messageRendering: M_MESSAGE_EVENT_CONTENT = {
+            [M_MESSAGE.name]: this.renderings,
+        };
+
+        // Use the shorthand if it's just a simple text event
+        if (this.renderings.length === 1) {
+            const mime = this.renderings[0].mimetype;
+            if (mime === undefined || mime === "text/plain") {
+                messageRendering = {
+                    [M_TEXT.name]: this.renderings[0].body,
+                };
+            }
+        }
+
+        return messageRendering;
+    }
+
     public serialize(): IPartialEvent<object> {
         return {
             type: "m.room.message",
             content: {
-                [M_MESSAGE.name]: this.renderings,
+                ...this.serializeMMessageOnly(),
                 body: this.text,
                 msgtype: "m.text",
                 format: this.html ? "org.matrix.custom.html" : undefined,
