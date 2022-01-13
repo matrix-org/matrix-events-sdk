@@ -17,7 +17,6 @@ limitations under the License.
 import {
     InvalidEventError,
     IPartialEvent,
-    M_MESSAGE,
     M_POLL_END,
     M_POLL_END_EVENT_CONTENT,
     M_TEXT,

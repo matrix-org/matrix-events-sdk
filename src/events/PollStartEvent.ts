@@ -26,7 +26,7 @@ import {
 } from "./poll_types";
 import { IPartialEvent } from "../IPartialEvent";
 import { MessageEvent } from "./MessageEvent";
-import { M_MESSAGE, M_TEXT } from "./message_types";
+import { M_TEXT } from "./message_types";
 import { InvalidEventError } from "../InvalidEventError";
 import { NamespacedValue } from "../NamespacedValue";
 
