@@ -16,6 +16,7 @@ limitations under the License.
 
 import {
     EmoteEvent,
+    EventType,
     ExtensibleEvent,
     ExtensibleEvents,
     IPartialEvent,
@@ -40,7 +41,6 @@ import {
     REFERENCE_RELATION,
     UnstableValue,
 } from "../src";
-import { EventType } from "../src/utility/events";
 
 describe('ExtensibleEvents', () => {
     // Note: we don't test the other static functions because it should be pretty
