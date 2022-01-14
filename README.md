@@ -13,11 +13,18 @@ const parsed = ExtensibleEvents.parse({
         "body": "Hello world!"
     },
     // and other fields
-});
-if (parsed) {
-    console.log(typeof parsed);
+}) as MessageEvent;
+
+// Using instanceof can be unsafe in some cases, but casting the
+// response in TypeScript (as above) should be safe given this
+// if statement will block non-message types anyhow.
+if (parsed?.isEquivalentTo(M_MESSAGE)) {
+    console.log(parsed.text);
 }
 ```
+
+*Note*: `instanceof` isn't considered safe for projects which might be running multiple copies
+of the library, such as in clients which have layers needing access to the events-sdk individually.
 
 If you would like to register your own handling of events, use the following:
 

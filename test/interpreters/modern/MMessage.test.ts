@@ -19,6 +19,7 @@ import {
     IPartialEvent,
     M_EMOTE,
     M_HTML,
+    M_MESSAGE,
     M_MESSAGE_EVENT_CONTENT,
     M_NOTICE,
     M_TEXT,
@@ -55,6 +56,8 @@ describe('parseMMessage', () => {
         const message = parseMMessage(input);
         expect(message).toBeDefined();
         expect(message instanceof EmoteEvent).toBe(true);
+        expect(message.isEquivalentTo(M_EMOTE)).toBe(true);
+        expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         expect(message.html).toBe("HTML here");
         expect(message.text).toBe("Text here");
         expect(message.renderings.length).toBe(2);
@@ -73,6 +76,8 @@ describe('parseMMessage', () => {
         const message = parseMMessage(input);
         expect(message).toBeDefined();
         expect(message instanceof NoticeEvent).toBe(true);
+        expect(message.isEquivalentTo(M_NOTICE)).toBe(true);
+        expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         expect(message.html).toBe("HTML here");
         expect(message.text).toBe("Text here");
         expect(message.renderings.length).toBe(2);

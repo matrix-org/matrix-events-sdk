@@ -20,6 +20,7 @@ import { IPartialEvent } from "../IPartialEvent";
 import { InvalidEventError } from "../InvalidEventError";
 import { PollStartEvent } from "./PollStartEvent";
 import { REFERENCE_RELATION } from "./relationship_types";
+import { EventType, isEventTypeSame } from "../utility/events";
 
 /**
  * Represents a poll response event.
@@ -99,6 +100,10 @@ export class PollResponseEvent extends ExtensibleEvent<M_POLL_RESPONSE_EVENT_CON
 
         this.internalAnswerIds = answers;
         this.internalSpoiled = false;
+    }
+
+    public isEquivalentTo(primaryEventType: EventType): boolean {
+        return isEventTypeSame(primaryEventType, M_POLL_RESPONSE);
     }
 
     public serialize(): IPartialEvent<object> {

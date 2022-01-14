@@ -14,21 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ExtensibleEvent } from "./ExtensibleEvent";
 import {
-    POLL_ANSWER,
-    M_POLL_START_EVENT_CONTENT,
+    KNOWN_POLL_KIND,
     M_POLL_KIND_DISCLOSED,
     M_POLL_KIND_UNDISCLOSED,
     M_POLL_START,
+    M_POLL_START_EVENT_CONTENT,
     M_POLL_START_SUBTYPE,
-    KNOWN_POLL_KIND,
+    POLL_ANSWER,
 } from "./poll_types";
 import { IPartialEvent } from "../IPartialEvent";
 import { MessageEvent } from "./MessageEvent";
 import { M_TEXT } from "./message_types";
 import { InvalidEventError } from "../InvalidEventError";
 import { NamespacedValue } from "../NamespacedValue";
+import { EventType, isEventTypeSame } from "../utility/events";
+import { ExtensibleEvent } from "./ExtensibleEvent";
 
 /**
  * Represents a poll answer. Note that this is represented as a subtype and is
@@ -149,6 +150,10 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
             throw new InvalidEventError("No answers available");
         }
         this.answers = answers;
+    }
+
+    public isEquivalentTo(primaryEventType: EventType): boolean {
+        return isEventTypeSame(primaryEventType, M_POLL_START);
     }
 
     public serialize(): IPartialEvent<object> {

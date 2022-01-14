@@ -27,6 +27,7 @@ import {
     M_NOTICE,
     M_TEXT,
 } from "./message_types";
+import { EventType, isEventTypeSame } from "../utility/events";
 
 /**
  * Represents a message event. Message events are the simplest form of event with
@@ -108,6 +109,10 @@ export class MessageEvent extends ExtensibleEvent<M_MESSAGE_EVENT_CONTENT> {
      */
     public get isNotice(): boolean {
         return M_NOTICE.matches(this.wireFormat.type) || isProvided(M_NOTICE.findIn(this.wireFormat.content));
+    }
+
+    public isEquivalentTo(primaryEventType: EventType): boolean {
+        return isEventTypeSame(primaryEventType, M_MESSAGE);
     }
 
     protected serializeMMessageOnly(): M_MESSAGE_EVENT_CONTENT {

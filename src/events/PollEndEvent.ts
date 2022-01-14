@@ -14,13 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ExtensibleEvent } from "./ExtensibleEvent";
-import { M_POLL_END_EVENT_CONTENT, M_POLL_END } from "./poll_types";
+import { M_POLL_END, M_POLL_END_EVENT_CONTENT } from "./poll_types";
 import { IPartialEvent } from "../IPartialEvent";
 import { InvalidEventError } from "../InvalidEventError";
 import { REFERENCE_RELATION } from "./relationship_types";
 import { MessageEvent } from "./MessageEvent";
 import { M_TEXT } from "./message_types";
+import { EventType, isEventTypeSame } from "../utility/events";
+import { ExtensibleEvent } from "./ExtensibleEvent";
 
 /**
  * Represents a poll end/closure event.
@@ -51,6 +52,10 @@ export class PollEndEvent extends ExtensibleEvent<M_POLL_END_EVENT_CONTENT> {
 
         this.pollEventId = rel.event_id;
         this.closingMessage = new MessageEvent(this.wireFormat);
+    }
+
+    public isEquivalentTo(primaryEventType: EventType): boolean {
+        return isEventTypeSame(primaryEventType, M_POLL_END);
     }
 
     public serialize(): IPartialEvent<object> {

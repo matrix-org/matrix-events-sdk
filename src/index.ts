@@ -24,6 +24,7 @@ export * from "./types";
 
 // Utilities
 export * from "./utility/MessageMatchers";
+export * from "./utility/events";
 
 // Legacy interpreters
 export * from "./interpreters/legacy/MRoomMessage";

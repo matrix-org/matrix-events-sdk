@@ -51,6 +51,7 @@ describe('parseMPoll', () => {
         };
         const poll = parseMPoll(input) as PollStartEvent;
         expect(poll instanceof PollStartEvent).toBe(true);
+        expect(poll.isEquivalentTo(M_POLL_START)).toBe(true);
         expect(poll.question).toBeDefined();
         expect(poll.question.text).toBe("Question here");
         expect(poll.kind).toBe(M_POLL_KIND_DISCLOSED);
@@ -77,6 +78,7 @@ describe('parseMPoll', () => {
         };
         const response = parseMPoll(input) as PollResponseEvent;
         expect(response instanceof PollResponseEvent).toBe(true);
+        expect(response.isEquivalentTo(M_POLL_RESPONSE)).toBe(true);
         expect(response.spoiled).toBe(false);
         expect(response.answerIds).toMatchObject(["one"]);
         expect(response.pollEventId).toBe("$poll");

@@ -40,6 +40,7 @@ import {
     REFERENCE_RELATION,
     UnstableValue,
 } from "../src";
+import { EventType } from "../src/utility/events";
 
 describe('ExtensibleEvents', () => {
     // Note: we don't test the other static functions because it should be pretty
@@ -63,6 +64,7 @@ describe('ExtensibleEvents', () => {
             const event = (new ExtensibleEvents()).parse(input);
             expect(event).toBeDefined();
             expect(event instanceof MessageEvent).toBe(true);
+            expect(event.isEquivalentTo(M_MESSAGE)).toBe(true);
         });
 
         it('should return falsy for entirely unknown types', () => {
@@ -88,6 +90,10 @@ describe('ExtensibleEvents', () => {
             }
 
             public serialize(): IPartialEvent<object> {
+                throw new Error("Not implemented for tests");
+            }
+
+            public isEquivalentTo(primaryEventType: EventType): boolean {
                 throw new Error("Not implemented for tests");
             }
         }
@@ -157,6 +163,7 @@ describe('ExtensibleEvents', () => {
             const message = (new ExtensibleEvents()).parse(input);
             expect(message).toBeDefined();
             expect(message instanceof MessageEvent).toBe(true);
+            expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         });
 
         it('should parse modern m.message events', () => {
@@ -169,6 +176,7 @@ describe('ExtensibleEvents', () => {
             const message = (new ExtensibleEvents()).parse(input);
             expect(message).toBeDefined();
             expect(message instanceof MessageEvent).toBe(true);
+            expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         });
 
         it('should parse modern m.emote events', () => {
@@ -181,6 +189,8 @@ describe('ExtensibleEvents', () => {
             const message = (new ExtensibleEvents()).parse(input);
             expect(message).toBeDefined();
             expect(message instanceof EmoteEvent).toBe(true);
+            expect(message.isEquivalentTo(M_EMOTE)).toBe(true);
+            expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         });
 
         it('should parse modern m.notice events', () => {
@@ -193,6 +203,8 @@ describe('ExtensibleEvents', () => {
             const message = (new ExtensibleEvents()).parse(input);
             expect(message).toBeDefined();
             expect(message instanceof NoticeEvent).toBe(true);
+            expect(message.isEquivalentTo(M_NOTICE)).toBe(true);
+            expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         });
 
         it('should parse m.poll.start events', () => {
@@ -215,6 +227,7 @@ describe('ExtensibleEvents', () => {
             const poll = (new ExtensibleEvents()).parse(input);
             expect(poll).toBeDefined();
             expect(poll instanceof PollStartEvent).toBe(true);
+            expect(poll.isEquivalentTo(M_POLL_START)).toBe(true);
         });
 
         it('should parse m.poll.response events', () => {
@@ -230,9 +243,10 @@ describe('ExtensibleEvents', () => {
                     },
                 },
             };
-            const poll = (new ExtensibleEvents()).parse(input);
-            expect(poll).toBeDefined();
-            expect(poll instanceof PollResponseEvent).toBe(true);
+            const response = (new ExtensibleEvents()).parse(input);
+            expect(response).toBeDefined();
+            expect(response instanceof PollResponseEvent).toBe(true);
+            expect(response.isEquivalentTo(M_POLL_RESPONSE)).toBe(true);
         });
 
         it('should parse m.poll.end events', () => {

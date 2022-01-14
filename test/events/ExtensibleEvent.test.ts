@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import { ExtensibleEvent, IPartialEvent } from "../../src";
+import { EventType } from "../../src/utility/events";
 
 class MockEvent extends ExtensibleEvent<any> {
     public constructor(wireEvent: IPartialEvent<any>) {
@@ -22,6 +23,10 @@ class MockEvent extends ExtensibleEvent<any> {
     }
 
     public serialize(): IPartialEvent<object> {
+        throw new Error("Not implemented for tests");
+    }
+
+    public isEquivalentTo(primaryEventType: EventType): boolean {
         throw new Error("Not implemented for tests");
     }
 }

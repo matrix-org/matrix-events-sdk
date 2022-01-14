@@ -17,6 +17,7 @@ limitations under the License.
 import { MessageEvent } from "./MessageEvent";
 import { IPartialEvent } from "../IPartialEvent";
 import { M_EMOTE, M_EMOTE_EVENT_CONTENT, M_HTML, M_TEXT } from "./message_types";
+import { EventType, isEventTypeSame } from "../utility/events";
 
 // Emote events are just decorated message events
 
@@ -31,6 +32,10 @@ export class EmoteEvent extends MessageEvent {
 
     public get isEmote(): boolean {
         return true; // override
+    }
+
+    public isEquivalentTo(primaryEventType: EventType): boolean {
+        return isEventTypeSame(primaryEventType, M_EMOTE) || super.isEquivalentTo(primaryEventType);
     }
 
     public serialize(): IPartialEvent<object> {
