@@ -22,12 +22,12 @@ import { REFERENCE_RELATION, RELATES_TO_RELATIONSHIP } from "./relationship_type
 /**
  * Identifier for a disclosed poll.
  */
-export const M_POLL_KIND_DISCLOSED = new UnstableValue("m.poll.disclosed", "org.matrix.msc3381.disclosed");
+export const M_POLL_KIND_DISCLOSED = new UnstableValue("m.poll.disclosed", "org.matrix.msc3381.poll.disclosed");
 
 /**
  * Identifier for an undisclosed poll.
  */
-export const M_POLL_KIND_UNDISCLOSED = new UnstableValue("m.poll.undisclosed", "org.matrix.msc3381.undisclosed");
+export const M_POLL_KIND_UNDISCLOSED = new UnstableValue("m.poll.undisclosed", "org.matrix.msc3381.poll.undisclosed");
 
 /**
  * Any poll kind.
