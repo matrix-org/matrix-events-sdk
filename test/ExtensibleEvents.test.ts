@@ -61,10 +61,12 @@ describe('ExtensibleEvents', () => {
                     [M_TEXT.name]: "Hello World",
                 },
             };
-            const event = (new ExtensibleEvents()).parse(input);
+            const event: ExtensibleEvent = (new ExtensibleEvents()).parse(input);
             expect(event).toBeDefined();
             expect(event instanceof MessageEvent).toBe(true);
             expect(event.isEquivalentTo(M_MESSAGE)).toBe(true);
+            const messageEvent = event as MessageEvent;
+            expect(messageEvent.text).toBe("Hello World");
         });
 
         it('should return falsy for entirely unknown types', () => {
@@ -87,6 +89,7 @@ describe('ExtensibleEvents', () => {
         class MyCustomEvent extends ExtensibleEvent<any> {
             public constructor(wireEvent: IPartialEvent<any>) {
                 super(wireEvent);
+                expect(wireEvent?.content.hello).toEqual("world");
             }
 
             public serialize(): IPartialEvent<object> {
@@ -164,6 +167,8 @@ describe('ExtensibleEvents', () => {
             expect(message).toBeDefined();
             expect(message instanceof MessageEvent).toBe(true);
             expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
+            const messageEvent = message as MessageEvent;
+            expect(messageEvent.text).toEqual("Text here");
         });
 
         it('should parse modern m.message events', () => {
@@ -177,6 +182,8 @@ describe('ExtensibleEvents', () => {
             expect(message).toBeDefined();
             expect(message instanceof MessageEvent).toBe(true);
             expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
+            const messageEvent = message as MessageEvent;
+            expect(messageEvent.text).toEqual("Text here");
         });
 
         it('should parse modern m.emote events', () => {
@@ -191,6 +198,8 @@ describe('ExtensibleEvents', () => {
             expect(message instanceof EmoteEvent).toBe(true);
             expect(message.isEquivalentTo(M_EMOTE)).toBe(true);
             expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
+            const messageEvent = message as EmoteEvent;
+            expect(messageEvent.text).toEqual("Text here");
         });
 
         it('should parse modern m.notice events', () => {
@@ -205,6 +214,8 @@ describe('ExtensibleEvents', () => {
             expect(message instanceof NoticeEvent).toBe(true);
             expect(message.isEquivalentTo(M_NOTICE)).toBe(true);
             expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
+            const messageEvent = message as NoticeEvent;
+            expect(messageEvent.text).toEqual("Text here");
         });
 
         it('should parse m.poll.start events', () => {
