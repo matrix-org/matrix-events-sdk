@@ -18,7 +18,10 @@ import {
     EmoteEvent,
     IPartialEvent,
     IPartialLegacyContent,
+    M_EMOTE,
     M_HTML,
+    M_MESSAGE,
+    M_NOTICE,
     M_TEXT,
     MessageEvent,
     NoticeEvent,
@@ -37,6 +40,7 @@ describe('parseMRoomMessage', () => {
         const message = parseMRoomMessage(input) as MessageEvent;
         expect(message).toBeDefined();
         expect(message instanceof MessageEvent).toBe(true);
+        expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         expect(message.html).toBe("HTML here");
         expect(message.text).toBe("Text here");
         expect(message.renderings.length).toBe(2);
@@ -57,6 +61,7 @@ describe('parseMRoomMessage', () => {
         const message = parseMRoomMessage(input) as MessageEvent;
         expect(message).toBeDefined();
         expect(message instanceof MessageEvent).toBe(true);
+        expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         expect(message.html).toBe("HTML here");
         expect(message.text).toBe("Text here");
         expect(message.renderings.length).toBe(2);
@@ -75,6 +80,7 @@ describe('parseMRoomMessage', () => {
         const message = parseMRoomMessage(input) as MessageEvent;
         expect(message).toBeDefined();
         expect(message instanceof MessageEvent).toBe(true);
+        expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         expect(message.html).toBeFalsy();
         expect(message.text).toBe("Text here");
         expect(message.renderings.length).toBe(1);
@@ -94,6 +100,8 @@ describe('parseMRoomMessage', () => {
         const message = parseMRoomMessage(input) as MessageEvent;
         expect(message).toBeDefined();
         expect(message instanceof EmoteEvent).toBe(true);
+        expect(message.isEquivalentTo(M_EMOTE)).toBe(true);
+        expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         expect(message.html).toBe("HTML here");
         expect(message.text).toBe("Text here");
         expect(message.renderings.length).toBe(2);
@@ -114,6 +122,8 @@ describe('parseMRoomMessage', () => {
         const message = parseMRoomMessage(input) as MessageEvent;
         expect(message).toBeDefined();
         expect(message instanceof NoticeEvent).toBe(true);
+        expect(message.isEquivalentTo(M_NOTICE)).toBe(true);
+        expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
         expect(message.html).toBe("HTML here");
         expect(message.text).toBe("Text here");
         expect(message.renderings.length).toBe(2);

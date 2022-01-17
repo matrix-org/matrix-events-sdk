@@ -24,16 +24,23 @@ export * from "./types";
 
 // Utilities
 export * from "./utility/MessageMatchers";
+export * from "./utility/events";
 
 // Legacy interpreters
 export * from "./interpreters/legacy/MRoomMessage";
 
 // Modern (or not-legacy) interpreters
 export * from "./interpreters/modern/MMessage";
+export * from "./interpreters/modern/MPoll";
 
 // Event objects
+export * from "./events/relationship_types";
 export * from "./events/ExtensibleEvent";
 export * from "./events/message_types";
 export * from "./events/MessageEvent";
 export * from "./events/EmoteEvent";
 export * from "./events/NoticeEvent";
+export * from "./events/poll_types";
+export * from "./events/PollStartEvent";
+export * from "./events/PollResponseEvent";
+export * from "./events/PollEndEvent";

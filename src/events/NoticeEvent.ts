@@ -17,6 +17,7 @@ limitations under the License.
 import { MessageEvent } from "./MessageEvent";
 import { IPartialEvent } from "../IPartialEvent";
 import { M_HTML, M_NOTICE, M_NOTICE_EVENT_CONTENT, M_TEXT } from "./message_types";
+import { EventType, isEventTypeSame } from "../utility/events";
 
 // Notice events are just decorated message events
 
@@ -31,6 +32,10 @@ export class NoticeEvent extends MessageEvent {
 
     public get isNotice(): boolean {
         return true; // override
+    }
+
+    public isEquivalentTo(primaryEventType: EventType): boolean {
+        return isEventTypeSame(primaryEventType, M_NOTICE) || super.isEquivalentTo(primaryEventType);
     }
 
     public serialize(): IPartialEvent<object> {

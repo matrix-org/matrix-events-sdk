@@ -15,6 +15,8 @@ limitations under the License.
 */
 
 import {
+    EmoteEvent,
+    InvalidEventError,
     IPartialEvent,
     M_EMOTE,
     M_EMOTE_EVENT_CONTENT,
@@ -24,8 +26,6 @@ import {
     M_NOTICE,
     M_NOTICE_EVENT_CONTENT,
     M_TEXT,
-    EmoteEvent,
-    InvalidEventError,
 } from "../../src";
 
 describe('EmoteEvent', () => {
@@ -222,9 +222,7 @@ describe('EmoteEvent', () => {
             const serialized = message.serialize();
             expect(serialized.type).toBe("m.room.message");
             expect(serialized.content).toMatchObject({
-                [M_MESSAGE.name]: [
-                    {body: "Text here", mimetype: "text/plain"},
-                ],
+                [M_TEXT.name]: "Text here",
                 body: "Text here",
                 msgtype: "m.emote",
                 format: undefined,

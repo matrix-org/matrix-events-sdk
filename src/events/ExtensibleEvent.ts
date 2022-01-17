@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import { IPartialEvent } from "../IPartialEvent";
+import { EventType } from "../utility/events";
 
 /**
  * Represents an Extensible Event in Matrix.
@@ -36,4 +37,24 @@ export abstract class ExtensibleEvent<TContent extends object = object> {
      * @returns {IPartialEvent<object>} The serialized event.
      */
     public abstract serialize(): IPartialEvent<object>;
+
+    /**
+     * Determines if this event is equivalent to the provided event type.
+     * This is recommended over `instanceof` checks due to issues in the JS
+     * runtime (and layering of dependencies in some projects).
+     *
+     * Implementations should pass this check off to their super classes
+     * if their own checks fail. Some primary implementations do not extend
+     * fallback classes given they support the primary type first. Thus,
+     * those classes may return false if asked about their fallback
+     * representation.
+     *
+     * Note that this only checks primary event types: legacy events, like
+     * m.room.message, should/will fail this check.
+     * @param {EventType} primaryEventType The (potentially namespaced) event
+     * type.
+     * @returns {boolean} True if this event *could* be represented as the
+     * given type.
+     */
+    public abstract isEquivalentTo(primaryEventType: EventType): boolean;
 }
