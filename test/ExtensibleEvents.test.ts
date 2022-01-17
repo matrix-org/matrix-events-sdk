@@ -52,8 +52,8 @@ describe('ExtensibleEvents', () => {
             const event: ExtensibleEvent = (new ExtensibleEvents()).parse(input);
             expect(event).toBeDefined();
             expect(event instanceof MessageEvent).toBe(true);
-            expect(event.serialize().type).toBe("m.room.message");
-            expect(event.serialize().content).toHaveProperty("body", "Hello World");
+            const messageEvent = event as MessageEvent;
+            expect(messageEvent.text).toBe("Hello World");
         });
 
         it('should return falsy for entirely unknown types', () => {
@@ -74,20 +74,13 @@ describe('ExtensibleEvents', () => {
 
     describe('custom events', () => {
         class MyCustomEvent extends ExtensibleEvent<any> {
-            hello: string;
-
             public constructor(wireEvent: IPartialEvent<any>) {
                 super(wireEvent);
-                this.hello = wireEvent?.content.hello;
+                expect(wireEvent?.content.hello).toEqual("world");
             }
 
             public serialize(): IPartialEvent<object> {
-                return {
-                    type: "myNamespace.name",
-                    content: {
-                        hello: this.hello,
-                    },
-                };
+                throw new Error("Not implemented for tests");
             }
         }
 
@@ -114,8 +107,6 @@ describe('ExtensibleEvents', () => {
             event = extev.parse(input);
             expect(event).toBeDefined();
             expect(event instanceof MyCustomEvent).toBe(true);
-            expect(event.serialize().type).toBe("myNamespace.name");
-            expect(event.serialize().content).toHaveProperty("hello", "world");
         });
 
         it('should support changing unknown parse order', () => {
@@ -158,8 +149,8 @@ describe('ExtensibleEvents', () => {
             const message = (new ExtensibleEvents()).parse(input);
             expect(message).toBeDefined();
             expect(message instanceof MessageEvent).toBe(true);
-            expect(message.serialize().type).toBe("m.room.message");
-            expect(message.serialize().content).toHaveProperty("body", "Text here");
+            const messageEvent = message as MessageEvent;
+            expect(messageEvent.text).toEqual("Text here");
         });
 
         it('should parse modern m.message events', () => {
@@ -172,8 +163,8 @@ describe('ExtensibleEvents', () => {
             const message = (new ExtensibleEvents()).parse(input);
             expect(message).toBeDefined();
             expect(message instanceof MessageEvent).toBe(true);
-            expect(message.serialize().type).toBe("m.room.message");
-            expect(message.serialize().content).toHaveProperty("body", "Text here");
+            const messageEvent = message as MessageEvent;
+            expect(messageEvent.text).toEqual("Text here");
         });
 
         it('should parse modern m.emote events', () => {
@@ -186,8 +177,8 @@ describe('ExtensibleEvents', () => {
             const message = (new ExtensibleEvents()).parse(input);
             expect(message).toBeDefined();
             expect(message instanceof EmoteEvent).toBe(true);
-            expect(message.serialize().type).toBe("m.room.message");
-            expect(message.serialize().content).toHaveProperty("body", "Text here");
+            const messageEvent = message as EmoteEvent;
+            expect(messageEvent.text).toEqual("Text here");
         });
 
         it('should parse modern m.notice events', () => {
@@ -200,8 +191,8 @@ describe('ExtensibleEvents', () => {
             const message = (new ExtensibleEvents()).parse(input);
             expect(message).toBeDefined();
             expect(message instanceof NoticeEvent).toBe(true);
-            expect(message.serialize().type).toBe("m.room.message");
-            expect(message.serialize().content).toHaveProperty("body", "Text here");
+            const messageEvent = message as NoticeEvent;
+            expect(messageEvent.text).toEqual("Text here");
         });
     });
 });
