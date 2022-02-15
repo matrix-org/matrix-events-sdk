@@ -280,9 +280,17 @@ describe('PollStartEvent', () => {
             expect(M_POLL_KIND_DISCLOSED.matches(poll.rawKind)).toBe(true);
             expect(poll.maxSelections).toBe(2);
             expect(poll.answers.length).toBe(3);
-            expect(poll.answers.some(a => a.id === "1-A" && a.text === "A")).toBe(true);
-            expect(poll.answers.some(a => a.id === "2-B" && a.text === "B")).toBe(true);
-            expect(poll.answers.some(a => a.id === "3-C" && a.text === "C")).toBe(true);
+            expect(poll.answers.some(a => a.text === "A")).toBe(true);
+            expect(poll.answers.some(a => a.text === "B")).toBe(true);
+            expect(poll.answers.some(a => a.text === "C")).toBe(true);
+
+            // Ids are non-empty and unique
+            expect(poll.answers[0].id).toHaveLength(16);
+            expect(poll.answers[1].id).toHaveLength(16);
+            expect(poll.answers[2].id).toHaveLength(16);
+            expect(poll.answers[0].id).not.toEqual(poll.answers[1].id);
+            expect(poll.answers[0].id).not.toEqual(poll.answers[2].id);
+            expect(poll.answers[1].id).not.toEqual(poll.answers[2].id);
 
             const serialized = poll.serialize();
             expect(M_POLL_START.matches(serialized.type)).toBe(true);
@@ -296,9 +304,9 @@ describe('PollStartEvent', () => {
                     max_selections: 2,
                     answers: [
                         // M_TEXT tested by MessageEvent tests
-                        {id: "1-A", [M_TEXT.name]: expect.any(String)},
-                        {id: "2-B", [M_TEXT.name]: expect.any(String)},
-                        {id: "3-C", [M_TEXT.name]: expect.any(String)},
+                        {id: expect.any(String), [M_TEXT.name]: expect.any(String)},
+                        {id: expect.any(String), [M_TEXT.name]: expect.any(String)},
+                        {id: expect.any(String), [M_TEXT.name]: expect.any(String)},
                     ],
                 },
             });
@@ -311,9 +319,9 @@ describe('PollStartEvent', () => {
             expect(poll.rawKind).toBe("org.example.poll.kind");
             expect(poll.maxSelections).toBe(2);
             expect(poll.answers.length).toBe(3);
-            expect(poll.answers.some(a => a.id === "1-A" && a.text === "A")).toBe(true);
-            expect(poll.answers.some(a => a.id === "2-B" && a.text === "B")).toBe(true);
-            expect(poll.answers.some(a => a.id === "3-C" && a.text === "C")).toBe(true);
+            expect(poll.answers.some(a => a.text === "A")).toBe(true);
+            expect(poll.answers.some(a => a.text === "B")).toBe(true);
+            expect(poll.answers.some(a => a.text === "C")).toBe(true);
 
             const serialized = poll.serialize();
             expect(M_POLL_START.matches(serialized.type)).toBe(true);
@@ -327,9 +335,9 @@ describe('PollStartEvent', () => {
                     max_selections: 2,
                     answers: [
                         // M_MESSAGE tested by MessageEvent tests
-                        {id: "1-A", [M_TEXT.name]: expect.any(String)},
-                        {id: "2-B", [M_TEXT.name]: expect.any(String)},
-                        {id: "3-C", [M_TEXT.name]: expect.any(String)},
+                        {id: expect.any(String), [M_TEXT.name]: expect.any(String)},
+                        {id: expect.any(String), [M_TEXT.name]: expect.any(String)},
+                        {id: expect.any(String), [M_TEXT.name]: expect.any(String)},
                     ],
                 },
             });

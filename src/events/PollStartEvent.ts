@@ -173,11 +173,11 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
 
     /**
      * Creates a new PollStartEvent from question, answers, and metadata.
-     * @param {string} question The question to ask.
-     * @param {string} answers The answers. Should be unique within each other.
-     * @param {KNOWN_POLL_KIND|string} kind The kind of poll.
-     * @param {number} maxSelections The maximum number of selections. Must be 1 or higher.
-     * @returns {PollStartEvent} The representative poll start event.
+     * @param question The question to ask.
+     * @param answers The answers. Should be unique within each other.
+     * @param kind The kind of poll.
+     * @param maxSelections The maximum number of selections. Must be 1 or higher.
+     * @returns The representative poll start event.
      */
     public static from(question: string, answers: string[], kind: KNOWN_POLL_KIND | string, maxSelections = 1): PollStartEvent {
         return new PollStartEvent({
@@ -188,9 +188,16 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
                     question: {[M_TEXT.name]: question},
                     kind: (kind instanceof NamespacedValue) ? kind.name : kind,
                     max_selections: maxSelections,
-                    answers: answers.map((a, i) => ({id: `${i + 1}-${a}`, [M_TEXT.name]: a})),
+                    answers: answers.map(a => ({id: makeId(), [M_TEXT.name]: a})),
                 },
             },
         });
     }
+}
+
+const LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+function makeId() {
+    return [...Array(16)].map(
+        () => LETTERS.charAt(Math.floor(Math.random() * LETTERS.length)),
+    ).join('');
 }
