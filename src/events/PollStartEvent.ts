@@ -188,9 +188,16 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
                     question: {[M_TEXT.name]: question},
                     kind: (kind instanceof NamespacedValue) ? kind.name : kind,
                     max_selections: maxSelections,
-                    answers: answers.map((a, i) => ({id: `${i + 1}-${a}`, [M_TEXT.name]: a})),
+                    answers: answers.map(a => ({id: makeId(), [M_TEXT.name]: a})),
                 },
             },
         });
     }
+}
+
+const LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+function makeId() {
+    return [...Array(16)].map(
+        () => LETTERS.charAt(Math.floor(Math.random() * LETTERS.length)),
+    ).join('');
 }
