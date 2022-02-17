@@ -173,11 +173,11 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
 
     /**
      * Creates a new PollStartEvent from question, answers, and metadata.
-     * @param question The question to ask.
-     * @param answers The answers. Should be unique within each other.
-     * @param kind The kind of poll.
-     * @param maxSelections The maximum number of selections. Must be 1 or higher.
-     * @returns The representative poll start event.
+     * @param {string} question The question to ask.
+     * @param {string} answers The answers. Should be unique within each other.
+     * @param {KNOWN_POLL_KIND|string} kind The kind of poll.
+     * @param {number} maxSelections The maximum number of selections. Must be 1 or higher.
+     * @returns {PollStartEvent} The representative poll start event.
      */
     public static from(question: string, answers: string[], kind: KNOWN_POLL_KIND | string, maxSelections = 1): PollStartEvent {
         return new PollStartEvent({
