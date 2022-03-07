@@ -92,9 +92,3 @@ export type M_NOTICE_EVENT = EitherAnd<{ [M_NOTICE.name]?: {} }, { [M_NOTICE.alt
  * The content for an m.notice event
  */
 export type M_NOTICE_EVENT_CONTENT = M_MESSAGE_EVENT_CONTENT & M_NOTICE_EVENT;
-
-export const M_TIMESTAMP = new UnstableValue("m.ts", "org.matrix.msc3488.ts");
-/**
- * The event definition for an m.ts event (in content)
- */
-export type M_TIMESTAMP_EVENT = EitherAnd<{ [M_TIMESTAMP.name]: number }, { [M_TIMESTAMP.altName]: number }>;
