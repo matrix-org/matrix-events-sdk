@@ -27,6 +27,5 @@ export type ExtendedWireContent<T> = T & {
  */
 export interface IPartialEvent<TContent> {
     type: string;
-    origin_server_ts?: number;
     content: TContent;
 }
