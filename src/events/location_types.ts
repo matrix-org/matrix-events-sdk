@@ -44,7 +44,7 @@ import { M_MESSAGE_EVENT_CONTENT } from "./message_types";
 export enum LocationAssetType {
     Self = "m.self",
     Live = "m.self.live",
-    Pin = "m.pin",
+    Static = "m.location",
 }
 
 export const M_ASSET = new UnstableValue("m.asset", "org.matrix.msc3488.asset");
