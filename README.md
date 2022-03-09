@@ -1,7 +1,15 @@
 # matrix-events-sdk
+
 JS/TS SDK for handling (extensible) events in Matrix
 
-**This project is a work in progress and subject to breaking changes.**
+## 🚨🚨 Project is a work in progress
+
+The architecture and approach of this repo is still being considered and is subject to breaking
+changes. Use at your own risk.
+
+As a general guide, functionality which is foundational to events (such as text, images, etc)
+should be incorporated in this repo before the more complex types. This is to ensure that the
+architecture is up to the task of handling proper extensible events.
 
 ## Usage: Parsing events
 
@@ -35,11 +43,11 @@ type MyContent = M_MESSAGE_EVENT_CONTENT & {
 
 class MyEvent extends MessageEvent {
     public readonly field: string;
-    
+
     constructor(wireFormat: IPartialEvent<MyContent>) {
         // Parse the text bit of the event
         super(wireFormat);
-        
+
         this.field = wireFormat.content?.field;
     }
 }
