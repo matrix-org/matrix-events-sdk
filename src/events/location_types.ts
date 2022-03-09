@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { M_TEXT_EVENT } from "..";
+import { ExtendedWireContent, M_TEXT_EVENT } from "..";
 import { UnstableValue } from "../NamespacedValue";
 import { EitherAnd } from "../types";
 
@@ -76,8 +76,18 @@ export type MLocationEvent = EitherAnd<{ [M_LOCATION.name]: MLocationContent }, 
 /**
  * The content for an m.location event
 */
-export type MLocationEventContent = { geo_uri: string } &
-    MTimestampEvent &
+export type MLocationEventContent = &
     MLocationEvent &
     MAssetEvent &
-    M_TEXT_EVENT;
+    M_TEXT_EVENT &
+    // timestamp is optional
+    (MTimestampEvent | undefined);
+
+export type LegacyLocationEventContent = ExtendedWireContent<{
+    geo_uri: string;
+}>;
+
+/**
+ * Possible content for location events as sent over the wire
+ */
+export type LocationEventWireContent = Partial<LegacyLocationEventContent & MLocationEventContent>;

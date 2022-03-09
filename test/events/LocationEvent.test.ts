@@ -14,9 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ExtendedWireContent, IPartialEvent, M_TEXT } from "../../src";
+import { IPartialEvent, M_TEXT } from "../../src";
 import { LocationEvent } from "../../src/events/LocationEvent";
-import { MLocationEventContent, M_LOCATION, M_ASSET, M_TIMESTAMP, LocationAssetType } from "../../src/events/location_types";
+import {
+    M_LOCATION,
+    M_ASSET,
+    M_TIMESTAMP,
+    LocationAssetType,
+    LocationEventWireContent,
+} from "../../src/events/location_types";
 
 describe('LocationEvent', () => {
     const defaultContent = {
@@ -29,19 +35,35 @@ describe('LocationEvent', () => {
         [M_TIMESTAMP.name]: 1646823712443,
     } as any;
 
-    const makeWireEvent = (content: Partial<ExtendedWireContent<MLocationEventContent>> = {}) => ({
+    const makeWireEvent = (content: LocationEventWireContent = {}) => ({
         type: "m.room.message",
         sender: '@user:server.org',
         content: {
             ...defaultContent,
             ...content,
         },
-    }) as IPartialEvent<ExtendedWireContent<MLocationEventContent>>;
+    }) as IPartialEvent<LocationEventWireContent>;
 
-    it('constructs event correctly', () => {
-        const wireEvent = makeWireEvent();
+    const backwardsCompatibleEvent = makeWireEvent();
 
-        const event = new LocationEvent(wireEvent);
+    const modernEvent = makeWireEvent();
+    // delete backwards compat properties from event
+    delete modernEvent.content.body;
+    delete modernEvent.content.geo_uri;
+    delete modernEvent.content.msgtype;
+
+    const legacyEvent = {
+        type: "m.room.message",
+        origin_server_ts: 1234,
+        content: {
+            msgtype: "m.location",
+            body: 'Ernie was at geo:51.5008,0.1247;u=35',
+            geo_uri: 'geo:51.5008,0.1247;u=35',
+        } as LocationEventWireContent,
+    };
+
+    it('parses backwards compatible event correctly', () => {
+        const event = new LocationEvent(backwardsCompatibleEvent);
 
         expect(event).toEqual(expect.objectContaining({
             text: defaultContent[M_TEXT.name],
@@ -52,20 +74,30 @@ describe('LocationEvent', () => {
         }));
     });
 
-    it('defaults asset type to self when no asset event in content', () => {
-        const wireEvent = makeWireEvent({
-            [M_ASSET.name]: null,
-        });
+    it('parses modern m.location event correctly', () => {
+        const event = new LocationEvent(modernEvent);
 
-        const event = new LocationEvent(wireEvent);
-
-        expect(event.assetType).toEqual(LocationAssetType.Self);
+        expect(event).toEqual(expect.objectContaining({
+            text: defaultContent[M_TEXT.name],
+            geoUri: defaultContent[M_LOCATION.name].uri,
+            description: defaultContent[M_LOCATION.name].description,
+            timestamp: defaultContent[M_TIMESTAMP.name],
+            assetType: defaultContent[M_ASSET.name].type,
+        }));
     });
 
-    it('serializes event correctly', () => {
-        const wireEvent = makeWireEvent();
+    it('parses legacy event correctly', () => {
+        const event = new LocationEvent(legacyEvent);
 
-        const event = new LocationEvent(wireEvent);
+        expect(event.text).toEqual(legacyEvent.content.body);
+        expect(event.geoUri).toEqual(legacyEvent.content.geo_uri);
+        // defaults to self
+        expect(event.assetType).toEqual(LocationAssetType.Self);
+        expect(event.timestamp).toEqual(undefined);
+    });
+
+    it('serializes backwards compatible event correctly', () => {
+        const event = new LocationEvent(backwardsCompatibleEvent);
 
         const serializedEvent = event.serialize();
 
@@ -75,9 +107,42 @@ describe('LocationEvent', () => {
         });
     });
 
+    it('serializes modern event correctly', () => {
+        const event = new LocationEvent(modernEvent);
+
+        const serializedEvent = event.serialize();
+
+        expect(serializedEvent).toEqual({
+            type: 'm.room.message',
+            content: defaultContent,
+        });
+    });
+
+    it('serializes legacy event correctly', () => {
+        const event = new LocationEvent(legacyEvent);
+
+        const serializedEvent = event.serialize();
+
+        expect(serializedEvent).toEqual({
+            type: 'm.room.message',
+            content: {
+                msgtype: M_LOCATION.name,
+                body: legacyEvent.content.body,
+                geo_uri: legacyEvent.content.geo_uri,
+                [M_LOCATION.name]: {
+                    description: undefined,
+                    uri: legacyEvent.content.geo_uri,
+                },
+                [M_ASSET.name]: {
+                    type: LocationAssetType.Self,
+                },
+                [M_TEXT.name]: legacyEvent.content.body,
+            },
+        });
+    });
+
     it('from() creates correct event', () => {
         const event = LocationEvent.from(
-            'test text',
             'geo:-36.24484561954707,175.46884959563613;u=10',
             123,
             'test description',
@@ -85,11 +150,35 @@ describe('LocationEvent', () => {
         );
 
         expect(event).toEqual(expect.objectContaining({
-            text: 'test text',
+            text: 'Location "test description" geo:-36.24484561954707,175.46884959563613;u=10 at 1970-01-01T00:00:00.123Z',
             geoUri: 'geo:-36.24484561954707,175.46884959563613;u=10',
             description: 'test description',
             timestamp: 123,
             assetType: LocationAssetType.Pin,
         }));
+    });
+
+    it('sets event text without description', () => {
+        const event = LocationEvent.from(
+            'geo:-36.24484561954707,175.46884959563613;u=10',
+            123,
+            undefined,
+            LocationAssetType.Pin,
+        );
+
+        expect(event.text).toEqual(
+            'Location geo:-36.24484561954707,175.46884959563613;u=10 at 1970-01-01T00:00:00.123Z',
+        );
+    });
+
+    it('sets event text without asset type', () => {
+        const event = LocationEvent.from(
+            'geo:-36.24484561954707,175.46884959563613;u=10',
+            123,
+        );
+
+        expect(event.text).toEqual(
+            'User Location geo:-36.24484561954707,175.46884959563613;u=10 at 1970-01-01T00:00:00.123Z',
+        );
     });
 });

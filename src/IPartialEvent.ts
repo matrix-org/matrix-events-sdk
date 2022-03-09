@@ -18,7 +18,8 @@ limitations under the License.
  * Event content extended for wire transport
  */
 export type ExtendedWireContent<T> = T & {
-    body: string; msgtype: string;
+    body: string;
+    msgtype: string;
 };
 
 /**
@@ -26,5 +27,6 @@ export type ExtendedWireContent<T> = T & {
  */
 export interface IPartialEvent<TContent> {
     type: string;
+    origin_server_ts?: number;
     content: TContent;
 }

@@ -15,22 +15,41 @@ limitations under the License.
 */
 
 import { EventType, isEventTypeSame } from "../utility/events";
-import { ExtendedWireContent, IPartialEvent } from "../IPartialEvent";
+import { IPartialEvent } from "../IPartialEvent";
 import { M_TEXT } from "./message_types";
 import { ExtensibleEvent } from "./ExtensibleEvent";
 import {
+    M_TIMESTAMP,
+    M_ASSET,
+    M_LOCATION,
     LocationAssetType,
-    M_ASSET, MAssetContent, M_LOCATION, MLocationContent, MLocationEventContent, M_TIMESTAMP,
+    LocationEventWireContent,
+    MAssetContent,
+    MLocationContent,
 } from "./location_types";
 
-export class LocationEvent extends ExtensibleEvent<ExtendedWireContent<MLocationEventContent>> {
+export const getTextForEvent = (uri: string, assetType: LocationAssetType, timestamp: number, description?: string): string => {
+    const date = `at ${new Date(timestamp).toISOString()}`;
+    const assetName = assetType === LocationAssetType.Self ? 'User' : undefined;
+    const quotedDescription = description ? `"${description}"` : undefined;
+
+    return [
+        assetName,
+        'Location',
+        quotedDescription,
+        uri,
+        date,
+    ].filter(Boolean).join(' ');
+};
+
+export class LocationEvent extends ExtensibleEvent<LocationEventWireContent> {
     public readonly geoUri: string;
     public readonly assetType: LocationAssetType;
     public readonly timestamp: number;
     public readonly text: string;
     public readonly description?: string;
 
-    public constructor(wireFormat: IPartialEvent<ExtendedWireContent<MLocationEventContent>>) {
+    public constructor(wireFormat: IPartialEvent<LocationEventWireContent>) {
         super(wireFormat);
 
         const location = M_LOCATION.findIn<MLocationContent>(this.wireContent);
@@ -49,7 +68,7 @@ export class LocationEvent extends ExtensibleEvent<ExtendedWireContent<MLocation
         return isEventTypeSame(primaryEventType, M_LOCATION);
     }
 
-    public serialize(): IPartialEvent<ExtendedWireContent<MLocationEventContent>> {
+    public serialize(): IPartialEvent<LocationEventWireContent> {
         return {
             type: "m.room.message",
             content: {
@@ -64,7 +83,7 @@ export class LocationEvent extends ExtensibleEvent<ExtendedWireContent<MLocation
                     type: this.assetType,
                 },
                 [M_TEXT.name]: this.text,
-                [M_TIMESTAMP.name]: this.timestamp,
+                ...(this.timestamp ? { [M_TIMESTAMP.name]: this.timestamp } : {}),
             },
         };
     }
@@ -78,12 +97,12 @@ export class LocationEvent extends ExtensibleEvent<ExtendedWireContent<MLocation
      * @param assetType the (optional) asset type of this location e.g. "m.self"
      */
     public static from(
-        text: string,
         uri: string,
-        ts: number,
+        timestamp: number,
         description?: string,
         assetType?: LocationAssetType,
     ): LocationEvent {
+        const text = getTextForEvent(uri, assetType || LocationAssetType.Self, timestamp, description);
         return new LocationEvent({
             type: M_LOCATION.name,
             content: {
@@ -98,7 +117,7 @@ export class LocationEvent extends ExtensibleEvent<ExtendedWireContent<MLocation
                     type: assetType,
                 },
                 [M_TEXT.name]: text,
-                [M_TIMESTAMP.name]: ts,
+                [M_TIMESTAMP.name]: timestamp,
             },
         });
     }

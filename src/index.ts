@@ -35,7 +35,7 @@ export * from "./interpreters/modern/MPoll";
 
 // Event objects
 export * from "./events/location_types";
-export * from "./events/LocationEvent";
+export { LocationEvent } from "./events/LocationEvent";
 export * from "./events/relationship_types";
 export * from "./events/ExtensibleEvent";
 export * from "./events/message_types";
