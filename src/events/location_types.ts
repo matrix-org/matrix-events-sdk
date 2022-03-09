@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { M_TEXT_EVENT } from "..";
 import { UnstableValue } from "../NamespacedValue";
 import { EitherAnd } from "../types";
-import { M_MESSAGE_EVENT_CONTENT } from "./message_types";
 
 /**
  * Location event types
@@ -44,40 +44,40 @@ import { M_MESSAGE_EVENT_CONTENT } from "./message_types";
 export enum LocationAssetType {
     Self = "m.self",
     Live = "m.self.live",
-    Default = "m.location",
+    Pin = "m.pin",
 }
 
 export const M_ASSET = new UnstableValue("m.asset", "org.matrix.msc3488.asset");
-export type M_ASSET_CONTENT = { type: LocationAssetType };
+export type MAssetContent = { type: LocationAssetType };
 /**
  * The event definition for an m.asset event (in content)
  */
-export type M_ASSET_EVENT = EitherAnd<{ [M_ASSET.name]: M_ASSET_CONTENT }, { [M_ASSET.altName]: M_ASSET_CONTENT }>;
+export type MAssetEvent = EitherAnd<{ [M_ASSET.name]: MAssetContent }, { [M_ASSET.altName]: MAssetContent }>;
 
 export const M_TIMESTAMP = new UnstableValue("m.ts", "org.matrix.msc3488.ts");
 /**
  * The event definition for an m.ts event (in content)
  */
-export type M_TIMESTAMP_EVENT = EitherAnd<{ [M_TIMESTAMP.name]: number }, { [M_TIMESTAMP.altName]: number }>;
+export type MTimestampEvent = EitherAnd<{ [M_TIMESTAMP.name]: number }, { [M_TIMESTAMP.altName]: number }>;
 
 export const M_LOCATION = new UnstableValue(
     "m.location", "org.matrix.msc3488.location");
 
-export type M_LOCATION_CONTENT = {
+export type MLocationContent = {
     uri: string;
-    description?: string;
+    description?: string | null;
 };
 
 /**
  * The event definition for an m.location event (in content)
  */
-export type M_LOCATION_EVENT = EitherAnd<{ [M_LOCATION.name]: M_LOCATION_CONTENT }, { [M_LOCATION.altName]: M_LOCATION_CONTENT }>;
+export type MLocationEvent = EitherAnd<{ [M_LOCATION.name]: MLocationContent }, { [M_LOCATION.altName]: MLocationContent }>;
 
 /**
  * The content for an m.location event
 */
-export type M_LOCATION_EVENT_CONTENT = { geo_uri: string } &
-    M_TIMESTAMP_EVENT &
-    M_LOCATION_CONTENT &
-    M_ASSET_CONTENT &
-    M_MESSAGE_EVENT_CONTENT;
+export type MLocationEventContent = { geo_uri: string } &
+    MTimestampEvent &
+    MLocationEvent &
+    MAssetEvent &
+    M_TEXT_EVENT;

@@ -15,6 +15,13 @@ limitations under the License.
 */
 
 /**
+ * Event content extended for wire transport
+ */
+export type ExtendedWireContent<T> = T & {
+    body: string; msgtype: string;
+};
+
+/**
  * Partial types for a Matrix Event.
  */
 export interface IPartialEvent<TContent> {
