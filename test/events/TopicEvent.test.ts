@@ -19,7 +19,7 @@ import {
     IPartialEvent,
     M_TOPIC,
     M_TOPIC_EVENT_CONTENT,
-    TopicEvent
+    TopicEvent,
 } from "../../src";
 
 describe('TopicEvent', () => {

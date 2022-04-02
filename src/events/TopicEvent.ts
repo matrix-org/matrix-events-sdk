@@ -42,7 +42,7 @@ export class TopicEvent extends ExtensibleEvent<M_TOPIC_EVENT_CONTENT> {
      * in the event content: this is because this is interpreted based off the
      * other information available in the event.
      */
-     public readonly renderings: IMessageRendering[];
+    public readonly renderings: IMessageRendering[];
 
     /**
      * Creates a new TopicEvent from a pure format. Note that the event is *not*
@@ -97,7 +97,7 @@ export class TopicEvent extends ExtensibleEvent<M_TOPIC_EVENT_CONTENT> {
                 [M_TOPIC.name]: [
                     {body: text, mimetype: "text/plain"},
                     {body: html, mimetype: "text/html"},
-                ]
+                ],
             },
         });
     }
