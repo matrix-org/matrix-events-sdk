@@ -21,7 +21,7 @@ import { IMessageRendering } from "./message_types";
 /**
  * The namespaced value for m.topic
  */
-export const M_TOPIC = new UnstableValue("m.topic", "org.matrix.msc3381.topic");
+export const M_TOPIC = new UnstableValue("m.topic", "org.matrix.msc3765.topic");
 
 /**
  * The event definition for an m.topic event (in content)
