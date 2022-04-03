@@ -44,3 +44,5 @@ export * from "./events/poll_types";
 export * from "./events/PollStartEvent";
 export * from "./events/PollResponseEvent";
 export * from "./events/PollEndEvent";
+export * from "./events/topic_types";
+export * from "./events/TopicEvent";
