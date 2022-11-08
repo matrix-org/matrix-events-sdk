@@ -1,6 +1,6 @@
 {
   "name": "matrix-events-sdk",
-  "version": "0.0.1-beta.7",
+  "version": "0.0.1",
   "description": "JS/TS SDK for interacting with Matrix events",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
