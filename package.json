@@ -15,6 +15,7 @@
     "LICENSE"
   ],
   "scripts": {
+    "prepublishOnly": "yarn build",
     "clean": "rimraf lib",
     "build": "yarn clean && yarn build:compile && yarn build:types",
     "build:types": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
