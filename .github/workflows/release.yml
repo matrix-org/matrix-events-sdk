@@ -28,7 +28,7 @@ jobs:
           cache: 'yarn'
 
       - name: 🛠️ Setup
-        run: "./scripts/setup.sh"
+        run: yarn install --pure-lockfile 
 
       - name: 👊 Bump version
         run: |
