@@ -20,20 +20,14 @@
     "build": "yarn clean && tsc -p tsconfig.build.json",
     "start": "tsc -p tsconfig.build.json -w",
     "test": "jest",
-    "lint": "eslint src test && tsc --noEmit",
-    "lint:fix": "eslint --fix src test"
+    "format": "prettier --config .prettierrc \"**/*.ts\" --write",
+    "lint": "prettier --config .prettierrc \"**/*.ts\" --check"
   },
   "devDependencies": {
     "@types/jest": "^29.2.3",
     "@types/node": "^16",
-    "@typescript-eslint/eslint-plugin": "^5.44.0",
-    "@typescript-eslint/parser": "^5.44.0",
-    "eslint": "^8.28.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-matrix-org": "^0.8.0",
-    "eslint-plugin-unicorn": "^45.0.0",
     "jest": "^29.3.1",
+    "prettier": "^2.8.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^29.0.3",
     "typescript": "^4.9.3"

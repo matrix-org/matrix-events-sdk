@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { EventType, ExtensibleEvent, IPartialEvent } from "../../src";
+import {EventType, ExtensibleEvent, IPartialEvent} from "../../src";
 
 class MockEvent extends ExtensibleEvent<any> {
     public constructor(wireEvent: IPartialEvent<any>) {
@@ -30,8 +30,8 @@ class MockEvent extends ExtensibleEvent<any> {
     }
 }
 
-describe('ExtensibleEvent', () => {
-    it('should expose the wire event directly', () => {
+describe("ExtensibleEvent", () => {
+    it("should expose the wire event directly", () => {
         const input: IPartialEvent<any> = {type: "org.example.custom", content: {hello: "world"}};
         const event = new MockEvent(input);
         expect(event.wireFormat).toBe(input);

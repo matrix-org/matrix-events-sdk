@@ -44,8 +44,8 @@ const SAMPLE_POLL = new PollStartEvent({
     },
 });
 
-describe('PollResponseEvent', () => {
-    it('should parse a poll response', () => {
+describe("PollResponseEvent", () => {
+    it("should parse a poll response", () => {
         const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
             type: M_POLL_RESPONSE.name,
             content: {
@@ -64,7 +64,7 @@ describe('PollResponseEvent', () => {
         expect(response.pollEventId).toBe("$poll");
     });
 
-    it('should fail to parse a missing relationship', () => {
+    it("should fail to parse a missing relationship", () => {
         const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
             type: M_POLL_RESPONSE.name,
             content: {
@@ -73,11 +73,12 @@ describe('PollResponseEvent', () => {
                 },
             } as any, // force invalid type
         };
-        expect(() => new PollResponseEvent(input))
-            .toThrow(new InvalidEventError("Relationship must be a reference to an event"));
+        expect(() => new PollResponseEvent(input)).toThrow(
+            new InvalidEventError("Relationship must be a reference to an event"),
+        );
     });
 
-    it('should fail to parse a missing relationship event ID', () => {
+    it("should fail to parse a missing relationship event ID", () => {
         const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
             type: M_POLL_RESPONSE.name,
             content: {
@@ -89,11 +90,12 @@ describe('PollResponseEvent', () => {
                 },
             } as any, // force invalid type
         };
-        expect(() => new PollResponseEvent(input))
-            .toThrow(new InvalidEventError("Relationship must be a reference to an event"));
+        expect(() => new PollResponseEvent(input)).toThrow(
+            new InvalidEventError("Relationship must be a reference to an event"),
+        );
     });
 
-    it('should fail to parse an improper relationship', () => {
+    it("should fail to parse an improper relationship", () => {
         const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
             type: M_POLL_RESPONSE.name,
             content: {
@@ -106,12 +108,13 @@ describe('PollResponseEvent', () => {
                 },
             } as any, // force invalid type
         };
-        expect(() => new PollResponseEvent(input))
-            .toThrow(new InvalidEventError("Relationship must be a reference to an event"));
+        expect(() => new PollResponseEvent(input)).toThrow(
+            new InvalidEventError("Relationship must be a reference to an event"),
+        );
     });
 
-    describe('validateAgainst', () => {
-        it('should spoil the vote when no answers', () => {
+    describe("validateAgainst", () => {
+        it("should spoil the vote when no answers", () => {
             const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
                 type: M_POLL_RESPONSE.name,
                 content: {
@@ -119,8 +122,7 @@ describe('PollResponseEvent', () => {
                         rel_type: REFERENCE_RELATION.name,
                         event_id: "$poll",
                     },
-                    [M_POLL_RESPONSE.name]: {
-                    },
+                    [M_POLL_RESPONSE.name]: {},
                 } as any, // force invalid type
             };
             const response = new PollResponseEvent(input);
@@ -130,7 +132,7 @@ describe('PollResponseEvent', () => {
             expect(response.spoiled).toBe(true);
         });
 
-        it('should spoil the vote when answers are empty', () => {
+        it("should spoil the vote when answers are empty", () => {
             const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
                 type: M_POLL_RESPONSE.name,
                 content: {
@@ -150,7 +152,7 @@ describe('PollResponseEvent', () => {
             expect(response.spoiled).toBe(true);
         });
 
-        it('should spoil the vote when answers are empty', () => {
+        it("should spoil the vote when answers are empty", () => {
             const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
                 type: M_POLL_RESPONSE.name,
                 content: {
@@ -170,7 +172,7 @@ describe('PollResponseEvent', () => {
             expect(response.spoiled).toBe(true);
         });
 
-        it('should spoil the vote when answers are not strings', () => {
+        it("should spoil the vote when answers are not strings", () => {
             const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
                 type: M_POLL_RESPONSE.name,
                 content: {
@@ -190,8 +192,8 @@ describe('PollResponseEvent', () => {
             expect(response.spoiled).toBe(true);
         });
 
-        describe('consumer usage', () => {
-            it('should spoil the vote when invalid answers are given', () => {
+        describe("consumer usage", () => {
+            it("should spoil the vote when invalid answers are given", () => {
                 const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
                     type: M_POLL_RESPONSE.name,
                     content: {
@@ -211,7 +213,7 @@ describe('PollResponseEvent', () => {
                 expect(response.spoiled).toBe(true);
             });
 
-            it('should truncate answers to the poll max selections', () => {
+            it("should truncate answers to the poll max selections", () => {
                 const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
                     type: M_POLL_RESPONSE.name,
                     content: {
@@ -235,8 +237,8 @@ describe('PollResponseEvent', () => {
         });
     });
 
-    describe('from & serialize', () => {
-        it('should serialize to a poll response event', () => {
+    describe("from & serialize", () => {
+        it("should serialize to a poll response event", () => {
             const response = PollResponseEvent.from(["A", "B", "C"], "$poll");
             expect(response.spoiled).toBe(false);
             expect(response.answerIds).toMatchObject(["A", "B", "C"]);
@@ -255,7 +257,7 @@ describe('PollResponseEvent', () => {
             });
         });
 
-        it('should serialize a spoiled vote', () => {
+        it("should serialize a spoiled vote", () => {
             const response = PollResponseEvent.from([], "$poll");
             expect(response.spoiled).toBe(true);
             expect(response.answerIds).toMatchObject([]);

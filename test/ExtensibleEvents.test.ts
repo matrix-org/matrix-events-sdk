@@ -42,15 +42,15 @@ import {
     UnstableValue,
 } from "../src";
 
-describe('ExtensibleEvents', () => {
+describe("ExtensibleEvents", () => {
     // Note: we don't test the other static functions because it should be pretty
     // obvious when they fail. We'll just make sure that the static accessor works.
-    it('should return an instance by default', () => {
+    it("should return an instance by default", () => {
         expect(ExtensibleEvents.defaultInstance).toBeDefined();
     });
 
-    describe('unknown events', () => {
-        it('should parse unknown event types with a fallback to m.message', () => {
+    describe("unknown events", () => {
+        it("should parse unknown event types with a fallback to m.message", () => {
             const input: IPartialEvent<any> = {
                 type: "org.example.message-like",
                 content: {
@@ -61,7 +61,7 @@ describe('ExtensibleEvents', () => {
                     [M_TEXT.name]: "Hello World",
                 },
             };
-            const event: ExtensibleEvent = (new ExtensibleEvents()).parse(input);
+            const event: ExtensibleEvent = new ExtensibleEvents().parse(input);
             expect(event).toBeDefined();
             expect(event instanceof MessageEvent).toBe(true);
             expect(event.isEquivalentTo(M_MESSAGE)).toBe(true);
@@ -69,7 +69,7 @@ describe('ExtensibleEvents', () => {
             expect(messageEvent.text).toBe("Hello World");
         });
 
-        it('should return falsy for entirely unknown types', () => {
+        it("should return falsy for entirely unknown types", () => {
             const input: IPartialEvent<any> = {
                 type: "org.example.message-like",
                 content: {
@@ -80,12 +80,12 @@ describe('ExtensibleEvents', () => {
                     },
                 },
             };
-            const event = (new ExtensibleEvents()).parse(input);
+            const event = new ExtensibleEvents().parse(input);
             expect(event).toBeFalsy();
         });
     });
 
-    describe('custom events', () => {
+    describe("custom events", () => {
         class MyCustomEvent extends ExtensibleEvent<any> {
             public constructor(wireEvent: IPartialEvent<any>) {
                 super(wireEvent);
@@ -107,7 +107,7 @@ describe('ExtensibleEvents', () => {
 
         const myNamespace = new UnstableValue(null, "org.example.custom.event");
 
-        it('should support custom interpreters', () => {
+        it("should support custom interpreters", () => {
             const input: IPartialEvent<any> = {
                 type: myNamespace.name,
                 content: {
@@ -126,7 +126,7 @@ describe('ExtensibleEvents', () => {
             expect(event instanceof MyCustomEvent).toBe(true);
         });
 
-        it('should support changing unknown parse order', () => {
+        it("should support changing unknown parse order", () => {
             const input: IPartialEvent<any> = {
                 type: "org.example.custom.not.under.namespace",
                 content: {
@@ -150,12 +150,12 @@ describe('ExtensibleEvents', () => {
         });
     });
 
-    describe('known events', () => {
+    describe("known events", () => {
         // Dev note: The "should parse X type" cases are not meant to be exhaustive. Just
         // a quick check to make sure the event comes out on the other end as the correct
         // type.
 
-        it('should parse legacy m.text room message events', () => {
+        it("should parse legacy m.text room message events", () => {
             const input: IPartialEvent<IPartialLegacyContent> = {
                 type: "m.room.message",
                 content: {
@@ -163,7 +163,7 @@ describe('ExtensibleEvents', () => {
                     body: "Text here",
                 },
             };
-            const message = (new ExtensibleEvents()).parse(input);
+            const message = new ExtensibleEvents().parse(input);
             expect(message).toBeDefined();
             expect(message instanceof MessageEvent).toBe(true);
             expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
@@ -171,14 +171,14 @@ describe('ExtensibleEvents', () => {
             expect(messageEvent.text).toEqual("Text here");
         });
 
-        it('should parse modern m.message events', () => {
+        it("should parse modern m.message events", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
                 type: M_MESSAGE.name,
                 content: {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = (new ExtensibleEvents()).parse(input);
+            const message = new ExtensibleEvents().parse(input);
             expect(message).toBeDefined();
             expect(message instanceof MessageEvent).toBe(true);
             expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
@@ -186,14 +186,14 @@ describe('ExtensibleEvents', () => {
             expect(messageEvent.text).toEqual("Text here");
         });
 
-        it('should parse modern m.emote events', () => {
+        it("should parse modern m.emote events", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
                 type: M_EMOTE.name,
                 content: {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = (new ExtensibleEvents()).parse(input);
+            const message = new ExtensibleEvents().parse(input);
             expect(message).toBeDefined();
             expect(message instanceof EmoteEvent).toBe(true);
             expect(message.isEquivalentTo(M_EMOTE)).toBe(true);
@@ -202,14 +202,14 @@ describe('ExtensibleEvents', () => {
             expect(messageEvent.text).toEqual("Text here");
         });
 
-        it('should parse modern m.notice events', () => {
+        it("should parse modern m.notice events", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
                 type: M_NOTICE.name,
                 content: {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = (new ExtensibleEvents()).parse(input);
+            const message = new ExtensibleEvents().parse(input);
             expect(message).toBeDefined();
             expect(message instanceof NoticeEvent).toBe(true);
             expect(message.isEquivalentTo(M_NOTICE)).toBe(true);
@@ -218,7 +218,7 @@ describe('ExtensibleEvents', () => {
             expect(messageEvent.text).toEqual("Text here");
         });
 
-        it('should parse m.poll.start events', () => {
+        it("should parse m.poll.start events", () => {
             const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
                 type: M_POLL_START.name,
                 content: {
@@ -235,13 +235,13 @@ describe('ExtensibleEvents', () => {
                     },
                 },
             };
-            const poll = (new ExtensibleEvents()).parse(input);
+            const poll = new ExtensibleEvents().parse(input);
             expect(poll).toBeDefined();
             expect(poll instanceof PollStartEvent).toBe(true);
             expect(poll.isEquivalentTo(M_POLL_START)).toBe(true);
         });
 
-        it('should parse m.poll.response events', () => {
+        it("should parse m.poll.response events", () => {
             const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
                 type: M_POLL_RESPONSE.name,
                 content: {
@@ -254,13 +254,13 @@ describe('ExtensibleEvents', () => {
                     },
                 },
             };
-            const response = (new ExtensibleEvents()).parse(input);
+            const response = new ExtensibleEvents().parse(input);
             expect(response).toBeDefined();
             expect(response instanceof PollResponseEvent).toBe(true);
             expect(response.isEquivalentTo(M_POLL_RESPONSE)).toBe(true);
         });
 
-        it('should parse m.poll.end events', () => {
+        it("should parse m.poll.end events", () => {
             const input: IPartialEvent<M_POLL_END_EVENT_CONTENT> = {
                 type: M_POLL_END.name,
                 content: {
@@ -269,10 +269,10 @@ describe('ExtensibleEvents', () => {
                         event_id: "$poll",
                     },
                     [M_TEXT.name]: "FALLBACK Closure notice here",
-                    [M_POLL_END.name]: { },
+                    [M_POLL_END.name]: {},
                 },
             };
-            const poll = (new ExtensibleEvents()).parse(input);
+            const poll = new ExtensibleEvents().parse(input);
             expect(poll).toBeDefined();
             expect(poll instanceof PollEndEvent).toBe(true);
         });

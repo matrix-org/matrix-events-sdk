@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { NamespacedValue, UnstableValue } from "../src";
+import {NamespacedValue, UnstableValue} from "../src";
 
 export const STABLE_VALUE = "org.example.stable";
 export const UNSTABLE_VALUE = "org.example.unstable";
 
-describe('NamespacedValue', () => {
-    it('should map stable and unstable', () => {
+describe("NamespacedValue", () => {
+    it("should map stable and unstable", () => {
         const ns = new NamespacedValue(STABLE_VALUE, UNSTABLE_VALUE);
         expect(ns.stable).toBe(STABLE_VALUE);
         expect(ns.unstable).toBe(UNSTABLE_VALUE);
@@ -28,7 +28,7 @@ describe('NamespacedValue', () => {
         expect(ns.altName).toBe(UNSTABLE_VALUE);
     });
 
-    it('should support optionally stable values', () => {
+    it("should support optionally stable values", () => {
         const ns = new NamespacedValue(null, UNSTABLE_VALUE);
         expect(ns.stable).toBe(null);
         expect(ns.unstable).toBe(UNSTABLE_VALUE);
@@ -36,7 +36,7 @@ describe('NamespacedValue', () => {
         expect(ns.altName).toBe(null);
     });
 
-    it('should support optionally unstable values', () => {
+    it("should support optionally unstable values", () => {
         const ns = new NamespacedValue(STABLE_VALUE, null);
         expect(ns.stable).toBe(STABLE_VALUE);
         expect(ns.unstable).toBe(null);
@@ -44,13 +44,12 @@ describe('NamespacedValue', () => {
         expect(ns.altName).toBe(null);
     });
 
-    it('should not support entirely optional values', () => {
-        expect(() => new NamespacedValue(null, null))
-            .toThrow("One of stable or unstable values must be supplied");
+    it("should not support entirely optional values", () => {
+        expect(() => new NamespacedValue(null, null)).toThrow("One of stable or unstable values must be supplied");
     });
 
-    describe('matches', () => {
-        it('should check both stable and unstable', () => {
+    describe("matches", () => {
+        it("should check both stable and unstable", () => {
             const ns = new NamespacedValue(STABLE_VALUE, UNSTABLE_VALUE);
             expect(ns.matches(STABLE_VALUE)).toBe(true);
             expect(ns.matches(UNSTABLE_VALUE)).toBe(true);
@@ -58,7 +57,7 @@ describe('NamespacedValue', () => {
             expect(ns.matches(null)).toBe(false);
         });
 
-        it('should not try to match null to an optional value', () => {
+        it("should not try to match null to an optional value", () => {
             const ns = new NamespacedValue(STABLE_VALUE, null);
             expect(ns.matches(STABLE_VALUE)).toBe(true);
             expect(ns.matches(UNSTABLE_VALUE)).toBe(false);
@@ -67,8 +66,8 @@ describe('NamespacedValue', () => {
         });
     });
 
-    describe('findIn', () => {
-        it('should locate stable values first', () => {
+    describe("findIn", () => {
+        it("should locate stable values first", () => {
             const obj = {
                 [UNSTABLE_VALUE]: 42,
                 [STABLE_VALUE]: 41,
@@ -78,7 +77,7 @@ describe('NamespacedValue', () => {
             expect(ns.findIn(obj)).toBe(41);
         });
 
-        it('should locate stable when required', () => {
+        it("should locate stable when required", () => {
             const obj = {
                 // [UNSTABLE_VALUE]: 42,
                 [STABLE_VALUE]: 41,
@@ -88,7 +87,7 @@ describe('NamespacedValue', () => {
             expect(ns.findIn(obj)).toBe(41);
         });
 
-        it('should locate unstable when required', () => {
+        it("should locate unstable when required", () => {
             const obj = {
                 [UNSTABLE_VALUE]: 42,
                 // [STABLE_VALUE]: 41,
@@ -98,7 +97,7 @@ describe('NamespacedValue', () => {
             expect(ns.findIn(obj)).toBe(42);
         });
 
-        it('should not locate anything when not present', () => {
+        it("should not locate anything when not present", () => {
             const obj = {
                 // [UNSTABLE_VALUE]: 42,
                 // [STABLE_VALUE]: 41,
@@ -109,20 +108,20 @@ describe('NamespacedValue', () => {
         });
     });
 
-    describe('includedIn', () => {
-        it('should locate stable when required', () => {
+    describe("includedIn", () => {
+        it("should locate stable when required", () => {
             const arr = [STABLE_VALUE, /*UNSTABLE_VALUE,*/ "NEITHER"];
             const ns = new NamespacedValue(STABLE_VALUE, UNSTABLE_VALUE);
             expect(ns.includedIn(arr)).toBe(true);
         });
 
-        it('should locate unstable when required', () => {
+        it("should locate unstable when required", () => {
             const arr = [/*STABLE_VALUE,*/ UNSTABLE_VALUE, "NEITHER"];
             const ns = new NamespacedValue(STABLE_VALUE, UNSTABLE_VALUE);
             expect(ns.includedIn(arr)).toBe(true);
         });
 
-        it('should not locate anything when not present', () => {
+        it("should not locate anything when not present", () => {
             const arr = [/*STABLE_VALUE, UNSTABLE_VALUE,*/ "NEITHER"];
             const ns = new NamespacedValue(STABLE_VALUE, UNSTABLE_VALUE);
             expect(ns.includedIn(arr)).toBe(false);
@@ -130,8 +129,8 @@ describe('NamespacedValue', () => {
     });
 });
 
-describe('UnstableValue', () => {
-    it('should map stable and unstable', () => {
+describe("UnstableValue", () => {
+    it("should map stable and unstable", () => {
         const ns = new UnstableValue(STABLE_VALUE, UNSTABLE_VALUE);
         expect(ns.stable).toBe(STABLE_VALUE);
         expect(ns.unstable).toBe(UNSTABLE_VALUE);
@@ -139,7 +138,7 @@ describe('UnstableValue', () => {
         expect(ns.altName).toBe(STABLE_VALUE);
     });
 
-    it('should support optionally stable values', () => {
+    it("should support optionally stable values", () => {
         const ns = new UnstableValue(null, UNSTABLE_VALUE);
         expect(ns.stable).toBe(null);
         expect(ns.unstable).toBe(UNSTABLE_VALUE);
@@ -147,18 +146,16 @@ describe('UnstableValue', () => {
         expect(ns.altName).toBe(null);
     });
 
-    it('should not support optionally unstable values', () => {
-        expect(() => new UnstableValue(STABLE_VALUE, null))
-            .toThrow("Unstable value must be supplied");
+    it("should not support optionally unstable values", () => {
+        expect(() => new UnstableValue(STABLE_VALUE, null)).toThrow("Unstable value must be supplied");
     });
 
-    it('should not support entirely optional values', () => {
-        expect(() => new UnstableValue(null, null))
-            .toThrow("One of stable or unstable values must be supplied");
+    it("should not support entirely optional values", () => {
+        expect(() => new UnstableValue(null, null)).toThrow("One of stable or unstable values must be supplied");
     });
 
-    describe('matches', () => {
-        it('should check both stable and unstable', () => {
+    describe("matches", () => {
+        it("should check both stable and unstable", () => {
             const ns = new UnstableValue(STABLE_VALUE, UNSTABLE_VALUE);
             expect(ns.matches(STABLE_VALUE)).toBe(true);
             expect(ns.matches(UNSTABLE_VALUE)).toBe(true);
@@ -166,7 +163,7 @@ describe('UnstableValue', () => {
             expect(ns.matches(null)).toBe(false);
         });
 
-        it('should not try to match null to an optional value', () => {
+        it("should not try to match null to an optional value", () => {
             const ns = new UnstableValue(null, UNSTABLE_VALUE);
             expect(ns.matches(STABLE_VALUE)).toBe(false);
             expect(ns.matches(UNSTABLE_VALUE)).toBe(true);
@@ -175,8 +172,8 @@ describe('UnstableValue', () => {
         });
     });
 
-    describe('findIn', () => {
-        it('should locate unstable values first', () => {
+    describe("findIn", () => {
+        it("should locate unstable values first", () => {
             const obj = {
                 [UNSTABLE_VALUE]: 42,
                 [STABLE_VALUE]: 41,
@@ -186,7 +183,7 @@ describe('UnstableValue', () => {
             expect(ns.findIn(obj)).toBe(42);
         });
 
-        it('should locate stable when required', () => {
+        it("should locate stable when required", () => {
             const obj = {
                 // [UNSTABLE_VALUE]: 42,
                 [STABLE_VALUE]: 41,
@@ -196,7 +193,7 @@ describe('UnstableValue', () => {
             expect(ns.findIn(obj)).toBe(41);
         });
 
-        it('should locate unstable when required', () => {
+        it("should locate unstable when required", () => {
             const obj = {
                 [UNSTABLE_VALUE]: 42,
                 // [STABLE_VALUE]: 41,
@@ -206,7 +203,7 @@ describe('UnstableValue', () => {
             expect(ns.findIn(obj)).toBe(42);
         });
 
-        it('should not locate anything when not present', () => {
+        it("should not locate anything when not present", () => {
             const obj = {
                 // [UNSTABLE_VALUE]: 42,
                 // [STABLE_VALUE]: 41,
@@ -217,20 +214,20 @@ describe('UnstableValue', () => {
         });
     });
 
-    describe('includedIn', () => {
-        it('should locate stable when required', () => {
+    describe("includedIn", () => {
+        it("should locate stable when required", () => {
             const arr = [STABLE_VALUE, /*UNSTABLE_VALUE,*/ "NEITHER"];
             const ns = new UnstableValue(STABLE_VALUE, UNSTABLE_VALUE);
             expect(ns.includedIn(arr)).toBe(true);
         });
 
-        it('should locate unstable when required', () => {
+        it("should locate unstable when required", () => {
             const arr = [/*STABLE_VALUE,*/ UNSTABLE_VALUE, "NEITHER"];
             const ns = new UnstableValue(STABLE_VALUE, UNSTABLE_VALUE);
             expect(ns.includedIn(arr)).toBe(true);
         });
 
-        it('should not locate anything when not present', () => {
+        it("should not locate anything when not present", () => {
             const arr = [/*STABLE_VALUE, UNSTABLE_VALUE,*/ "NEITHER"];
             const ns = new UnstableValue(STABLE_VALUE, UNSTABLE_VALUE);
             expect(ns.includedIn(arr)).toBe(false);

@@ -27,8 +27,8 @@ import {
     parseMMessage,
 } from "../../../src";
 
-describe('parseMMessage', () => {
-    it('should return an unmodified MessageEvent', () => {
+describe("parseMMessage", () => {
+    it("should return an unmodified MessageEvent", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: "org.example.message-like",
             content: {
@@ -45,7 +45,7 @@ describe('parseMMessage', () => {
         expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 
-    it('should return an unmodified EmoteEvent', () => {
+    it("should return an unmodified EmoteEvent", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: M_EMOTE.name,
             content: {
@@ -65,7 +65,7 @@ describe('parseMMessage', () => {
         expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 
-    it('should return an unmodified NoticeEvent', () => {
+    it("should return an unmodified NoticeEvent", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: M_NOTICE.name,
             content: {

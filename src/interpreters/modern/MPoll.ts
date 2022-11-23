@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { IPartialEvent } from "../../IPartialEvent";
-import { Optional } from "../../types";
+import {IPartialEvent} from "../../IPartialEvent";
+import {Optional} from "../../types";
 import {
     M_POLL_END,
     M_POLL_END_EVENT_CONTENT,
@@ -24,9 +24,9 @@ import {
     M_POLL_START,
     M_POLL_START_EVENT_CONTENT,
 } from "../../events/poll_types";
-import { PollStartEvent } from "../../events/PollStartEvent";
-import { PollResponseEvent } from "../../events/PollResponseEvent";
-import { PollEndEvent } from "../../events/PollEndEvent";
+import {PollStartEvent} from "../../events/PollStartEvent";
+import {PollResponseEvent} from "../../events/PollResponseEvent";
+import {PollEndEvent} from "../../events/PollEndEvent";
 
 type PollContent = M_POLL_START_EVENT_CONTENT | M_POLL_RESPONSE_EVENT_CONTENT | M_POLL_END_EVENT_CONTENT;
 type PollEvent = PollStartEvent | PollResponseEvent | PollEndEvent;

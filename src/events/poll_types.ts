@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { UnstableValue } from "../NamespacedValue";
-import { EitherAnd, TSNamespace } from "../types";
-import { M_MESSAGE_EVENT_CONTENT } from "./message_types";
-import { REFERENCE_RELATION, RELATES_TO_RELATIONSHIP } from "./relationship_types";
+import {UnstableValue} from "../NamespacedValue";
+import {EitherAnd, TSNamespace} from "../types";
+import {M_MESSAGE_EVENT_CONTENT} from "./message_types";
+import {REFERENCE_RELATION, RELATES_TO_RELATIONSHIP} from "./relationship_types";
 
 /**
  * Identifier for a disclosed poll.
@@ -32,12 +32,15 @@ export const M_POLL_KIND_UNDISCLOSED = new UnstableValue("m.poll.undisclosed", "
 /**
  * Any poll kind.
  */
-export type POLL_KIND = TSNamespace<typeof M_POLL_KIND_DISCLOSED> | TSNamespace<typeof M_POLL_KIND_UNDISCLOSED> | string;
+export type POLL_KIND =
+    | TSNamespace<typeof M_POLL_KIND_DISCLOSED>
+    | TSNamespace<typeof M_POLL_KIND_UNDISCLOSED>
+    | string;
 
 /**
  * Known poll kind namespaces.
  */
-export type KNOWN_POLL_KIND = (typeof M_POLL_KIND_DISCLOSED) | (typeof M_POLL_KIND_UNDISCLOSED);
+export type KNOWN_POLL_KIND = typeof M_POLL_KIND_DISCLOSED | typeof M_POLL_KIND_UNDISCLOSED;
 
 /**
  * The namespaced value for m.poll.start
@@ -62,7 +65,10 @@ export type POLL_ANSWER = M_MESSAGE_EVENT_CONTENT & {id: string};
 /**
  * The event definition for an m.poll.start event (in content)
  */
-export type M_POLL_START_EVENT = EitherAnd<{ [M_POLL_START.name]: M_POLL_START_SUBTYPE }, { [M_POLL_START.altName]: M_POLL_START_SUBTYPE }>;
+export type M_POLL_START_EVENT = EitherAnd<
+    {[M_POLL_START.name]: M_POLL_START_SUBTYPE},
+    {[M_POLL_START.altName]: M_POLL_START_SUBTYPE}
+>;
 
 /**
  * The content for an m.poll.start event
@@ -84,7 +90,10 @@ export type M_POLL_RESPONSE_SUBTYPE = {
 /**
  * The event definition for an m.poll.response event (in content)
  */
-export type M_POLL_RESPONSE_EVENT = EitherAnd<{ [M_POLL_RESPONSE.name]: M_POLL_RESPONSE_SUBTYPE }, { [M_POLL_RESPONSE.altName]: M_POLL_RESPONSE_SUBTYPE }>;
+export type M_POLL_RESPONSE_EVENT = EitherAnd<
+    {[M_POLL_RESPONSE.name]: M_POLL_RESPONSE_SUBTYPE},
+    {[M_POLL_RESPONSE.altName]: M_POLL_RESPONSE_SUBTYPE}
+>;
 
 /**
  * The content for an m.poll.response event
@@ -99,9 +108,11 @@ export const M_POLL_END = new UnstableValue("m.poll.end", "org.matrix.msc3381.po
 /**
  * The event definition for an m.poll.end event (in content)
  */
-export type M_POLL_END_EVENT = EitherAnd<{ [M_POLL_END.name]: {} }, { [M_POLL_END.altName]: {} }>;
+export type M_POLL_END_EVENT = EitherAnd<{[M_POLL_END.name]: {}}, {[M_POLL_END.altName]: {}}>;
 
 /**
  * The content for an m.poll.end event
  */
-export type M_POLL_END_EVENT_CONTENT = M_POLL_END_EVENT & RELATES_TO_RELATIONSHIP<typeof REFERENCE_RELATION> & M_MESSAGE_EVENT_CONTENT;
+export type M_POLL_END_EVENT_CONTENT = M_POLL_END_EVENT &
+    RELATES_TO_RELATIONSHIP<typeof REFERENCE_RELATION> &
+    M_MESSAGE_EVENT_CONTENT;

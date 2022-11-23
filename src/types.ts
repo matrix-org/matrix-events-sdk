@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { NamespacedValue } from "./NamespacedValue";
+import {NamespacedValue} from "./NamespacedValue";
 
 /**
  * Represents an optional type: can either be T or a falsy value.
@@ -27,7 +27,7 @@ export type Optional<T> = T | null | undefined;
  * @returns {boolean} True if the input is a defined string.
  */
 export function isOptionalAString(s: Optional<string>): boolean {
-    return isProvided(s) && (typeof s) === 'string';
+    return isProvided(s) && typeof s === "string";
 }
 
 /**
@@ -48,7 +48,7 @@ export type EitherAnd<T1, T2> = (T1 & T2) | T1 | T2;
  * Represents the stable and unstable values of a given namespace.
  */
 export type TSNamespace<N> = N extends NamespacedValue<infer S, infer U>
-    ? (TSNamespaceValue<S> | TSNamespaceValue<U>)
+    ? TSNamespaceValue<S> | TSNamespaceValue<U>
     : never;
 
 /**
