@@ -1,14 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "rootDir": "./src",
-    "sourceMap": true,
-    "noEmit": false,
-    "module": "commonjs",
-    "emitDecoratorMetadata": true,
-    "declaration": true,
-    "outDir": "./lib"
-  },
   "include": [
     "./src/**/*.ts"
   ]

@@ -1,13 +1,18 @@
 {
   "compilerOptions": {
     "target": "es2016",
-    "experimentalDecorators": true,
+    "experimentalDecorators": false,
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "declaration": false,
-    "noEmit": true
+    "noUnusedLocals": true,
+    "sourceMap": true,
+    "alwaysStrict": true,
+    "noImplicitThis": true,
+    "strictBindCallApply": true,
+    "declaration": true,
+    "outDir": "./lib"
   },
   "include": [
     "./src/**/*.ts",
