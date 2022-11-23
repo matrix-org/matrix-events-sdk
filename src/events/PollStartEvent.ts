@@ -196,7 +196,7 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
 }
 
 const LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-function makeId() {
+function makeId(): string {
     return [...Array(16)].map(
         () => LETTERS.charAt(Math.floor(Math.random() * LETTERS.length)),
     ).join('');

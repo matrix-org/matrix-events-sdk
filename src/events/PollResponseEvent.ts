@@ -73,7 +73,7 @@ export class PollResponseEvent extends ExtensibleEvent<M_POLL_RESPONSE_EVENT_CON
      * is used to determine if the vote is spoiled, whether the answers are valid, etc.
      * @param {PollStartEvent} poll The poll start event.
      */
-    public validateAgainst(poll: PollStartEvent) {
+    public validateAgainst(poll: PollStartEvent): void {
         const response = M_POLL_RESPONSE.findIn<M_POLL_RESPONSE_SUBTYPE>(this.wireContent);
         if (!Array.isArray(response?.answers)) {
             this.internalSpoiled = true;

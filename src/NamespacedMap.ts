@@ -45,7 +45,7 @@ export class NamespacedMap<V> {
      * @param {NS} key The key.
      * @param {V} val The value.
      */
-    public set(key: NS, val: V) {
+    public set(key: NS, val: V): void {
         if (key.name) {
             this.internalMap.set(key.name, val);
         }
@@ -68,7 +68,7 @@ export class NamespacedMap<V> {
      * Removes all the namespaced values from the map.
      * @param {NS} key The key.
      */
-    public delete(key: NS) {
+    public delete(key: NS): void {
         if (key.name) {
             this.internalMap.delete(key.name);
         }
