@@ -15,17 +15,19 @@
     "LICENSE"
   ],
   "scripts": {
+    "prepare": "husky install",
     "prepublishOnly": "yarn build",
     "clean": "rimraf lib",
     "build": "yarn clean && tsc -p tsconfig.build.json",
     "start": "tsc -p tsconfig.build.json -w",
     "test": "jest",
     "format": "prettier --config .prettierrc \"**/*.ts\" --write",
-    "lint": "prettier --config .prettierrc \"**/*.ts\" --check"
+    "lint": "tsc -p tsconfig.build.json --noEmit && prettier --config .prettierrc \"**/*.ts\" --check"
   },
   "devDependencies": {
     "@types/jest": "^29.2.3",
     "@types/node": "^16",
+    "husky": "^8.0.2",
     "jest": "^29.3.1",
     "prettier": "^2.8.0",
     "rimraf": "^3.0.2",
