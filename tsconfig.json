@@ -5,14 +5,18 @@
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "noImplicitAny": true,
     "noUnusedLocals": true,
     "sourceMap": true,
-    "alwaysStrict": true,
-    "noImplicitThis": true,
-    "strictBindCallApply": true,
     "declaration": true,
-    "outDir": "./lib"
+    "outDir": "./lib",
+    "strict": false,
+    "noImplicitAny": true,
+    "strictNullChecks": false,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": false,
+    "noImplicitThis": true,
+    "alwaysStrict": true
   },
   "include": [
     "./src/**/*.ts",

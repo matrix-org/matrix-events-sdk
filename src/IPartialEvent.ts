@@ -17,7 +17,7 @@ limitations under the License.
 /**
  * Partial types for a Matrix Event.
  */
-export interface IPartialEvent<TContent> {
+export interface IPartialEvent<TContent extends object> {
     type: string;
     content: TContent;
 }

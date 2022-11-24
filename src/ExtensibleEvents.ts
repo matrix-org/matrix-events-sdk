@@ -26,7 +26,7 @@ import {M_EMOTE, M_MESSAGE, M_NOTICE} from "./events/message_types";
 import {M_POLL_END, M_POLL_RESPONSE, M_POLL_START} from "./events/poll_types";
 import {parseMPoll} from "./interpreters/modern/MPoll";
 
-export type EventInterpreter<TContentIn = object, TEvent extends ExtensibleEvent = ExtensibleEvent> = (
+export type EventInterpreter<TContentIn extends object = object, TEvent extends ExtensibleEvent = ExtensibleEvent> = (
     wireEvent: IPartialEvent<TContentIn>,
 ) => Optional<TEvent>;
 
@@ -38,7 +38,7 @@ export type EventInterpreter<TContentIn = object, TEvent extends ExtensibleEvent
 export class ExtensibleEvents {
     private static _defaultInstance: ExtensibleEvents = new ExtensibleEvents();
 
-    private interpreters = new NamespacedMap<EventInterpreter>([
+    private interpreters = new NamespacedMap<EventInterpreter<any>>([
         // Remember to add your unit test when adding to this! ("known events" test description)
         [LEGACY_M_ROOM_MESSAGE, parseMRoomMessage],
         [M_MESSAGE, parseMMessage],
