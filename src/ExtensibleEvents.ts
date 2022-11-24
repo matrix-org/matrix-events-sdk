@@ -14,20 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { IPartialEvent } from "./IPartialEvent";
-import { ExtensibleEvent } from "./events/ExtensibleEvent";
-import { Optional } from "./types";
-import { NamespacedValue } from "./NamespacedValue";
-import { NamespacedMap } from "./NamespacedMap";
-import { InvalidEventError } from "./InvalidEventError";
-import { LEGACY_M_ROOM_MESSAGE, parseMRoomMessage } from "./interpreters/legacy/MRoomMessage";
-import { parseMMessage } from "./interpreters/modern/MMessage";
-import { M_EMOTE, M_MESSAGE, M_NOTICE } from "./events/message_types";
-import { M_POLL_END, M_POLL_RESPONSE, M_POLL_START } from "./events/poll_types";
-import { parseMPoll } from "./interpreters/modern/MPoll";
+import {IPartialEvent} from "./IPartialEvent";
+import {ExtensibleEvent} from "./events/ExtensibleEvent";
+import {Optional} from "./types";
+import {NamespacedValue} from "./NamespacedValue";
+import {NamespacedMap} from "./NamespacedMap";
+import {InvalidEventError} from "./InvalidEventError";
+import {LEGACY_M_ROOM_MESSAGE, parseMRoomMessage} from "./interpreters/legacy/MRoomMessage";
+import {parseMMessage} from "./interpreters/modern/MMessage";
+import {M_EMOTE, M_MESSAGE, M_NOTICE} from "./events/message_types";
+import {M_POLL_END, M_POLL_RESPONSE, M_POLL_START} from "./events/poll_types";
+import {parseMPoll} from "./interpreters/modern/MPoll";
 
-export type EventInterpreter<TContentIn = object, TEvent extends ExtensibleEvent = ExtensibleEvent>
-    = (wireEvent: IPartialEvent<TContentIn>) => Optional<TEvent>;
+export type EventInterpreter<TContentIn = object, TEvent extends ExtensibleEvent = ExtensibleEvent> = (
+    wireEvent: IPartialEvent<TContentIn>,
+) => Optional<TEvent>;
 
 /**
  * Utility class for parsing and identifying event types in a renderable form. An
@@ -48,12 +49,9 @@ export class ExtensibleEvents {
         [M_POLL_END, parseMPoll],
     ]);
 
-    private _unknownInterpretOrder: NamespacedValue<string, string>[] = [
-        M_MESSAGE,
-    ];
+    private _unknownInterpretOrder: NamespacedValue<string, string>[] = [M_MESSAGE];
 
-    public constructor() {
-    }
+    public constructor() {}
 
     /**
      * Gets the default instance for all extensible event parsing.
@@ -112,7 +110,10 @@ export class ExtensibleEvents {
      * @param {NamespacedValue<string, string>} wireEventType The event type.
      * @param {EventInterpreter} interpreter The interpreter.
      */
-    public static registerInterpreter(wireEventType: NamespacedValue<string, string>, interpreter: EventInterpreter): void {
+    public static registerInterpreter(
+        wireEventType: NamespacedValue<string, string>,
+        interpreter: EventInterpreter,
+    ): void {
         ExtensibleEvents.defaultInstance.registerInterpreter(wireEventType, interpreter);
     }
 

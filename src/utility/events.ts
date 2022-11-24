@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { NamespacedValue } from "../NamespacedValue";
+import {NamespacedValue} from "../NamespacedValue";
 
 /**
  * Represents a potentially namespaced event type.
@@ -29,14 +29,14 @@ export type EventType = NamespacedValue<string, string> | string;
  * @returns {boolean} True if the given type matches the expected type.
  */
 export function isEventTypeSame(given: EventType, expected: EventType): boolean {
-    if ((typeof given) === "string") {
-        if ((typeof expected) === "string") {
+    if (typeof given === "string") {
+        if (typeof expected === "string") {
             return expected === given;
         } else {
             return (expected as NamespacedValue<string, string>).matches(given as string);
         }
     } else {
-        if ((typeof expected) === "string") {
+        if (typeof expected === "string") {
             return (given as NamespacedValue<string, string>).matches(expected as string);
         } else {
             const expectedNs = expected as NamespacedValue<string, string>;

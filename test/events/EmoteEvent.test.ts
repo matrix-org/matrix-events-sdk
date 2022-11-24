@@ -28,8 +28,8 @@ import {
     M_TEXT,
 } from "../../src";
 
-describe('EmoteEvent', () => {
-    it('should parse m.text', () => {
+describe("EmoteEvent", () => {
+    it("should parse m.text", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: "org.example.message-like",
             content: {
@@ -43,7 +43,7 @@ describe('EmoteEvent', () => {
         expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 
-    it('should parse m.html', () => {
+    it("should parse m.html", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: "org.example.message-like",
             content: {
@@ -59,7 +59,7 @@ describe('EmoteEvent', () => {
         expect(message.renderings.some(r => r.mimetype === "text/html" && r.body === "HTML here")).toBe(true);
     });
 
-    it('should parse m.message', () => {
+    it("should parse m.message", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: "org.example.message-like",
             content: {
@@ -83,43 +83,40 @@ describe('EmoteEvent', () => {
         expect(message.renderings.some(r => r.mimetype === "text/markdown" && r.body === "MD here")).toBe(true);
     });
 
-    it('should fail to parse missing text', () => {
+    it("should fail to parse missing text", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: "org.example.message-like",
             content: {
                 hello: "world",
             } as any, // force invalid type
         };
-        expect(() => new EmoteEvent(input))
-            .toThrow(new InvalidEventError("Missing textual representation for event"));
+        expect(() => new EmoteEvent(input)).toThrow(new InvalidEventError("Missing textual representation for event"));
     });
 
-    it('should fail to parse missing plain text in m.message', () => {
+    it("should fail to parse missing plain text in m.message", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: "org.example.message-like",
             content: {
-                [M_MESSAGE.name]: [
-                    {body: "HTML here", mimetype: "text/html"},
-                ],
+                [M_MESSAGE.name]: [{body: "HTML here", mimetype: "text/html"}],
             },
         };
-        expect(() => new EmoteEvent(input))
-            .toThrow(new InvalidEventError("m.message is missing a plain text representation"));
+        expect(() => new EmoteEvent(input)).toThrow(
+            new InvalidEventError("m.message is missing a plain text representation"),
+        );
     });
 
-    it('should fail to parse non-array m.message', () => {
+    it("should fail to parse non-array m.message", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: "org.example.message-like",
             content: {
                 [M_MESSAGE.name]: "invalid",
             } as any, // force invalid type
         };
-        expect(() => new EmoteEvent(input))
-            .toThrow(new InvalidEventError("m.message contents must be an array"));
+        expect(() => new EmoteEvent(input)).toThrow(new InvalidEventError("m.message contents must be an array"));
     });
 
-    describe('isEmote', () => {
-        it('should be true by default', () => {
+    describe("isEmote", () => {
+        it("should be true by default", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
                 type: "org.example.message-like",
                 content: {
@@ -130,7 +127,7 @@ describe('EmoteEvent', () => {
             expect(message.isEmote).toBe(true);
         });
 
-        it('should be true when using an emote subtype', () => {
+        it("should be true when using an emote subtype", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT & M_EMOTE_EVENT_CONTENT> = {
                 type: "org.example.message-like",
                 content: {
@@ -142,7 +139,7 @@ describe('EmoteEvent', () => {
             expect(message.isEmote).toBe(true);
         });
 
-        it('should be true when using an emote primary type', () => {
+        it("should be true when using an emote primary type", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
                 type: M_EMOTE.name,
                 content: {
@@ -154,8 +151,8 @@ describe('EmoteEvent', () => {
         });
     });
 
-    describe('isNotice', () => {
-        it('should be false by default', () => {
+    describe("isNotice", () => {
+        it("should be false by default", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
                 type: "org.example.message-like",
                 content: {
@@ -166,7 +163,7 @@ describe('EmoteEvent', () => {
             expect(message.isNotice).toBe(false);
         });
 
-        it('should be true when using a notice subtype', () => {
+        it("should be true when using a notice subtype", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT & M_NOTICE_EVENT_CONTENT> = {
                 type: "org.example.message-like",
                 content: {
@@ -178,7 +175,7 @@ describe('EmoteEvent', () => {
             expect(message.isNotice).toBe(true);
         });
 
-        it('should be true when using a notice primary type', () => {
+        it("should be true when using a notice primary type", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
                 type: M_NOTICE.name,
                 content: {
@@ -190,8 +187,8 @@ describe('EmoteEvent', () => {
         });
     });
 
-    describe('from & serialize', () => {
-        it('should serialize to a legacy fallback', () => {
+    describe("from & serialize", () => {
+        it("should serialize to a legacy fallback", () => {
             const message = EmoteEvent.from("Text here", "HTML here");
             expect(message.text).toBe("Text here");
             expect(message.html).toBe("HTML here");
@@ -213,7 +210,7 @@ describe('EmoteEvent', () => {
             });
         });
 
-        it('should serialize non-html content to a legacy fallback', () => {
+        it("should serialize non-html content to a legacy fallback", () => {
             const message = EmoteEvent.from("Text here");
             expect(message.text).toBe("Text here");
             expect(message.renderings.length).toBe(1);

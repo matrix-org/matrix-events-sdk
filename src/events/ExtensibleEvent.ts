@@ -14,15 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { IPartialEvent } from "../IPartialEvent";
-import { EventType } from "../utility/events";
+import {IPartialEvent} from "../IPartialEvent";
+import {EventType} from "../utility/events";
 
 /**
  * Represents an Extensible Event in Matrix.
  */
 export abstract class ExtensibleEvent<TContent extends object = object> {
-    protected constructor(public readonly wireFormat: IPartialEvent<TContent>) {
-    }
+    protected constructor(public readonly wireFormat: IPartialEvent<TContent>) {}
 
     /**
      * Shortcut to wireFormat.content

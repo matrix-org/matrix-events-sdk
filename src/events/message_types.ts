@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { UnstableValue } from "../NamespacedValue";
-import { EitherAnd } from "../types";
+import {UnstableValue} from "../NamespacedValue";
+import {EitherAnd} from "../types";
 
 /**
  * The namespaced value for m.message
@@ -33,7 +33,10 @@ export interface IMessageRendering {
 /**
  * The content for an m.message event
  */
-export type M_MESSAGE_EVENT = EitherAnd<{ [M_MESSAGE.name]: IMessageRendering[] }, { [M_MESSAGE.altName]: IMessageRendering[] }>;
+export type M_MESSAGE_EVENT = EitherAnd<
+    {[M_MESSAGE.name]: IMessageRendering[]},
+    {[M_MESSAGE.altName]: IMessageRendering[]}
+>;
 
 /**
  * The namespaced value for m.text
@@ -43,7 +46,7 @@ export const M_TEXT = new UnstableValue("m.text", "org.matrix.msc1767.text");
 /**
  * The content for an m.text event
  */
-export type M_TEXT_EVENT = EitherAnd<{ [M_TEXT.name]: string }, { [M_TEXT.altName]: string }>;
+export type M_TEXT_EVENT = EitherAnd<{[M_TEXT.name]: string}, {[M_TEXT.altName]: string}>;
 
 /**
  * The namespaced value for m.html
@@ -53,15 +56,12 @@ export const M_HTML = new UnstableValue("m.html", "org.matrix.msc1767.html");
 /**
  * The content for an m.html event
  */
-export type M_HTML_EVENT = EitherAnd<{ [M_HTML.name]: string }, { [M_HTML.altName]: string }>;
+export type M_HTML_EVENT = EitherAnd<{[M_HTML.name]: string}, {[M_HTML.altName]: string}>;
 
 /**
  * The content for an m.message, m.text, or m.html event
  */
-export type M_MESSAGE_EVENT_CONTENT =
-    | M_MESSAGE_EVENT
-    | M_TEXT_EVENT
-    | M_HTML_EVENT;
+export type M_MESSAGE_EVENT_CONTENT = M_MESSAGE_EVENT | M_TEXT_EVENT | M_HTML_EVENT;
 
 /**
  * The namespaced value for m.emote
@@ -71,7 +71,7 @@ export const M_EMOTE = new UnstableValue("m.emote", "org.matrix.msc1767.emote");
 /**
  * The event definition for an m.emote event (in content)
  */
-export type M_EMOTE_EVENT = EitherAnd<{ [M_EMOTE.name]?: {} }, { [M_EMOTE.altName]?: {} }>;
+export type M_EMOTE_EVENT = EitherAnd<{[M_EMOTE.name]?: {}}, {[M_EMOTE.altName]?: {}}>;
 
 /**
  * The content for an m.emote event
@@ -86,7 +86,7 @@ export const M_NOTICE = new UnstableValue("m.notice", "org.matrix.msc1767.notice
 /**
  * The event definition for an m.notice event (in content)
  */
-export type M_NOTICE_EVENT = EitherAnd<{ [M_NOTICE.name]?: {} }, { [M_NOTICE.altName]?: {} }>;
+export type M_NOTICE_EVENT = EitherAnd<{[M_NOTICE.name]?: {}}, {[M_NOTICE.altName]?: {}}>;
 
 /**
  * The content for an m.notice event

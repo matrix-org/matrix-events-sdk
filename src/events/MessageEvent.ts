@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ExtensibleEvent } from "./ExtensibleEvent";
-import { IPartialEvent } from "../IPartialEvent";
-import { isOptionalAString, isProvided, Optional } from "../types";
-import { InvalidEventError } from "../InvalidEventError";
+import {ExtensibleEvent} from "./ExtensibleEvent";
+import {IPartialEvent} from "../IPartialEvent";
+import {isOptionalAString, isProvided, Optional} from "../types";
+import {InvalidEventError} from "../InvalidEventError";
 import {
     IMessageRendering,
     M_EMOTE,
@@ -27,7 +27,7 @@ import {
     M_NOTICE,
     M_TEXT,
 } from "./message_types";
-import { EventType, isEventTypeSame } from "../utility/events";
+import {EventType, isEventTypeSame} from "../utility/events";
 
 /**
  * Represents a message event. Message events are the simplest form of event with
@@ -82,9 +82,7 @@ export class MessageEvent extends ExtensibleEvent<M_MESSAGE_EVENT_CONTENT> {
         } else if (isOptionalAString(mtext)) {
             this.text = mtext;
             this.html = mhtml;
-            this.renderings = [
-                {body: mtext, mimetype: "text/plain"},
-            ];
+            this.renderings = [{body: mtext, mimetype: "text/plain"}];
             if (this.html) {
                 this.renderings.push({body: this.html, mimetype: "text/html"});
             }

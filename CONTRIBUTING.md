@@ -13,7 +13,7 @@ The preferred and easiest way to contribute changes to the project is to fork
 it on github, and then create a pull request to ask us to pull your changes
 into our repo (https://help.github.com/articles/using-pull-requests/)
 
-We use the main branch as an unstable/development branch - users looking for
+We use the `main` branch as an unstable/development branch - users looking for
 a stable branch should use the release branches or a given release instead.
 
 The workflow is that contributors should fork the main branch to
@@ -37,10 +37,9 @@ with the architecture of the SDK (index file becomes less clear) and could
 introduce naming problems (as default exports get aliased upon import). In
 general, avoid using `export default`.
 
-The remaining code-style for this project is not formally documented, but
-contributors are encouraged to read the
-[code style document for matrix-react-sdk](https://github.com/matrix-org/matrix-react-sdk/blob/master/code_style.md)
-and follow the principles set out there.
+The remaining code styles are automatically enforced by Prettier. Git hooks are
+used to automatically apply the format, though you can see if your changes will
+pass with `yarn lint`. To automatically apply code style fixes, run `yarn format`.
 
 Please ensure your changes match the cosmetic style of the existing project,
 and **never** mix cosmetic and functional changes in the same commit, as it

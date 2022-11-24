@@ -14,14 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { M_POLL_END, M_POLL_END_EVENT_CONTENT } from "./poll_types";
-import { IPartialEvent } from "../IPartialEvent";
-import { InvalidEventError } from "../InvalidEventError";
-import { REFERENCE_RELATION } from "./relationship_types";
-import { MessageEvent } from "./MessageEvent";
-import { M_TEXT } from "./message_types";
-import { EventType, isEventTypeSame } from "../utility/events";
-import { ExtensibleEvent } from "./ExtensibleEvent";
+import {M_POLL_END, M_POLL_END_EVENT_CONTENT} from "./poll_types";
+import {IPartialEvent} from "../IPartialEvent";
+import {InvalidEventError} from "../InvalidEventError";
+import {REFERENCE_RELATION} from "./relationship_types";
+import {MessageEvent} from "./MessageEvent";
+import {M_TEXT} from "./message_types";
+import {EventType, isEventTypeSame} from "../utility/events";
+import {ExtensibleEvent} from "./ExtensibleEvent";
 
 /**
  * Represents a poll end/closure event.
@@ -46,7 +46,7 @@ export class PollEndEvent extends ExtensibleEvent<M_POLL_END_EVENT_CONTENT> {
         super(wireFormat);
 
         const rel = this.wireContent["m.relates_to"];
-        if (!REFERENCE_RELATION.matches(rel?.rel_type) || (typeof rel?.event_id) !== "string") {
+        if (!REFERENCE_RELATION.matches(rel?.rel_type) || typeof rel?.event_id !== "string") {
             throw new InvalidEventError("Relationship must be a reference to an event");
         }
 

@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { isEventTypeSame, NamespacedValue } from "../../src";
+import {isEventTypeSame, NamespacedValue} from "../../src";
 
-describe('isEventTypeSame', () => {
-    it('should match string and string', () => {
+describe("isEventTypeSame", () => {
+    it("should match string and string", () => {
         const a = "org.example.message-like";
         const b = "org.example.different";
 
@@ -28,7 +28,7 @@ describe('isEventTypeSame', () => {
         expect(isEventTypeSame(b, b)).toBe(true);
     });
 
-    it('should match string and namespace', () => {
+    it("should match string and namespace", () => {
         const a = "org.example.message-like";
         const b = new NamespacedValue<string, string>("org.example.stable", "org.example.unstable");
 
@@ -43,7 +43,7 @@ describe('isEventTypeSame', () => {
         expect(isEventTypeSame(b, b.altName)).toBe(true);
     });
 
-    it('should match namespace and namespace', () => {
+    it("should match namespace and namespace", () => {
         const a = new NamespacedValue<string, string>("org.example.stable1", "org.example.unstable1");
         const b = new NamespacedValue<string, string>("org.example.stable2", "org.example.unstable2");
 
@@ -63,7 +63,7 @@ describe('isEventTypeSame', () => {
         expect(isEventTypeSame(b, b.altName)).toBe(true);
     });
 
-    it('should match namespaces of different pointers', () => {
+    it("should match namespaces of different pointers", () => {
         const a = new NamespacedValue<string, string>("org.example.stable", "org.example.unstable");
         const b = new NamespacedValue<string, string>("org.example.stable", "org.example.unstable");
 

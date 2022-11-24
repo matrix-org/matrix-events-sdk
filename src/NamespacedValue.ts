@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { Optional } from "./types";
+import {Optional} from "./types";
 
 /**
  * Represents a simple Matrix namespaced value. This will assume that if a stable prefix

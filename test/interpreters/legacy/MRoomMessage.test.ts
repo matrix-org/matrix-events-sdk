@@ -28,8 +28,8 @@ import {
     parseMRoomMessage,
 } from "../../../src";
 
-describe('parseMRoomMessage', () => {
-    it('should return an unmodified MessageEvent when using extensible events', () => {
+describe("parseMRoomMessage", () => {
+    it("should return an unmodified MessageEvent when using extensible events", () => {
         const input: IPartialEvent<IPartialLegacyContent> = {
             type: "org.example.message-like",
             content: {
@@ -48,7 +48,7 @@ describe('parseMRoomMessage', () => {
         expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 
-    it('should interpret m.text as a MessageEvent', () => {
+    it("should interpret m.text as a MessageEvent", () => {
         const input: IPartialEvent<IPartialLegacyContent> = {
             type: "org.example.message-like",
             content: {
@@ -69,7 +69,7 @@ describe('parseMRoomMessage', () => {
         expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 
-    it('should support parsing without HTML', () => {
+    it("should support parsing without HTML", () => {
         const input: IPartialEvent<IPartialLegacyContent> = {
             type: "org.example.message-like",
             content: {
@@ -87,7 +87,7 @@ describe('parseMRoomMessage', () => {
         expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 
-    it('should interpret m.emote as an EmoteEvent', () => {
+    it("should interpret m.emote as an EmoteEvent", () => {
         const input: IPartialEvent<IPartialLegacyContent> = {
             type: "org.example.message-like",
             content: {
@@ -109,7 +109,7 @@ describe('parseMRoomMessage', () => {
         expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 
-    it('should interpret m.notice as a NoticeEvent', () => {
+    it("should interpret m.notice as a NoticeEvent", () => {
         const input: IPartialEvent<IPartialLegacyContent> = {
             type: "org.example.message-like",
             content: {
@@ -131,7 +131,7 @@ describe('parseMRoomMessage', () => {
         expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 
-    it('should not interpret unknown msgtypes', () => {
+    it("should not interpret unknown msgtypes", () => {
         const input: IPartialEvent<IPartialLegacyContent> = {
             type: "org.example.message-like",
             content: {

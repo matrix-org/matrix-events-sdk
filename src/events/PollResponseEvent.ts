@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ExtensibleEvent } from "./ExtensibleEvent";
-import { M_POLL_RESPONSE, M_POLL_RESPONSE_EVENT_CONTENT, M_POLL_RESPONSE_SUBTYPE } from "./poll_types";
-import { IPartialEvent } from "../IPartialEvent";
-import { InvalidEventError } from "../InvalidEventError";
-import { PollStartEvent } from "./PollStartEvent";
-import { REFERENCE_RELATION } from "./relationship_types";
-import { EventType, isEventTypeSame } from "../utility/events";
+import {ExtensibleEvent} from "./ExtensibleEvent";
+import {M_POLL_RESPONSE, M_POLL_RESPONSE_EVENT_CONTENT, M_POLL_RESPONSE_SUBTYPE} from "./poll_types";
+import {IPartialEvent} from "../IPartialEvent";
+import {InvalidEventError} from "../InvalidEventError";
+import {PollStartEvent} from "./PollStartEvent";
+import {REFERENCE_RELATION} from "./relationship_types";
+import {EventType, isEventTypeSame} from "../utility/events";
 
 /**
  * Represents a poll response event.
@@ -60,7 +60,7 @@ export class PollResponseEvent extends ExtensibleEvent<M_POLL_RESPONSE_EVENT_CON
         super(wireFormat);
 
         const rel = this.wireContent["m.relates_to"];
-        if (!REFERENCE_RELATION.matches(rel?.rel_type) || (typeof rel?.event_id) !== "string") {
+        if (!REFERENCE_RELATION.matches(rel?.rel_type) || typeof rel?.event_id !== "string") {
             throw new InvalidEventError("Relationship must be a reference to an event");
         }
 
@@ -73,7 +73,7 @@ export class PollResponseEvent extends ExtensibleEvent<M_POLL_RESPONSE_EVENT_CON
      * is used to determine if the vote is spoiled, whether the answers are valid, etc.
      * @param {PollStartEvent} poll The poll start event.
      */
-    public validateAgainst(poll: PollStartEvent) {
+    public validateAgainst(poll: PollStartEvent): void {
         const response = M_POLL_RESPONSE.findIn<M_POLL_RESPONSE_SUBTYPE>(this.wireContent);
         if (!Array.isArray(response?.answers)) {
             this.internalSpoiled = true;
@@ -82,7 +82,7 @@ export class PollResponseEvent extends ExtensibleEvent<M_POLL_RESPONSE_EVENT_CON
         }
 
         let answers = response.answers;
-        if (answers.some(a => (typeof a) !== "string") || answers.length === 0) {
+        if (answers.some(a => typeof a !== "string") || answers.length === 0) {
             this.internalSpoiled = true;
             this.internalAnswerIds = [];
             return;

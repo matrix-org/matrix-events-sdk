@@ -26,11 +26,17 @@ import {
     M_TEXT,
 } from "../../src";
 
-describe('isEventLike', () => {
-    it('should match legacy text', () => {
-        const input1: IPartialEvent<IPartialLegacyContent> = {type: "m.room.message", content: {msgtype: "m.text", body: "a"}};
+describe("isEventLike", () => {
+    it("should match legacy text", () => {
+        const input1: IPartialEvent<IPartialLegacyContent> = {
+            type: "m.room.message",
+            content: {msgtype: "m.text", body: "a"},
+        };
         const input2: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {type: M_MESSAGE.name, content: {[M_TEXT.name]: "a"}};
-        const input3: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {type: "org.example.message-like", content: {[M_TEXT.name]: "a"}};
+        const input3: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
+            type: "org.example.message-like",
+            content: {[M_TEXT.name]: "a"},
+        };
 
         expect(isEventLike(input1, LegacyMsgType.Text)).toBe(true);
         expect(isEventLike(input2, LegacyMsgType.Text)).toBe(true);
@@ -45,10 +51,16 @@ describe('isEventLike', () => {
         expect(isEventLike(input3, LegacyMsgType.Emote)).toBe(false);
     });
 
-    it('should match legacy emotes', () => {
-        const input1: IPartialEvent<IPartialLegacyContent> = {type: "m.room.message", content: {msgtype: "m.emote", body: "a"}};
+    it("should match legacy emotes", () => {
+        const input1: IPartialEvent<IPartialLegacyContent> = {
+            type: "m.room.message",
+            content: {msgtype: "m.emote", body: "a"},
+        };
         const input2: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {type: M_EMOTE.name, content: {[M_TEXT.name]: "a"}};
-        const input3: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {type: "org.example.message-like", content: {[M_TEXT.name]: "a"}};
+        const input3: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
+            type: "org.example.message-like",
+            content: {[M_TEXT.name]: "a"},
+        };
 
         expect(isEventLike(input1, LegacyMsgType.Text)).toBe(false);
         expect(isEventLike(input2, LegacyMsgType.Text)).toBe(false);
@@ -63,10 +75,16 @@ describe('isEventLike', () => {
         expect(isEventLike(input3, LegacyMsgType.Emote)).toBe(false);
     });
 
-    it('should match legacy notices', () => {
-        const input1: IPartialEvent<IPartialLegacyContent> = {type: "m.room.message", content: {msgtype: "m.notice", body: "a"}};
+    it("should match legacy notices", () => {
+        const input1: IPartialEvent<IPartialLegacyContent> = {
+            type: "m.room.message",
+            content: {msgtype: "m.notice", body: "a"},
+        };
         const input2: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {type: M_NOTICE.name, content: {[M_TEXT.name]: "a"}};
-        const input3: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {type: "org.example.message-like", content: {[M_TEXT.name]: "a"}};
+        const input3: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
+            type: "org.example.message-like",
+            content: {[M_TEXT.name]: "a"},
+        };
 
         expect(isEventLike(input1, LegacyMsgType.Text)).toBe(false);
         expect(isEventLike(input2, LegacyMsgType.Text)).toBe(false);

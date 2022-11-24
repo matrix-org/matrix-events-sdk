@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { NamespacedMap, NamespacedValue, UnstableValue } from "../src";
-import { STABLE_VALUE, UNSTABLE_VALUE } from "./NamespacedValue.test";
+import {NamespacedMap, NamespacedValue, UnstableValue} from "../src";
+import {STABLE_VALUE, UNSTABLE_VALUE} from "./NamespacedValue.test";
 
 type TestableNamespacedMap<V> = {internalMap: Map<string, V>} & NamespacedMap<V>;
 function asTestableMap<V>(map: NamespacedMap<V>): TestableNamespacedMap<V> {
@@ -26,18 +26,20 @@ const STABLE_UNSTABLE_NS = new NamespacedValue(`${STABLE_VALUE}.st_ust`, `${UNST
 const STABLE_ONLY_NS = new NamespacedValue(`${STABLE_VALUE}.st_only`, null);
 const UNSTABLE_ONLY_NS = new UnstableValue(null, `${UNSTABLE_VALUE}.ust_only`);
 
-describe('NamespacedMap', () => {
-    it('should support no initial entries', () => {
+describe("NamespacedMap", () => {
+    it("should support no initial entries", () => {
         const map = asTestableMap(new NamespacedMap<string>());
         expect(map.internalMap.size).toBe(0);
     });
 
-    it('should support initial entries', () => {
-        const map = asTestableMap(new NamespacedMap<string>([
-            [STABLE_UNSTABLE_NS, "val1"],
-            [STABLE_ONLY_NS, "val2"],
-            [UNSTABLE_ONLY_NS, "val3"],
-        ]));
+    it("should support initial entries", () => {
+        const map = asTestableMap(
+            new NamespacedMap<string>([
+                [STABLE_UNSTABLE_NS, "val1"],
+                [STABLE_ONLY_NS, "val2"],
+                [UNSTABLE_ONLY_NS, "val3"],
+            ]),
+        );
         expect(map.internalMap.size).toBe(4);
         expect(map.internalMap.get(STABLE_UNSTABLE_NS.name)).toBe("val1");
         expect(map.internalMap.get(STABLE_UNSTABLE_NS.altName)).toBe("val1");
@@ -47,7 +49,7 @@ describe('NamespacedMap', () => {
         expect(map.internalMap.get(UNSTABLE_ONLY_NS.altName)).toBeFalsy();
     });
 
-    it('should set both stable and unstable', () => {
+    it("should set both stable and unstable", () => {
         const map = asTestableMap(new NamespacedMap<string>());
         map.set(STABLE_UNSTABLE_NS, "val1");
         expect(map.internalMap.size).toBe(2);
@@ -61,7 +63,7 @@ describe('NamespacedMap', () => {
         expect(map.get(STABLE_UNSTABLE_NS)).toBe("val1");
     });
 
-    it('should only set stable if available', () => {
+    it("should only set stable if available", () => {
         const map = asTestableMap(new NamespacedMap<string>());
         map.set(STABLE_ONLY_NS, "val1");
         expect(map.internalMap.size).toBe(1);
@@ -75,7 +77,7 @@ describe('NamespacedMap', () => {
         expect(map.get(STABLE_ONLY_NS)).toBe("val1");
     });
 
-    it('should only set unstable if available', () => {
+    it("should only set unstable if available", () => {
         const map = asTestableMap(new NamespacedMap<string>());
         map.set(UNSTABLE_ONLY_NS, "val1");
         expect(map.internalMap.size).toBe(1);
@@ -89,7 +91,7 @@ describe('NamespacedMap', () => {
         expect(map.get(UNSTABLE_ONLY_NS)).toBe("val1");
     });
 
-    it('should delete both keys when requested', () => {
+    it("should delete both keys when requested", () => {
         const map = asTestableMap(new NamespacedMap<string>());
         map.set(STABLE_UNSTABLE_NS, "val1");
         expect(map.internalMap.size).toBe(2);
@@ -97,7 +99,7 @@ describe('NamespacedMap', () => {
         expect(map.internalMap.size).toBe(0);
     });
 
-    it('should delete just stable when requested', () => {
+    it("should delete just stable when requested", () => {
         const map = asTestableMap(new NamespacedMap<string>());
         map.set(STABLE_ONLY_NS, "val1");
         expect(map.internalMap.size).toBe(1);
@@ -105,7 +107,7 @@ describe('NamespacedMap', () => {
         expect(map.internalMap.size).toBe(0);
     });
 
-    it('should delete just unstable when requested', () => {
+    it("should delete just unstable when requested", () => {
         const map = asTestableMap(new NamespacedMap<string>());
         map.set(UNSTABLE_ONLY_NS, "val1");
         expect(map.internalMap.size).toBe(1);

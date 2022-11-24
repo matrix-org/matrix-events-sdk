@@ -23,13 +23,13 @@ import {
     M_POLL_START_SUBTYPE,
     POLL_ANSWER,
 } from "./poll_types";
-import { IPartialEvent } from "../IPartialEvent";
-import { MessageEvent } from "./MessageEvent";
-import { M_TEXT } from "./message_types";
-import { InvalidEventError } from "../InvalidEventError";
-import { NamespacedValue } from "../NamespacedValue";
-import { EventType, isEventTypeSame } from "../utility/events";
-import { ExtensibleEvent } from "./ExtensibleEvent";
+import {IPartialEvent} from "../IPartialEvent";
+import {MessageEvent} from "./MessageEvent";
+import {M_TEXT} from "./message_types";
+import {InvalidEventError} from "../InvalidEventError";
+import {NamespacedValue} from "../NamespacedValue";
+import {EventType, isEventTypeSame} from "../utility/events";
+import {ExtensibleEvent} from "./ExtensibleEvent";
 
 /**
  * Represents a poll answer. Note that this is represented as a subtype and is
@@ -46,7 +46,7 @@ export class PollAnswerSubevent extends MessageEvent {
         super(wireFormat);
 
         const id = wireFormat.content.id;
-        if (!id || (typeof id) !== "string") {
+        if (!id || typeof id !== "string") {
             throw new InvalidEventError("Answer ID must be a non-empty string");
         }
         this.id = id;
@@ -135,17 +135,18 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
             this.kind = M_POLL_KIND_UNDISCLOSED; // default & assumed value
         }
 
-        this.maxSelections = (Number.isFinite(poll.max_selections) && poll.max_selections > 0)
-            ? poll.max_selections
-            : 1;
+        this.maxSelections = Number.isFinite(poll.max_selections) && poll.max_selections > 0 ? poll.max_selections : 1;
 
         if (!Array.isArray(poll.answers)) {
             throw new InvalidEventError("Poll answers must be an array");
         }
-        const answers = poll.answers.slice(0, 20).map(a => new PollAnswerSubevent({
-            type: "org.matrix.sdk.poll.answer",
-            content: a,
-        }));
+        const answers = poll.answers.slice(0, 20).map(
+            a =>
+                new PollAnswerSubevent({
+                    type: "org.matrix.sdk.poll.answer",
+                    content: a,
+                }),
+        );
         if (answers.length <= 0) {
             throw new InvalidEventError("No answers available");
         }
@@ -179,14 +180,19 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
      * @param {number} maxSelections The maximum number of selections. Must be 1 or higher.
      * @returns {PollStartEvent} The representative poll start event.
      */
-    public static from(question: string, answers: string[], kind: KNOWN_POLL_KIND | string, maxSelections = 1): PollStartEvent {
+    public static from(
+        question: string,
+        answers: string[],
+        kind: KNOWN_POLL_KIND | string,
+        maxSelections = 1,
+    ): PollStartEvent {
         return new PollStartEvent({
             type: M_POLL_START.name,
             content: {
                 [M_TEXT.name]: question, // unused by parsing
                 [M_POLL_START.name]: {
                     question: {[M_TEXT.name]: question},
-                    kind: (kind instanceof NamespacedValue) ? kind.name : kind,
+                    kind: kind instanceof NamespacedValue ? kind.name : kind,
                     max_selections: maxSelections,
                     answers: answers.map(a => ({id: makeId(), [M_TEXT.name]: a})),
                 },
@@ -196,8 +202,6 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
 }
 
 const LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-function makeId() {
-    return [...Array(16)].map(
-        () => LETTERS.charAt(Math.floor(Math.random() * LETTERS.length)),
-    ).join('');
+function makeId(): string {
+    return [...Array(16)].map(() => LETTERS.charAt(Math.floor(Math.random() * LETTERS.length))).join("");
 }

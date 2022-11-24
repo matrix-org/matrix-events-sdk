@@ -31,8 +31,8 @@ import {
     REFERENCE_RELATION,
 } from "../../../src";
 
-describe('parseMPoll', () => {
-    it('should return an unmodified PollStartEvent', () => {
+describe("parseMPoll", () => {
+    it("should return an unmodified PollStartEvent", () => {
         const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
             type: M_POLL_START.name,
             content: {
@@ -63,7 +63,7 @@ describe('parseMPoll', () => {
         expect(poll.answers.some(a => a.id === "thr" && a.text === "THR")).toBe(true);
     });
 
-    it('should return an unmodified PollResponseEvent', () => {
+    it("should return an unmodified PollResponseEvent", () => {
         const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
             type: M_POLL_RESPONSE.name,
             content: {
@@ -84,7 +84,7 @@ describe('parseMPoll', () => {
         expect(response.pollEventId).toBe("$poll");
     });
 
-    it('should return an unmodified PollEndEvent', () => {
+    it("should return an unmodified PollEndEvent", () => {
         const input: IPartialEvent<M_POLL_END_EVENT_CONTENT> = {
             type: M_POLL_END.name,
             content: {

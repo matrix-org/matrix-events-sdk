@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { NamespacedValue } from "../NamespacedValue";
-import { DefaultNever, TSNamespace } from "../types";
+import {NamespacedValue} from "../NamespacedValue";
+import {DefaultNever, TSNamespace} from "../types";
 
 /**
  * The namespaced value for an m.reference relation

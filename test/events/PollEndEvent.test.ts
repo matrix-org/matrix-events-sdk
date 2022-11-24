@@ -24,11 +24,11 @@ import {
     REFERENCE_RELATION,
 } from "../../src";
 
-describe('PollEndEvent', () => {
+describe("PollEndEvent", () => {
     // Note: throughout these tests we don't really bother testing that
     // MessageEvent is doing its job. It has its own tests to worry about.
 
-    it('should parse a poll closure', () => {
+    it("should parse a poll closure", () => {
         const input: IPartialEvent<M_POLL_END_EVENT_CONTENT> = {
             type: M_POLL_END.name,
             content: {
@@ -45,7 +45,7 @@ describe('PollEndEvent', () => {
         expect(event.closingMessage.text).toBe("Poll closed");
     });
 
-    it('should fail to parse a missing relationship', () => {
+    it("should fail to parse a missing relationship", () => {
         const input: IPartialEvent<M_POLL_END_EVENT_CONTENT> = {
             type: M_POLL_END.name,
             content: {
@@ -53,11 +53,12 @@ describe('PollEndEvent', () => {
                 [M_TEXT.name]: "Poll closed",
             } as any, // force invalid type
         };
-        expect(() => new PollEndEvent(input))
-            .toThrow(new InvalidEventError("Relationship must be a reference to an event"));
+        expect(() => new PollEndEvent(input)).toThrow(
+            new InvalidEventError("Relationship must be a reference to an event"),
+        );
     });
 
-    it('should fail to parse a missing relationship event ID', () => {
+    it("should fail to parse a missing relationship event ID", () => {
         const input: IPartialEvent<M_POLL_END_EVENT_CONTENT> = {
             type: M_POLL_END.name,
             content: {
@@ -68,11 +69,12 @@ describe('PollEndEvent', () => {
                 [M_TEXT.name]: "Poll closed",
             } as any, // force invalid type
         };
-        expect(() => new PollEndEvent(input))
-            .toThrow(new InvalidEventError("Relationship must be a reference to an event"));
+        expect(() => new PollEndEvent(input)).toThrow(
+            new InvalidEventError("Relationship must be a reference to an event"),
+        );
     });
 
-    it('should fail to parse an improper relationship', () => {
+    it("should fail to parse an improper relationship", () => {
         const input: IPartialEvent<M_POLL_END_EVENT_CONTENT> = {
             type: M_POLL_END.name,
             content: {
@@ -84,12 +86,13 @@ describe('PollEndEvent', () => {
                 [M_TEXT.name]: "Poll closed",
             } as any, // force invalid type
         };
-        expect(() => new PollEndEvent(input))
-            .toThrow(new InvalidEventError("Relationship must be a reference to an event"));
+        expect(() => new PollEndEvent(input)).toThrow(
+            new InvalidEventError("Relationship must be a reference to an event"),
+        );
     });
 
-    describe('from & serialize', () => {
-        it('should serialize to a poll end event', () => {
+    describe("from & serialize", () => {
+        it("should serialize to a poll end event", () => {
             const event = PollEndEvent.from("$poll", "Poll closed");
             expect(event.pollEventId).toBe("$poll");
             expect(event.closingMessage.text).toBe("Poll closed");

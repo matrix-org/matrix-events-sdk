@@ -27,11 +27,11 @@ import {
     PollStartEvent,
 } from "../../src";
 
-describe('PollAnswerSubevent', () => {
+describe("PollAnswerSubevent", () => {
     // Note: throughout these tests we don't really bother testing that
     // MessageEvent is doing its job. It has its own tests to worry about.
 
-    it('should parse an answer representation', () => {
+    it("should parse an answer representation", () => {
         const input: IPartialEvent<POLL_ANSWER> = {
             type: "org.matrix.sdk.poll.answer",
             content: {
@@ -44,30 +44,30 @@ describe('PollAnswerSubevent', () => {
         expect(answer.text).toBe("ONE");
     });
 
-    it('should fail to parse answers without an ID', () => {
+    it("should fail to parse answers without an ID", () => {
         const input: IPartialEvent<POLL_ANSWER> = {
             type: "org.matrix.sdk.poll.answer",
             content: {
                 [M_TEXT.name]: "ONE",
             } as any, // force invalid type
         };
-        expect(() => new PollAnswerSubevent(input))
-            .toThrow(new InvalidEventError("Answer ID must be a non-empty string"));
+        expect(() => new PollAnswerSubevent(input)).toThrow(
+            new InvalidEventError("Answer ID must be a non-empty string"),
+        );
     });
 
-    it('should fail to parse answers without text', () => {
+    it("should fail to parse answers without text", () => {
         const input: IPartialEvent<POLL_ANSWER> = {
             type: "org.matrix.sdk.poll.answer",
             content: {
                 id: "one",
             } as any, // force invalid type
         };
-        expect(() => new PollAnswerSubevent(input))
-            .toThrow(); // we don't check message - that'll be MessageEvent's problem
+        expect(() => new PollAnswerSubevent(input)).toThrow(); // we don't check message - that'll be MessageEvent's problem
     });
 
-    describe('from & serialize', () => {
-        it('should serialize to a placeholder representation', () => {
+    describe("from & serialize", () => {
+        it("should serialize to a placeholder representation", () => {
             const answer = PollAnswerSubevent.from("one", "ONE");
             expect(answer.id).toBe("one");
             expect(answer.text).toBe("ONE");
@@ -82,11 +82,11 @@ describe('PollAnswerSubevent', () => {
     });
 });
 
-describe('PollStartEvent', () => {
+describe("PollStartEvent", () => {
     // Note: throughout these tests we don't really bother testing that
     // MessageEvent is doing its job. It has its own tests to worry about.
 
-    it('should parse a poll', () => {
+    it("should parse a poll", () => {
         const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
             type: M_POLL_START.name,
             content: {
@@ -115,7 +115,7 @@ describe('PollStartEvent', () => {
         expect(poll.answers.some(a => a.id === "thr" && a.text === "THR")).toBe(true);
     });
 
-    it('should fail to parse a missing question', () => {
+    it("should fail to parse a missing question", () => {
         const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
             type: M_POLL_START.name,
             content: {
@@ -131,11 +131,10 @@ describe('PollStartEvent', () => {
                 },
             } as any, // force invalid type
         };
-        expect(() => new PollStartEvent(input))
-            .toThrow(new InvalidEventError("A question is required"));
+        expect(() => new PollStartEvent(input)).toThrow(new InvalidEventError("A question is required"));
     });
 
-    it('should fail to parse non-array answers', () => {
+    it("should fail to parse non-array answers", () => {
         const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
             type: M_POLL_START.name,
             content: {
@@ -148,11 +147,10 @@ describe('PollStartEvent', () => {
                 } as any, // force invalid type
             },
         };
-        expect(() => new PollStartEvent(input))
-            .toThrow(new InvalidEventError("Poll answers must be an array"));
+        expect(() => new PollStartEvent(input)).toThrow(new InvalidEventError("Poll answers must be an array"));
     });
 
-    it('should fail to parse invalid answers', () => {
+    it("should fail to parse invalid answers", () => {
         const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
             type: M_POLL_START.name,
             content: {
@@ -161,18 +159,14 @@ describe('PollStartEvent', () => {
                     question: {[M_TEXT.name]: "Question here"},
                     kind: M_POLL_KIND_DISCLOSED.name,
                     max_selections: 2,
-                    answers: [
-                        {id: "one"},
-                        {[M_TEXT.name]: "TWO"},
-                    ],
+                    answers: [{id: "one"}, {[M_TEXT.name]: "TWO"}],
                 } as any, // force invalid type
             },
         };
-        expect(() => new PollStartEvent(input))
-            .toThrow(); // error tested by PollAnswerSubevent tests
+        expect(() => new PollStartEvent(input)).toThrow(); // error tested by PollAnswerSubevent tests
     });
 
-    it('should fail to parse lack of answers', () => {
+    it("should fail to parse lack of answers", () => {
         const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
             type: M_POLL_START.name,
             content: {
@@ -185,11 +179,10 @@ describe('PollStartEvent', () => {
                 } as any, // force invalid type
             },
         };
-        expect(() => new PollStartEvent(input))
-            .toThrow(new InvalidEventError("No answers available"));
+        expect(() => new PollStartEvent(input)).toThrow(new InvalidEventError("No answers available"));
     });
 
-    it('should truncate answers at 20', () => {
+    it("should truncate answers at 20", () => {
         const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
             type: M_POLL_START.name,
             content: {
@@ -229,7 +222,7 @@ describe('PollStartEvent', () => {
         expect(poll.answers.some(a => a.id === "FAIL")).toBe(false);
     });
 
-    it('should infer a kind from unknown kinds', () => {
+    it("should infer a kind from unknown kinds", () => {
         const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
             type: M_POLL_START.name,
             content: {
@@ -251,7 +244,7 @@ describe('PollStartEvent', () => {
         expect(poll.rawKind).toBe("org.example.custom.poll.kind");
     });
 
-    it('should infer a kind from missing kinds', () => {
+    it("should infer a kind from missing kinds", () => {
         const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
             type: M_POLL_START.name,
             content: {
@@ -272,8 +265,8 @@ describe('PollStartEvent', () => {
         expect(poll.rawKind).toBeFalsy();
     });
 
-    describe('from & serialize', () => {
-        it('should serialize to a poll start event', () => {
+    describe("from & serialize", () => {
+        it("should serialize to a poll start event", () => {
             const poll = PollStartEvent.from("Question here", ["A", "B", "C"], M_POLL_KIND_DISCLOSED, 2);
             expect(poll.question.text).toBe("Question here");
             expect(poll.kind).toBe(M_POLL_KIND_DISCLOSED);
@@ -312,7 +305,7 @@ describe('PollStartEvent', () => {
             });
         });
 
-        it('should serialize to a custom kind poll start event', () => {
+        it("should serialize to a custom kind poll start event", () => {
             const poll = PollStartEvent.from("Question here", ["A", "B", "C"], "org.example.poll.kind", 2);
             expect(poll.question.text).toBe("Question here");
             expect(poll.kind).toBe(M_POLL_KIND_UNDISCLOSED);
