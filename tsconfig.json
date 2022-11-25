@@ -9,14 +9,7 @@
     "sourceMap": true,
     "declaration": true,
     "outDir": "./lib",
-    "strict": false,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": false,
-    "noImplicitThis": true,
-    "alwaysStrict": true
+    "strict": true,
   },
   "include": [
     "./src/**/*.ts",

@@ -27,8 +27,8 @@ import {Optional} from "../types";
  * Represents a poll response event.
  */
 export class PollResponseEvent extends ExtensibleEvent<M_POLL_RESPONSE_EVENT_CONTENT> {
-    private internalAnswerIds: string[];
-    private internalSpoiled: boolean;
+    private internalAnswerIds: string[] = [];
+    private internalSpoiled: boolean = false;
 
     /**
      * The provided answers for the poll. Note that this may be falsy/unpredictable if
