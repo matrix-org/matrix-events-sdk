@@ -33,14 +33,14 @@ export class NamespacedValue<S extends string, U extends string> {
         if (this.stable) {
             return this.stable;
         }
-        return this.unstable;
+        return this.unstable!;
     }
 
     public get altName(): U | S | null {
         if (!this.stable) {
             return null;
         }
-        return this.unstable;
+        return this.unstable!;
     }
 
     public matches(val: string): boolean {
@@ -83,13 +83,16 @@ export class UnstableValue<S extends string, U extends string> extends Namespace
         if (!this.unstable) {
             throw new Error("Unstable value must be supplied");
         }
+        if (!this.stable) {
+            throw new Error("Stable value must be supplied");
+        }
     }
 
     public get name(): U {
-        return this.unstable;
+        return this.unstable!;
     }
 
     public get altName(): S {
-        return this.stable;
+        return this.stable!;
     }
 }

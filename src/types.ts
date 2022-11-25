@@ -22,11 +22,18 @@ import {NamespacedValue} from "./NamespacedValue";
 export type Optional<T> = T | null | undefined;
 
 /**
+ * Applies the same behaviour as `Partial<T>`, but using `Optional<T>` instead.
+ */
+export type OptionalPartial<T> = {
+    [P in keyof T]: Optional<T[P]>;
+};
+
+/**
  * Determines if the given optional string is a defined string.
  * @param {Optional<string>} s The input string.
  * @returns {boolean} True if the input is a defined string.
  */
-export function isOptionalAString(s: Optional<string>): boolean {
+export function isOptionalAString(s: Optional<string>): s is string {
     return isProvided(s) && typeof s === "string";
 }
 
@@ -37,6 +44,16 @@ export function isOptionalAString(s: Optional<string>): boolean {
  */
 export function isProvided<T>(s: Optional<T>): boolean {
     return s !== null && s !== undefined;
+}
+
+/**
+ * TypeScript wrapper for `Number.isFinite`.
+ * @param n The number
+ * @returns True if the number is finite.
+ * @see Number#isFinite
+ */
+export function isNumberFinite(n: unknown): n is number {
+    return Number.isFinite(n);
 }
 
 /**

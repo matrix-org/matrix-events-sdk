@@ -128,12 +128,12 @@ export class ExtensibleEvents {
     public parse(wireFormat: IPartialEvent<object>): Optional<ExtensibleEvent> {
         try {
             if (this.interpreters.hasNamespaced(wireFormat.type)) {
-                return this.interpreters.getNamespaced(wireFormat.type)(wireFormat);
+                return this.interpreters.getNamespaced(wireFormat.type)!(wireFormat);
             }
 
             for (const tryType of this.unknownInterpretOrder) {
                 if (this.interpreters.has(tryType)) {
-                    const val = this.interpreters.get(tryType)(wireFormat);
+                    const val = this.interpreters.get(tryType)!(wireFormat);
                     if (val) return val;
                 }
             }

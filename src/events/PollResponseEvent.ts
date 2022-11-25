@@ -21,6 +21,7 @@ import {InvalidEventError} from "../InvalidEventError";
 import {PollStartEvent} from "./PollStartEvent";
 import {REFERENCE_RELATION} from "./relationship_types";
 import {EventType, isEventTypeSame} from "../utility/events";
+import {Optional} from "../types";
 
 /**
  * Represents a poll response event.
@@ -71,17 +72,21 @@ export class PollResponseEvent extends ExtensibleEvent<M_POLL_RESPONSE_EVENT_CON
     /**
      * Validates the poll response using the poll start event as a frame of reference. This
      * is used to determine if the vote is spoiled, whether the answers are valid, etc.
-     * @param {PollStartEvent} poll The poll start event.
+     *
+     * Validating against a falsy poll start event resets the response event to be against
+     * an unknown poll, implying a valid (unspoiled) response.
+     * @param {Optional<PollStartEvent>} poll The poll start event.
      */
-    public validateAgainst(poll: PollStartEvent): void {
+    public validateAgainst(poll: Optional<PollStartEvent>): void {
         const response = M_POLL_RESPONSE.findIn<M_POLL_RESPONSE_SUBTYPE>(this.wireContent);
-        if (!Array.isArray(response?.answers)) {
+        if (!response?.answers || !Array.isArray(response?.answers)) {
             this.internalSpoiled = true;
             this.internalAnswerIds = [];
             return;
         }
 
         let answers = response.answers;
+        // noinspection SuspiciousTypeOfGuard - We're checking the wire types because TS is only compile-time safe.
         if (answers.some(a => typeof a !== "string") || answers.length === 0) {
             this.internalSpoiled = true;
             this.internalAnswerIds = [];

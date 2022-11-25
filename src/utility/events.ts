@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import {NamespacedValue} from "../NamespacedValue";
+import {isOptionalAString} from "../types";
 
 /**
  * Represents a potentially namespaced event type.
@@ -41,7 +42,10 @@ export function isEventTypeSame(given: EventType, expected: EventType): boolean 
         } else {
             const expectedNs = expected as NamespacedValue<string, string>;
             const givenNs = given as NamespacedValue<string, string>;
-            return expectedNs.matches(givenNs.name) || expectedNs.matches(givenNs.altName);
+            return (
+                expectedNs.matches(givenNs.name) ||
+                (isOptionalAString(givenNs.altName) && expectedNs.matches(givenNs.altName))
+            );
         }
     }
 }

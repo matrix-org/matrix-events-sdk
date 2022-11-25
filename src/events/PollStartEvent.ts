@@ -30,6 +30,7 @@ import {InvalidEventError} from "../InvalidEventError";
 import {NamespacedValue} from "../NamespacedValue";
 import {EventType, isEventTypeSame} from "../utility/events";
 import {ExtensibleEvent} from "./ExtensibleEvent";
+import {isNumberFinite} from "../types";
 
 /**
  * Represents a poll answer. Note that this is represented as a subtype and is
@@ -122,7 +123,7 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
 
         const poll = M_POLL_START.findIn<M_POLL_START_SUBTYPE>(this.wireContent);
 
-        if (!poll.question) {
+        if (!poll?.question) {
             throw new InvalidEventError("A question is required");
         }
 
@@ -135,7 +136,7 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
             this.kind = M_POLL_KIND_UNDISCLOSED; // default & assumed value
         }
 
-        this.maxSelections = Number.isFinite(poll.max_selections) && poll.max_selections > 0 ? poll.max_selections : 1;
+        this.maxSelections = isNumberFinite(poll.max_selections) && poll.max_selections > 0 ? poll.max_selections : 1;
 
         if (!Array.isArray(poll.answers)) {
             throw new InvalidEventError("Poll answers must be an array");

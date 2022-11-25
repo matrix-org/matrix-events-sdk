@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import {UnstableValue} from "../NamespacedValue";
-import {EitherAnd} from "../types";
+import {EitherAnd, OptionalPartial} from "../types";
 
 /**
  * The namespaced value for m.message
@@ -61,7 +61,7 @@ export type M_HTML_EVENT = EitherAnd<{[M_HTML.name]: string}, {[M_HTML.altName]:
 /**
  * The content for an m.message, m.text, or m.html event
  */
-export type M_MESSAGE_EVENT_CONTENT = M_MESSAGE_EVENT | M_TEXT_EVENT | M_HTML_EVENT;
+export type M_MESSAGE_EVENT_CONTENT = M_MESSAGE_EVENT | M_TEXT_EVENT | OptionalPartial<M_HTML_EVENT>;
 
 /**
  * The namespaced value for m.emote

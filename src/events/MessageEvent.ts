@@ -82,7 +82,7 @@ export class MessageEvent extends ExtensibleEvent<M_MESSAGE_EVENT_CONTENT> {
         } else if (isOptionalAString(mtext)) {
             this.text = mtext;
             this.html = mhtml;
-            this.renderings = [{body: mtext, mimetype: "text/plain"}];
+            this.renderings = [{body: this.text, mimetype: "text/plain"}];
             if (this.html) {
                 this.renderings.push({body: this.html, mimetype: "text/html"});
             }
