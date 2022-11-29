@@ -83,9 +83,6 @@ export class UnstableValue<S extends string, U extends string> extends Namespace
         if (!this.unstable) {
             throw new Error("Unstable value must be supplied");
         }
-        if (!this.stable) {
-            throw new Error("Stable value must be supplied");
-        }
     }
 
     public get name(): U {
