@@ -23,7 +23,7 @@ import {Optional} from "./types";
 export class NamespacedValue<S extends string, U extends string> {
     // Stable is optional, but one of the two parameters is required, hence the weird-looking types.
     // Goal is to have developers explicitly say there is no stable value (if applicable).
-    public constructor(public readonly stable: Optional<S>, public readonly unstable?: U) {
+    public constructor(public readonly stable: Optional<S>, public readonly unstable?: Optional<U>) {
         if (!this.unstable && !this.stable) {
             throw new Error("One of stable or unstable values must be supplied");
         }
@@ -78,7 +78,7 @@ export class NamespacedValue<S extends string, U extends string> {
  */
 export class UnstableValue<S extends string, U extends string> extends NamespacedValue<S, U> {
     // Note: Constructor difference is that `unstable` is *required*.
-    public constructor(stable: S, unstable: U) {
+    public constructor(stable: Optional<S>, unstable: U) {
         super(stable, unstable);
         if (!this.unstable) {
             throw new Error("Unstable value must be supplied");

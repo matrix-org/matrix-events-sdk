@@ -22,7 +22,7 @@
     "start": "tsc -p tsconfig.build.json -w",
     "test": "jest",
     "format": "prettier --config .prettierrc \"{src,test}/**/*.ts\" --write",
-    "lint": "tsc -p tsconfig.build.json --noEmit && prettier --config .prettierrc \"{src,test}/**/*.ts\" --check"
+    "lint": "tsc -p tsconfig.json --noEmit && prettier --config .prettierrc \"{src,test}/**/*.ts\" --check"
   },
   "devDependencies": {
     "@types/jest": "^29.2.3",

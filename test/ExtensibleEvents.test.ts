@@ -35,6 +35,7 @@ import {
     M_TEXT,
     MessageEvent,
     NoticeEvent,
+    Optional,
     PollEndEvent,
     PollResponseEvent,
     PollStartEvent,
@@ -61,10 +62,10 @@ describe("ExtensibleEvents", () => {
                     [M_TEXT.name]: "Hello World",
                 },
             };
-            const event: ExtensibleEvent = new ExtensibleEvents().parse(input);
+            const event: Optional<ExtensibleEvent> = new ExtensibleEvents().parse(input);
             expect(event).toBeDefined();
             expect(event instanceof MessageEvent).toBe(true);
-            expect(event.isEquivalentTo(M_MESSAGE)).toBe(true);
+            expect(event!.isEquivalentTo(M_MESSAGE)).toBe(true);
             const messageEvent = event as MessageEvent;
             expect(messageEvent.text).toBe("Hello World");
         });
@@ -166,7 +167,7 @@ describe("ExtensibleEvents", () => {
             const message = new ExtensibleEvents().parse(input);
             expect(message).toBeDefined();
             expect(message instanceof MessageEvent).toBe(true);
-            expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
+            expect(message!.isEquivalentTo(M_MESSAGE)).toBe(true);
             const messageEvent = message as MessageEvent;
             expect(messageEvent.text).toEqual("Text here");
         });
@@ -181,7 +182,7 @@ describe("ExtensibleEvents", () => {
             const message = new ExtensibleEvents().parse(input);
             expect(message).toBeDefined();
             expect(message instanceof MessageEvent).toBe(true);
-            expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
+            expect(message!.isEquivalentTo(M_MESSAGE)).toBe(true);
             const messageEvent = message as MessageEvent;
             expect(messageEvent.text).toEqual("Text here");
         });
@@ -196,8 +197,8 @@ describe("ExtensibleEvents", () => {
             const message = new ExtensibleEvents().parse(input);
             expect(message).toBeDefined();
             expect(message instanceof EmoteEvent).toBe(true);
-            expect(message.isEquivalentTo(M_EMOTE)).toBe(true);
-            expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
+            expect(message!.isEquivalentTo(M_EMOTE)).toBe(true);
+            expect(message!.isEquivalentTo(M_MESSAGE)).toBe(true);
             const messageEvent = message as EmoteEvent;
             expect(messageEvent.text).toEqual("Text here");
         });
@@ -212,8 +213,8 @@ describe("ExtensibleEvents", () => {
             const message = new ExtensibleEvents().parse(input);
             expect(message).toBeDefined();
             expect(message instanceof NoticeEvent).toBe(true);
-            expect(message.isEquivalentTo(M_NOTICE)).toBe(true);
-            expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
+            expect(message!.isEquivalentTo(M_NOTICE)).toBe(true);
+            expect(message!.isEquivalentTo(M_MESSAGE)).toBe(true);
             const messageEvent = message as NoticeEvent;
             expect(messageEvent.text).toEqual("Text here");
         });
@@ -238,7 +239,7 @@ describe("ExtensibleEvents", () => {
             const poll = new ExtensibleEvents().parse(input);
             expect(poll).toBeDefined();
             expect(poll instanceof PollStartEvent).toBe(true);
-            expect(poll.isEquivalentTo(M_POLL_START)).toBe(true);
+            expect(poll!.isEquivalentTo(M_POLL_START)).toBe(true);
         });
 
         it("should parse m.poll.response events", () => {
@@ -257,7 +258,7 @@ describe("ExtensibleEvents", () => {
             const response = new ExtensibleEvents().parse(input);
             expect(response).toBeDefined();
             expect(response instanceof PollResponseEvent).toBe(true);
-            expect(response.isEquivalentTo(M_POLL_RESPONSE)).toBe(true);
+            expect(response!.isEquivalentTo(M_POLL_RESPONSE)).toBe(true);
         });
 
         it("should parse m.poll.end events", () => {

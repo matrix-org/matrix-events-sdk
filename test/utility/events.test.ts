@@ -38,9 +38,9 @@ describe("isEventTypeSame", () => {
         expect(isEventTypeSame(a, a)).toBe(true);
         expect(isEventTypeSame(b, b)).toBe(true);
         expect(isEventTypeSame(b.name, b)).toBe(true);
-        expect(isEventTypeSame(b.altName, b)).toBe(true);
+        expect(isEventTypeSame(b.altName ?? "TEST_FAIL", b)).toBe(true);
         expect(isEventTypeSame(b, b.name)).toBe(true);
-        expect(isEventTypeSame(b, b.altName)).toBe(true);
+        expect(isEventTypeSame(b, b.altName ?? "TEST_FAIL")).toBe(true);
     });
 
     it("should match namespace and namespace", () => {
@@ -52,15 +52,15 @@ describe("isEventTypeSame", () => {
 
         expect(isEventTypeSame(a, a)).toBe(true);
         expect(isEventTypeSame(a.name, a)).toBe(true);
-        expect(isEventTypeSame(a.altName, a)).toBe(true);
+        expect(isEventTypeSame(a.altName ?? "TEST_FAIL", a)).toBe(true);
         expect(isEventTypeSame(a, a.name)).toBe(true);
-        expect(isEventTypeSame(a, a.altName)).toBe(true);
+        expect(isEventTypeSame(a, a.altName ?? "TEST_FAIL")).toBe(true);
 
         expect(isEventTypeSame(b, b)).toBe(true);
         expect(isEventTypeSame(b.name, b)).toBe(true);
-        expect(isEventTypeSame(b.altName, b)).toBe(true);
+        expect(isEventTypeSame(b.altName ?? "TEST_FAIL", b)).toBe(true);
         expect(isEventTypeSame(b, b.name)).toBe(true);
-        expect(isEventTypeSame(b, b.altName)).toBe(true);
+        expect(isEventTypeSame(b, b.altName ?? "TEST_FAIL")).toBe(true);
     });
 
     it("should match namespaces of different pointers", () => {
@@ -72,14 +72,14 @@ describe("isEventTypeSame", () => {
 
         expect(isEventTypeSame(a, a)).toBe(true);
         expect(isEventTypeSame(a.name, a)).toBe(true);
-        expect(isEventTypeSame(a.altName, a)).toBe(true);
+        expect(isEventTypeSame(a.altName ?? "TEST_FAIL", a)).toBe(true);
         expect(isEventTypeSame(a, a.name)).toBe(true);
-        expect(isEventTypeSame(a, a.altName)).toBe(true);
+        expect(isEventTypeSame(a, a.altName ?? "TEST_FAIL")).toBe(true);
 
         expect(isEventTypeSame(b, b)).toBe(true);
         expect(isEventTypeSame(b.name, b)).toBe(true);
-        expect(isEventTypeSame(b.altName, b)).toBe(true);
+        expect(isEventTypeSame(b.altName ?? "TEST_FAIL", b)).toBe(true);
         expect(isEventTypeSame(b, b.name)).toBe(true);
-        expect(isEventTypeSame(b, b.altName)).toBe(true);
+        expect(isEventTypeSame(b, b.altName ?? "TEST_FAIL")).toBe(true);
     });
 });

@@ -38,11 +38,11 @@ describe("parseMMessage", () => {
         };
         const message = parseMMessage(input);
         expect(message).toBeDefined();
-        expect(message.html).toBe("HTML here");
-        expect(message.text).toBe("Text here");
-        expect(message.renderings.length).toBe(2);
-        expect(message.renderings.some(r => r.mimetype === "text/html" && r.body === "HTML here")).toBe(true);
-        expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
+        expect(message!.html).toBe("HTML here");
+        expect(message!.text).toBe("Text here");
+        expect(message!.renderings.length).toBe(2);
+        expect(message!.renderings.some(r => r.mimetype === "text/html" && r.body === "HTML here")).toBe(true);
+        expect(message!.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 
     it("should return an unmodified EmoteEvent", () => {
@@ -56,13 +56,13 @@ describe("parseMMessage", () => {
         const message = parseMMessage(input);
         expect(message).toBeDefined();
         expect(message instanceof EmoteEvent).toBe(true);
-        expect(message.isEquivalentTo(M_EMOTE)).toBe(true);
-        expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
-        expect(message.html).toBe("HTML here");
-        expect(message.text).toBe("Text here");
-        expect(message.renderings.length).toBe(2);
-        expect(message.renderings.some(r => r.mimetype === "text/html" && r.body === "HTML here")).toBe(true);
-        expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
+        expect(message!.isEquivalentTo(M_EMOTE)).toBe(true);
+        expect(message!.isEquivalentTo(M_MESSAGE)).toBe(true);
+        expect(message!.html).toBe("HTML here");
+        expect(message!.text).toBe("Text here");
+        expect(message!.renderings.length).toBe(2);
+        expect(message!.renderings.some(r => r.mimetype === "text/html" && r.body === "HTML here")).toBe(true);
+        expect(message!.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 
     it("should return an unmodified NoticeEvent", () => {
@@ -76,12 +76,12 @@ describe("parseMMessage", () => {
         const message = parseMMessage(input);
         expect(message).toBeDefined();
         expect(message instanceof NoticeEvent).toBe(true);
-        expect(message.isEquivalentTo(M_NOTICE)).toBe(true);
-        expect(message.isEquivalentTo(M_MESSAGE)).toBe(true);
-        expect(message.html).toBe("HTML here");
-        expect(message.text).toBe("Text here");
-        expect(message.renderings.length).toBe(2);
-        expect(message.renderings.some(r => r.mimetype === "text/html" && r.body === "HTML here")).toBe(true);
-        expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
+        expect(message!.isEquivalentTo(M_NOTICE)).toBe(true);
+        expect(message!.isEquivalentTo(M_MESSAGE)).toBe(true);
+        expect(message!.html).toBe("HTML here");
+        expect(message!.text).toBe("Text here");
+        expect(message!.renderings.length).toBe(2);
+        expect(message!.renderings.some(r => r.mimetype === "text/html" && r.body === "HTML here")).toBe(true);
+        expect(message!.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
     });
 });

@@ -54,7 +54,6 @@ describe("NamespacedValue", () => {
             expect(ns.matches(STABLE_VALUE)).toBe(true);
             expect(ns.matches(UNSTABLE_VALUE)).toBe(true);
             expect(ns.matches("NEITHER")).toBe(false);
-            expect(ns.matches(null)).toBe(false);
         });
 
         it("should not try to match null to an optional value", () => {
@@ -62,7 +61,6 @@ describe("NamespacedValue", () => {
             expect(ns.matches(STABLE_VALUE)).toBe(true);
             expect(ns.matches(UNSTABLE_VALUE)).toBe(false);
             expect(ns.matches("NEITHER")).toBe(false);
-            expect(ns.matches(null)).toBe(false);
         });
     });
 
@@ -147,10 +145,12 @@ describe("UnstableValue", () => {
     });
 
     it("should not support optionally unstable values", () => {
+        // @ts-ignore
         expect(() => new UnstableValue(STABLE_VALUE, null)).toThrow("Unstable value must be supplied");
     });
 
     it("should not support entirely optional values", () => {
+        // @ts-ignore
         expect(() => new UnstableValue(null, null)).toThrow("One of stable or unstable values must be supplied");
     });
 
@@ -160,7 +160,6 @@ describe("UnstableValue", () => {
             expect(ns.matches(STABLE_VALUE)).toBe(true);
             expect(ns.matches(UNSTABLE_VALUE)).toBe(true);
             expect(ns.matches("NEITHER")).toBe(false);
-            expect(ns.matches(null)).toBe(false);
         });
 
         it("should not try to match null to an optional value", () => {
@@ -168,7 +167,6 @@ describe("UnstableValue", () => {
             expect(ns.matches(STABLE_VALUE)).toBe(false);
             expect(ns.matches(UNSTABLE_VALUE)).toBe(true);
             expect(ns.matches("NEITHER")).toBe(false);
-            expect(ns.matches(null)).toBe(false);
         });
     });
 
