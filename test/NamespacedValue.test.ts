@@ -30,18 +30,18 @@ describe("NamespacedValue", () => {
 
     it("should support optionally stable values", () => {
         const ns = new NamespacedValue(null, UNSTABLE_VALUE);
-        expect(ns.stable).toBe(null);
+        expect(ns.stable).toBeNull();
         expect(ns.unstable).toBe(UNSTABLE_VALUE);
         expect(ns.name).toBe(UNSTABLE_VALUE);
-        expect(ns.altName).toBe(null);
+        expect(ns.altName).toBeNull();
     });
 
     it("should support optionally unstable values", () => {
         const ns = new NamespacedValue(STABLE_VALUE, null);
         expect(ns.stable).toBe(STABLE_VALUE);
-        expect(ns.unstable).toBe(null);
+        expect(ns.unstable).toBeNull();
         expect(ns.name).toBe(STABLE_VALUE);
-        expect(ns.altName).toBe(null);
+        expect(ns.altName).toBeNull();
     });
 
     it("should not support entirely optional values", () => {
@@ -138,10 +138,10 @@ describe("UnstableValue", () => {
 
     it("should support optionally stable values", () => {
         const ns = new UnstableValue(null, UNSTABLE_VALUE);
-        expect(ns.stable).toBe(null);
+        expect(ns.stable).toBeNull();
         expect(ns.unstable).toBe(UNSTABLE_VALUE);
         expect(ns.name).toBe(UNSTABLE_VALUE);
-        expect(ns.altName).toBe(null);
+        expect(ns.altName).toBeNull();
     });
 
     it("should not support optionally unstable values", () => {
@@ -207,6 +207,11 @@ describe("UnstableValue", () => {
                 // [STABLE_VALUE]: 41,
                 NEITHER: "failed",
             };
+            const ns = new UnstableValue(STABLE_VALUE, UNSTABLE_VALUE);
+            expect(ns.findIn(obj)).toBeFalsy();
+        });
+
+        it.each([null, undefined])("shouldn't explode when given a %s object", obj => {
             const ns = new UnstableValue(STABLE_VALUE, UNSTABLE_VALUE);
             expect(ns.findIn(obj)).toBeFalsy();
         });

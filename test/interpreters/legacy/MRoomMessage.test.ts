@@ -144,4 +144,14 @@ describe("parseMRoomMessage", () => {
         const message = parseMRoomMessage(input);
         expect(message).toBeFalsy();
     });
+
+    it("should not interpret events missing content", () => {
+        const input: IPartialEvent<IPartialLegacyContent> = {
+            type: "org.example.message-like",
+            // @ts-ignore
+            content: null,
+        };
+        const message = parseMRoomMessage(input);
+        expect(message).toBeNull();
+    });
 });

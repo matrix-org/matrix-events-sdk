@@ -46,7 +46,8 @@ export class PollEndEvent extends ExtensibleEvent<M_POLL_END_EVENT_CONTENT> {
         super(wireFormat);
 
         const rel = this.wireContent["m.relates_to"];
-        if (!REFERENCE_RELATION.matches(rel?.rel_type) || typeof rel?.event_id !== "string") {
+        // noinspection SuspiciousTypeOfGuard
+        if (!REFERENCE_RELATION.matches(rel?.rel_type) || typeof rel.event_id !== "string") {
             throw new InvalidEventError("Relationship must be a reference to an event");
         }
 

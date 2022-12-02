@@ -19,6 +19,7 @@ import {
     EventType,
     ExtensibleEvent,
     ExtensibleEvents,
+    InvalidEventError,
     IPartialEvent,
     IPartialLegacyContent,
     M_EMOTE,
@@ -44,10 +45,15 @@ import {
 } from "../src";
 
 describe("ExtensibleEvents", () => {
-    // Note: we don't test the other static functions because it should be pretty
-    // obvious when they fail. We'll just make sure that the static accessor works.
-    it("should return an instance by default", () => {
-        expect(ExtensibleEvents.defaultInstance).toBeDefined();
+    afterEach(() => {
+        // gutwrench the default instance into something safe/new to "reset" it
+        (<any>ExtensibleEvents)._defaultInstance = new ExtensibleEvents();
+    });
+
+    describe("static api", () => {
+        it("should return an instance by default", () => {
+            expect(ExtensibleEvents.defaultInstance).toBeDefined();
+        });
     });
 
     describe("unknown events", () => {
@@ -83,6 +89,23 @@ describe("ExtensibleEvents", () => {
             };
             const event = new ExtensibleEvents().parse(input);
             expect(event).toBeFalsy();
+        });
+
+        describe("static api", () => {
+            afterEach(() => {
+                ExtensibleEvents.unknownInterpretOrder = new ExtensibleEvents().unknownInterpretOrder;
+            });
+
+            it("should persist the unknown interpret order", () => {
+                expect(ExtensibleEvents.unknownInterpretOrder.length).toBeGreaterThan(0);
+
+                const testValue1 = new UnstableValue(null, "org.matrix.example.feature1");
+                const testValue2 = new UnstableValue(null, "org.matrix.example.feature2");
+                const array = [testValue1, testValue2];
+                ExtensibleEvents.unknownInterpretOrder = array;
+
+                expect(ExtensibleEvents.unknownInterpretOrder).toBe(array);
+            });
         });
     });
 
@@ -148,6 +171,25 @@ describe("ExtensibleEvents", () => {
             event = extev.parse(input);
             expect(event).toBeDefined();
             expect(event instanceof MyCustomEvent).toBe(true);
+        });
+
+        describe("static api", () => {
+            it("should support custom interpreters", () => {
+                const input: IPartialEvent<any> = {
+                    type: myNamespace.name,
+                    content: {
+                        hello: "world",
+                    },
+                };
+
+                let event = ExtensibleEvents.parse(input);
+                expect(event).toBeFalsy();
+
+                ExtensibleEvents.registerInterpreter(myNamespace, myInterpreter);
+                event = ExtensibleEvents.parse(input);
+                expect(event).toBeDefined();
+                expect(event instanceof MyCustomEvent).toBe(true);
+            });
         });
     });
 
@@ -276,6 +318,56 @@ describe("ExtensibleEvents", () => {
             const poll = new ExtensibleEvents().parse(input);
             expect(poll).toBeDefined();
             expect(poll instanceof PollEndEvent).toBe(true);
+        });
+    });
+
+    describe("parse errors", () => {
+        function myForcedInvalidInterpreter(wireEvent: IPartialEvent<any>): ExtensibleEvent {
+            throw new InvalidEventError("deliberate throw of invalid type");
+        }
+
+        function myExplodingInterpreter(wireEvent: IPartialEvent<any>): ExtensibleEvent {
+            throw new Error("deliberate throw");
+        }
+
+        it("should return null when InvalidEventError is raised", () => {
+            const extev = new ExtensibleEvents();
+            const namespace = new UnstableValue(null, "org.matrix.example");
+            extev.registerInterpreter(namespace, myForcedInvalidInterpreter);
+            const result = extev.parse({type: namespace.name, content: {unused: true}});
+            expect(result).toBeNull();
+        });
+
+        it("should return null when no known parser is found", () => {
+            const extev = new ExtensibleEvents();
+            const namespace = new UnstableValue(null, "org.matrix.example");
+            const result = extev.parse({type: namespace.name, content: {unused: true}});
+            expect(result).toBeNull();
+        });
+
+        it("should throw if the parser throws an unknown error", () => {
+            const extev = new ExtensibleEvents();
+            const namespace = new UnstableValue(null, "org.matrix.example");
+            extev.registerInterpreter(namespace, myExplodingInterpreter);
+            expect(() => extev.parse({type: namespace.name, content: {unused: true}})).toThrow("deliberate throw");
+        });
+
+        it("should throw if the parser throws an unknown error during unknown interpret order", () => {
+            const extev = new ExtensibleEvents();
+            const namespace = new UnstableValue(null, "org.matrix.example");
+            const namespace2 = new UnstableValue(null, "org.matrix.example2");
+            extev.registerInterpreter(namespace, myExplodingInterpreter);
+            extev.unknownInterpretOrder = [namespace];
+            expect(() => extev.parse({type: namespace2.name, content: {unused: true}})).toThrow("deliberate throw");
+        });
+
+        describe("static api", () => {
+            it("should return null when InvalidEventError is raised", () => {
+                const namespace = new UnstableValue(null, "org.matrix.example");
+                ExtensibleEvents.registerInterpreter(namespace, myForcedInvalidInterpreter);
+                const result = ExtensibleEvents.parse({type: namespace.name, content: {unused: true}});
+                expect(result).toBeNull();
+            });
         });
     });
 });

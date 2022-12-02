@@ -98,4 +98,47 @@ describe("isEventLike", () => {
         expect(isEventLike(input2, LegacyMsgType.Emote)).toBe(false);
         expect(isEventLike(input3, LegacyMsgType.Emote)).toBe(false);
     });
+
+    it("should not match unknown msgtypes", () => {
+        const input1: IPartialEvent<IPartialLegacyContent> = {
+            type: "m.room.message",
+            content: {msgtype: "org.example.custom", body: "a"},
+        };
+        const input2: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {type: M_TEXT.name, content: {[M_TEXT.name]: "a"}};
+        const input3: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
+            type: "org.example.message-like",
+            content: {[M_TEXT.name]: "a"},
+        };
+
+        expect(isEventLike(input1, LegacyMsgType.Text)).toBe(false);
+        expect(isEventLike(input2, LegacyMsgType.Text)).toBe(false);
+        expect(isEventLike(input3, LegacyMsgType.Text)).toBe(false);
+
+        expect(isEventLike(input1, LegacyMsgType.Notice)).toBe(false);
+        expect(isEventLike(input2, LegacyMsgType.Notice)).toBe(false);
+        expect(isEventLike(input3, LegacyMsgType.Notice)).toBe(false);
+
+        expect(isEventLike(input1, LegacyMsgType.Emote)).toBe(false);
+        expect(isEventLike(input2, LegacyMsgType.Emote)).toBe(false);
+        expect(isEventLike(input3, LegacyMsgType.Emote)).toBe(false);
+
+        // @ts-ignore
+        expect(isEventLike(input1, "m.video")).toBe(false);
+        // @ts-ignore
+        expect(isEventLike(input2, "m.video")).toBe(false);
+        // @ts-ignore
+        expect(isEventLike(input3, "m.video")).toBe(false);
+    });
+
+    it("should not explode on missing event content", () => {
+        const input1: IPartialEvent<IPartialLegacyContent> = {
+            type: "m.room.message",
+            // @ts-ignore
+            content: null,
+        };
+
+        expect(isEventLike(input1, LegacyMsgType.Text)).toBe(false);
+        expect(isEventLike(input1, LegacyMsgType.Notice)).toBe(false);
+        expect(isEventLike(input1, LegacyMsgType.Emote)).toBe(false);
+    });
 });

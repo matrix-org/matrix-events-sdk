@@ -61,7 +61,8 @@ export class PollResponseEvent extends ExtensibleEvent<M_POLL_RESPONSE_EVENT_CON
         super(wireFormat);
 
         const rel = this.wireContent["m.relates_to"];
-        if (!REFERENCE_RELATION.matches(rel?.rel_type) || typeof rel?.event_id !== "string") {
+        // noinspection SuspiciousTypeOfGuard
+        if (!REFERENCE_RELATION.matches(rel?.rel_type) || typeof rel.event_id !== "string") {
             throw new InvalidEventError("Relationship must be a reference to an event");
         }
 
@@ -79,7 +80,7 @@ export class PollResponseEvent extends ExtensibleEvent<M_POLL_RESPONSE_EVENT_CON
      */
     public validateAgainst(poll: Optional<PollStartEvent>): void {
         const response = M_POLL_RESPONSE.findIn<M_POLL_RESPONSE_SUBTYPE>(this.wireContent);
-        if (!response?.answers || !Array.isArray(response?.answers)) {
+        if (!response?.answers || !Array.isArray(response.answers)) {
             this.internalSpoiled = true;
             this.internalAnswerIds = [];
             return;

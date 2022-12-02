@@ -63,6 +63,29 @@ describe("NamespacedMap", () => {
         expect(map.get(STABLE_UNSTABLE_NS)).toBe("val1");
     });
 
+    it("should lookup by altName (unstable) if it is the only option", () => {
+        const map = asTestableMap(new NamespacedMap<string>());
+        map.set(STABLE_UNSTABLE_NS, "val1");
+        const tempNs = new NamespacedValue("wrong_stable", STABLE_UNSTABLE_NS.unstable);
+        expect(map.internalMap.size).toBe(2);
+        expect(map.internalMap.get(tempNs.name ?? "TEST_FAIL")).toBeUndefined();
+        expect(map.internalMap.get(tempNs.altName ?? "TEST_FAIL")).toBe("val1");
+        expect(map.hasNamespaced(tempNs.name ?? "TEST_FAIL")).toBe(false);
+        expect(map.hasNamespaced(tempNs.altName ?? "TEST_FAIL")).toBe(true);
+        expect(map.getNamespaced(tempNs.name ?? "TEST_FAIL")).toBeUndefined();
+        expect(map.getNamespaced(tempNs.altName ?? "TEST_FAIL")).toBe("val1");
+        expect(map.has(tempNs)).toBe(true);
+        expect(map.get(tempNs)).toBe("val1");
+    });
+
+    describe("get", () => {
+        it("should return null if no valid keys are found", () => {
+            const map = asTestableMap(new NamespacedMap<string>());
+            expect(map.internalMap.size).toBe(0);
+            expect(map.get(STABLE_UNSTABLE_NS)).toBeNull();
+        });
+    });
+
     it("should only set stable if available", () => {
         const map = asTestableMap(new NamespacedMap<string>());
         map.set(STABLE_ONLY_NS, "val1");

@@ -36,6 +36,8 @@ export type EventInterpreter<TContentIn extends object = object, TEvent extends 
  * on use-case.
  */
 export class ExtensibleEvents {
+    // Dev note: this is manually reset by the unit tests - adjust name in both places
+    // if changed.
     private static _defaultInstance: ExtensibleEvents = new ExtensibleEvents();
 
     private interpreters = new NamespacedMap<EventInterpreter<any>>([
@@ -65,7 +67,7 @@ export class ExtensibleEvents {
      * event types.
      */
     public get unknownInterpretOrder(): NamespacedValue<string, string>[] {
-        return this._unknownInterpretOrder ?? [];
+        return this._unknownInterpretOrder;
     }
 
     /**
@@ -133,8 +135,16 @@ export class ExtensibleEvents {
 
             for (const tryType of this.unknownInterpretOrder) {
                 if (this.interpreters.has(tryType)) {
-                    const val = this.interpreters.get(tryType)!(wireFormat);
-                    if (val) return val;
+                    try {
+                        const val = this.interpreters.get(tryType)!(wireFormat);
+                        if (val) return val;
+                    } catch (e) {
+                        if (e instanceof InvalidEventError) {
+                            continue; // clearly can't be parsed as the unknown type
+                        }
+                        // noinspection ExceptionCaughtLocallyJS
+                        throw e; // re-throw everything else
+                    }
                 }
             }
 

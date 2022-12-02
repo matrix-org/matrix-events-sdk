@@ -115,6 +115,16 @@ describe("PollStartEvent", () => {
         expect(poll.answers.some(a => a.id === "thr" && a.text === "THR")).toBe(true);
     });
 
+    it("should fail to parse a missing subevent", () => {
+        const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
+            type: M_POLL_START.name,
+            content: {
+                [M_TEXT.name]: "FALLBACK Question here",
+            } as any, // force invalid type
+        };
+        expect(() => new PollStartEvent(input)).toThrow(new InvalidEventError("A question is required"));
+    });
+
     it("should fail to parse a missing question", () => {
         const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
             type: M_POLL_START.name,
@@ -265,7 +275,86 @@ describe("PollStartEvent", () => {
         expect(poll.rawKind).toBeFalsy();
     });
 
+    it.each([NaN, -1, 0, null, "2", Infinity])("should assume invalid (%s) max_selections means 1", val => {
+        const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
+            type: M_POLL_START.name,
+            content: {
+                [M_TEXT.name]: "FALLBACK Question here",
+                [M_POLL_START.name]: {
+                    question: {[M_TEXT.name]: "Question here"},
+                    max_selections: val,
+                    answers: [
+                        {id: "01", [M_TEXT.name]: "A"},
+                        {id: "02", [M_TEXT.name]: "B"},
+                        {id: "03", [M_TEXT.name]: "C"},
+                    ],
+                } as any, // force invalid type
+            },
+        };
+        const poll = new PollStartEvent(input);
+        expect(poll.maxSelections).toBe(1);
+    });
+
+    it.each([2, 3, 1])("should use %s as max_selections when provided", val => {
+        const input: IPartialEvent<M_POLL_START_EVENT_CONTENT> = {
+            type: M_POLL_START.name,
+            content: {
+                [M_TEXT.name]: "FALLBACK Question here",
+                [M_POLL_START.name]: {
+                    question: {[M_TEXT.name]: "Question here"},
+                    max_selections: val,
+                    answers: [
+                        {id: "01", [M_TEXT.name]: "A"},
+                        {id: "02", [M_TEXT.name]: "B"},
+                        {id: "03", [M_TEXT.name]: "C"},
+                    ],
+                } as any, // force invalid type
+            },
+        };
+        const poll = new PollStartEvent(input);
+        expect(poll.maxSelections).toBe(val);
+    });
+
     describe("from & serialize", () => {
+        it("should serialize with the minimum number of arguments", () => {
+            const poll = PollStartEvent.from("Question here", ["A", "B", "C"], M_POLL_KIND_DISCLOSED);
+            expect(poll.question.text).toBe("Question here");
+            expect(poll.kind).toBe(M_POLL_KIND_DISCLOSED);
+            expect(M_POLL_KIND_DISCLOSED.matches(poll.rawKind)).toBe(true);
+            expect(poll.maxSelections).toBe(1);
+            expect(poll.answers.length).toBe(3);
+            expect(poll.answers.some(a => a.text === "A")).toBe(true);
+            expect(poll.answers.some(a => a.text === "B")).toBe(true);
+            expect(poll.answers.some(a => a.text === "C")).toBe(true);
+
+            // Ids are non-empty and unique
+            expect(poll.answers[0].id).toHaveLength(16);
+            expect(poll.answers[1].id).toHaveLength(16);
+            expect(poll.answers[2].id).toHaveLength(16);
+            expect(poll.answers[0].id).not.toEqual(poll.answers[1].id);
+            expect(poll.answers[0].id).not.toEqual(poll.answers[2].id);
+            expect(poll.answers[1].id).not.toEqual(poll.answers[2].id);
+
+            const serialized = poll.serialize();
+            expect(M_POLL_START.matches(serialized.type)).toBe(true);
+            expect(serialized.content).toMatchObject({
+                [M_TEXT.name]: "Question here\n1. A\n2. B\n3. C",
+                [M_POLL_START.name]: {
+                    question: {
+                        [M_TEXT.name]: expect.any(String), // tested by MessageEvent tests
+                    },
+                    kind: M_POLL_KIND_DISCLOSED.name,
+                    max_selections: 1,
+                    answers: [
+                        // M_TEXT tested by MessageEvent tests
+                        {id: expect.any(String), [M_TEXT.name]: expect.any(String)},
+                        {id: expect.any(String), [M_TEXT.name]: expect.any(String)},
+                        {id: expect.any(String), [M_TEXT.name]: expect.any(String)},
+                    ],
+                },
+            });
+        });
+
         it("should serialize to a poll start event", () => {
             const poll = PollStartEvent.from("Question here", ["A", "B", "C"], M_POLL_KIND_DISCLOSED, 2);
             expect(poll.question.text).toBe("Question here");

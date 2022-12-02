@@ -83,6 +83,28 @@ describe("MessageEvent", () => {
         expect(message.renderings.some(r => r.mimetype === "text/markdown" && r.body === "MD here")).toBe(true);
     });
 
+    it("should not find HTML if there isn't any", () => {
+        const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
+            type: "org.example.message-like",
+            content: {
+                [M_MESSAGE.name]: [
+                    {body: "Text here", mimetype: "text/plain"},
+                    {body: "MD here", mimetype: "text/markdown"},
+                ],
+
+                // These should be ignored
+                [M_TEXT.name]: "WRONG Text here",
+                [M_HTML.name]: "WRONG HTML here",
+            },
+        };
+        const message = new MessageEvent(input);
+        expect(message.text).toBe("Text here");
+        expect(message.html).toBeUndefined();
+        expect(message.renderings.length).toBe(2);
+        expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
+        expect(message.renderings.some(r => r.mimetype === "text/markdown" && r.body === "MD here")).toBe(true);
+    });
+
     it("should fail to parse missing text", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: "org.example.message-like",

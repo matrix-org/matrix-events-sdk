@@ -114,6 +114,23 @@ describe("PollResponseEvent", () => {
     });
 
     describe("validateAgainst", () => {
+        it("should spoil the vote when no response subevent", () => {
+            const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
+                type: M_POLL_RESPONSE.name,
+                content: {
+                    "m.relates_to": {
+                        rel_type: REFERENCE_RELATION.name,
+                        event_id: "$poll",
+                    },
+                } as any, // force invalid type
+            };
+            const response = new PollResponseEvent(input);
+            expect(response.spoiled).toBe(true);
+
+            response.validateAgainst(SAMPLE_POLL);
+            expect(response.spoiled).toBe(true);
+        });
+
         it("should spoil the vote when no answers", () => {
             const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
                 type: M_POLL_RESPONSE.name,
@@ -182,6 +199,26 @@ describe("PollResponseEvent", () => {
                     },
                     [M_POLL_RESPONSE.name]: {
                         answers: [1, 2, 3],
+                    },
+                } as any, // force invalid type
+            };
+            const response = new PollResponseEvent(input);
+            expect(response.spoiled).toBe(true);
+
+            response.validateAgainst(SAMPLE_POLL);
+            expect(response.spoiled).toBe(true);
+        });
+
+        it("should spoil the vote when answers is not an array", () => {
+            const input: IPartialEvent<M_POLL_RESPONSE_EVENT_CONTENT> = {
+                type: M_POLL_RESPONSE.name,
+                content: {
+                    "m.relates_to": {
+                        rel_type: REFERENCE_RELATION.name,
+                        event_id: "$poll",
+                    },
+                    [M_POLL_RESPONSE.name]: {
+                        answers: "yes",
                     },
                 } as any, // force invalid type
             };

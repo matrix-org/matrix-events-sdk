@@ -109,4 +109,13 @@ describe("PollEndEvent", () => {
             });
         });
     });
+
+    describe("isEquivalentTo", () => {
+        it("should consider itself the same for M_POLL_END types", () => {
+            const event = PollEndEvent.from("$poll", "Poll closed");
+            expect(event.isEquivalentTo(M_POLL_END.name)).toBe(true);
+            expect(event.isEquivalentTo(M_POLL_END.altName)).toBe(true);
+            expect(event.isEquivalentTo("org.matrix.random")).toBe(false);
+        });
+    });
 });

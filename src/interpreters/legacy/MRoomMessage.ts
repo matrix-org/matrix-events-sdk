@@ -38,9 +38,11 @@ export function parseMRoomMessage(wireEvent: IPartialEvent<IPartialLegacyContent
         return new MessageEvent(wireEvent as unknown as IPartialEvent<M_MESSAGE_EVENT_CONTENT>);
     }
 
-    const msgtype = wireEvent.content?.msgtype;
-    const text = wireEvent.content?.body;
-    const html = wireEvent.content?.format === "org.matrix.custom.html" ? wireEvent.content.formatted_body : null;
+    if (!wireEvent.content) return null;
+
+    const msgtype = wireEvent.content.msgtype;
+    const text = wireEvent.content.body;
+    const html = wireEvent.content.format === "org.matrix.custom.html" ? wireEvent.content.formatted_body : null;
 
     if (msgtype === "m.text") {
         return new MessageEvent({
