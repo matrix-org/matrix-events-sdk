@@ -24,7 +24,7 @@ import {
     M_MESSAGE_EVENT_CONTENT,
     M_NOTICE,
     M_TEXT,
-} from "../../src";
+} from "../../../src/v1-old";
 
 describe("isEventLike", () => {
     it("should match legacy text", () => {

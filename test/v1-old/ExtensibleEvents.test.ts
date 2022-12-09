@@ -42,7 +42,7 @@ import {
     PollStartEvent,
     REFERENCE_RELATION,
     UnstableValue,
-} from "../src";
+} from "../../src/v1-old";
 
 describe("ExtensibleEvents", () => {
     afterEach(() => {

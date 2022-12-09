@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import {
+    EmoteEvent,
     InvalidEventError,
     IPartialEvent,
     M_EMOTE,
@@ -25,10 +26,9 @@ import {
     M_NOTICE,
     M_NOTICE_EVENT_CONTENT,
     M_TEXT,
-    NoticeEvent,
-} from "../../src";
+} from "../../../src/v1-old";
 
-describe("NoticeEvent", () => {
+describe("EmoteEvent", () => {
     it("should parse m.text", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: "org.example.message-like",
@@ -36,7 +36,7 @@ describe("NoticeEvent", () => {
                 [M_TEXT.name]: "Text here",
             },
         };
-        const message = new NoticeEvent(input);
+        const message = new EmoteEvent(input);
         expect(message.text).toBe("Text here");
         expect(message.html).toBeFalsy();
         expect(message.renderings.length).toBe(1);
@@ -51,7 +51,7 @@ describe("NoticeEvent", () => {
                 [M_HTML.name]: "HTML here",
             },
         };
-        const message = new NoticeEvent(input);
+        const message = new EmoteEvent(input);
         expect(message.text).toBe("Text here");
         expect(message.html).toBe("HTML here");
         expect(message.renderings.length).toBe(2);
@@ -74,7 +74,7 @@ describe("NoticeEvent", () => {
                 [M_HTML.name]: "WRONG HTML here",
             },
         };
-        const message = new NoticeEvent(input);
+        const message = new EmoteEvent(input);
         expect(message.text).toBe("Text here");
         expect(message.html).toBe("HTML here");
         expect(message.renderings.length).toBe(3);
@@ -90,7 +90,7 @@ describe("NoticeEvent", () => {
                 hello: "world",
             } as any, // force invalid type
         };
-        expect(() => new NoticeEvent(input)).toThrow(new InvalidEventError("Missing textual representation for event"));
+        expect(() => new EmoteEvent(input)).toThrow(new InvalidEventError("Missing textual representation for event"));
     });
 
     it("should fail to parse missing plain text in m.message", () => {
@@ -100,7 +100,7 @@ describe("NoticeEvent", () => {
                 [M_MESSAGE.name]: [{body: "HTML here", mimetype: "text/html"}],
             },
         };
-        expect(() => new NoticeEvent(input)).toThrow(
+        expect(() => new EmoteEvent(input)).toThrow(
             new InvalidEventError("m.message is missing a plain text representation"),
         );
     });
@@ -112,19 +112,19 @@ describe("NoticeEvent", () => {
                 [M_MESSAGE.name]: "invalid",
             } as any, // force invalid type
         };
-        expect(() => new NoticeEvent(input)).toThrow(new InvalidEventError("m.message contents must be an array"));
+        expect(() => new EmoteEvent(input)).toThrow(new InvalidEventError("m.message contents must be an array"));
     });
 
     describe("isEmote", () => {
-        it("should be false by default", () => {
+        it("should be true by default", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
                 type: "org.example.message-like",
                 content: {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = new NoticeEvent(input);
-            expect(message.isEmote).toBe(false);
+            const message = new EmoteEvent(input);
+            expect(message.isEmote).toBe(true);
         });
 
         it("should be true when using an emote subtype", () => {
@@ -135,7 +135,7 @@ describe("NoticeEvent", () => {
                     [M_EMOTE.name]: {},
                 },
             };
-            const message = new NoticeEvent(input);
+            const message = new EmoteEvent(input);
             expect(message.isEmote).toBe(true);
         });
 
@@ -146,21 +146,21 @@ describe("NoticeEvent", () => {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = new NoticeEvent(input);
+            const message = new EmoteEvent(input);
             expect(message.isEmote).toBe(true);
         });
     });
 
     describe("isNotice", () => {
-        it("should be true by default", () => {
+        it("should be false by default", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
                 type: "org.example.message-like",
                 content: {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = new NoticeEvent(input);
-            expect(message.isNotice).toBe(true);
+            const message = new EmoteEvent(input);
+            expect(message.isNotice).toBe(false);
         });
 
         it("should be true when using a notice subtype", () => {
@@ -171,7 +171,7 @@ describe("NoticeEvent", () => {
                     [M_NOTICE.name]: {},
                 },
             };
-            const message = new NoticeEvent(input);
+            const message = new EmoteEvent(input);
             expect(message.isNotice).toBe(true);
         });
 
@@ -182,14 +182,14 @@ describe("NoticeEvent", () => {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = new NoticeEvent(input);
+            const message = new EmoteEvent(input);
             expect(message.isNotice).toBe(true);
         });
     });
 
     describe("from & serialize", () => {
         it("should serialize to a legacy fallback", () => {
-            const message = NoticeEvent.from("Text here", "HTML here");
+            const message = EmoteEvent.from("Text here", "HTML here");
             expect(message.text).toBe("Text here");
             expect(message.html).toBe("HTML here");
             expect(message.renderings.length).toBe(2);
@@ -204,14 +204,14 @@ describe("NoticeEvent", () => {
                     {body: "HTML here", mimetype: "text/html"},
                 ],
                 body: "Text here",
-                msgtype: "m.notice",
+                msgtype: "m.emote",
                 format: "org.matrix.custom.html",
                 formatted_body: "HTML here",
             });
         });
 
         it("should serialize non-html content to a legacy fallback", () => {
-            const message = NoticeEvent.from("Text here");
+            const message = EmoteEvent.from("Text here");
             expect(message.text).toBe("Text here");
             expect(message.renderings.length).toBe(1);
             expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
@@ -221,7 +221,7 @@ describe("NoticeEvent", () => {
             expect(serialized.content).toMatchObject({
                 [M_TEXT.name]: "Text here",
                 body: "Text here",
-                msgtype: "m.notice",
+                msgtype: "m.emote",
                 format: undefined,
                 formatted_body: undefined,
             });

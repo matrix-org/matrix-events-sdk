@@ -25,10 +25,10 @@ import {
     M_NOTICE,
     M_NOTICE_EVENT_CONTENT,
     M_TEXT,
-    MessageEvent,
-} from "../../src";
+    NoticeEvent,
+} from "../../../src/v1-old";
 
-describe("MessageEvent", () => {
+describe("NoticeEvent", () => {
     it("should parse m.text", () => {
         const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
             type: "org.example.message-like",
@@ -36,7 +36,7 @@ describe("MessageEvent", () => {
                 [M_TEXT.name]: "Text here",
             },
         };
-        const message = new MessageEvent(input);
+        const message = new NoticeEvent(input);
         expect(message.text).toBe("Text here");
         expect(message.html).toBeFalsy();
         expect(message.renderings.length).toBe(1);
@@ -51,7 +51,7 @@ describe("MessageEvent", () => {
                 [M_HTML.name]: "HTML here",
             },
         };
-        const message = new MessageEvent(input);
+        const message = new NoticeEvent(input);
         expect(message.text).toBe("Text here");
         expect(message.html).toBe("HTML here");
         expect(message.renderings.length).toBe(2);
@@ -74,34 +74,12 @@ describe("MessageEvent", () => {
                 [M_HTML.name]: "WRONG HTML here",
             },
         };
-        const message = new MessageEvent(input);
+        const message = new NoticeEvent(input);
         expect(message.text).toBe("Text here");
         expect(message.html).toBe("HTML here");
         expect(message.renderings.length).toBe(3);
         expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
         expect(message.renderings.some(r => r.mimetype === "text/html" && r.body === "HTML here")).toBe(true);
-        expect(message.renderings.some(r => r.mimetype === "text/markdown" && r.body === "MD here")).toBe(true);
-    });
-
-    it("should not find HTML if there isn't any", () => {
-        const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
-            type: "org.example.message-like",
-            content: {
-                [M_MESSAGE.name]: [
-                    {body: "Text here", mimetype: "text/plain"},
-                    {body: "MD here", mimetype: "text/markdown"},
-                ],
-
-                // These should be ignored
-                [M_TEXT.name]: "WRONG Text here",
-                [M_HTML.name]: "WRONG HTML here",
-            },
-        };
-        const message = new MessageEvent(input);
-        expect(message.text).toBe("Text here");
-        expect(message.html).toBeUndefined();
-        expect(message.renderings.length).toBe(2);
-        expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
         expect(message.renderings.some(r => r.mimetype === "text/markdown" && r.body === "MD here")).toBe(true);
     });
 
@@ -112,9 +90,7 @@ describe("MessageEvent", () => {
                 hello: "world",
             } as any, // force invalid type
         };
-        expect(() => new MessageEvent(input)).toThrow(
-            new InvalidEventError("Missing textual representation for event"),
-        );
+        expect(() => new NoticeEvent(input)).toThrow(new InvalidEventError("Missing textual representation for event"));
     });
 
     it("should fail to parse missing plain text in m.message", () => {
@@ -124,7 +100,7 @@ describe("MessageEvent", () => {
                 [M_MESSAGE.name]: [{body: "HTML here", mimetype: "text/html"}],
             },
         };
-        expect(() => new MessageEvent(input)).toThrow(
+        expect(() => new NoticeEvent(input)).toThrow(
             new InvalidEventError("m.message is missing a plain text representation"),
         );
     });
@@ -136,7 +112,7 @@ describe("MessageEvent", () => {
                 [M_MESSAGE.name]: "invalid",
             } as any, // force invalid type
         };
-        expect(() => new MessageEvent(input)).toThrow(new InvalidEventError("m.message contents must be an array"));
+        expect(() => new NoticeEvent(input)).toThrow(new InvalidEventError("m.message contents must be an array"));
     });
 
     describe("isEmote", () => {
@@ -147,7 +123,7 @@ describe("MessageEvent", () => {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = new MessageEvent(input);
+            const message = new NoticeEvent(input);
             expect(message.isEmote).toBe(false);
         });
 
@@ -159,7 +135,7 @@ describe("MessageEvent", () => {
                     [M_EMOTE.name]: {},
                 },
             };
-            const message = new MessageEvent(input);
+            const message = new NoticeEvent(input);
             expect(message.isEmote).toBe(true);
         });
 
@@ -170,21 +146,21 @@ describe("MessageEvent", () => {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = new MessageEvent(input);
+            const message = new NoticeEvent(input);
             expect(message.isEmote).toBe(true);
         });
     });
 
     describe("isNotice", () => {
-        it("should be false by default", () => {
+        it("should be true by default", () => {
             const input: IPartialEvent<M_MESSAGE_EVENT_CONTENT> = {
                 type: "org.example.message-like",
                 content: {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = new MessageEvent(input);
-            expect(message.isNotice).toBe(false);
+            const message = new NoticeEvent(input);
+            expect(message.isNotice).toBe(true);
         });
 
         it("should be true when using a notice subtype", () => {
@@ -195,7 +171,7 @@ describe("MessageEvent", () => {
                     [M_NOTICE.name]: {},
                 },
             };
-            const message = new MessageEvent(input);
+            const message = new NoticeEvent(input);
             expect(message.isNotice).toBe(true);
         });
 
@@ -206,14 +182,14 @@ describe("MessageEvent", () => {
                     [M_TEXT.name]: "Text here",
                 },
             };
-            const message = new MessageEvent(input);
+            const message = new NoticeEvent(input);
             expect(message.isNotice).toBe(true);
         });
     });
 
     describe("from & serialize", () => {
         it("should serialize to a legacy fallback", () => {
-            const message = MessageEvent.from("Text here", "HTML here");
+            const message = NoticeEvent.from("Text here", "HTML here");
             expect(message.text).toBe("Text here");
             expect(message.html).toBe("HTML here");
             expect(message.renderings.length).toBe(2);
@@ -228,14 +204,14 @@ describe("MessageEvent", () => {
                     {body: "HTML here", mimetype: "text/html"},
                 ],
                 body: "Text here",
-                msgtype: "m.text",
+                msgtype: "m.notice",
                 format: "org.matrix.custom.html",
                 formatted_body: "HTML here",
             });
         });
 
         it("should serialize non-html content to a legacy fallback", () => {
-            const message = MessageEvent.from("Text here");
+            const message = NoticeEvent.from("Text here");
             expect(message.text).toBe("Text here");
             expect(message.renderings.length).toBe(1);
             expect(message.renderings.some(r => r.mimetype === "text/plain" && r.body === "Text here")).toBe(true);
@@ -245,7 +221,7 @@ describe("MessageEvent", () => {
             expect(serialized.content).toMatchObject({
                 [M_TEXT.name]: "Text here",
                 body: "Text here",
-                msgtype: "m.text",
+                msgtype: "m.notice",
                 format: undefined,
                 formatted_body: undefined,
             });

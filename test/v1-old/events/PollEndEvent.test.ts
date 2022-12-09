@@ -22,7 +22,7 @@ import {
     M_TEXT,
     PollEndEvent,
     REFERENCE_RELATION,
-} from "../../src";
+} from "../../../src/v1-old";
 
 describe("PollEndEvent", () => {
     // Note: throughout these tests we don't really bother testing that

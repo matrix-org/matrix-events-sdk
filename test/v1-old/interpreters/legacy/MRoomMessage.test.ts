@@ -26,7 +26,7 @@ import {
     MessageEvent,
     NoticeEvent,
     parseMRoomMessage,
-} from "../../../src";
+} from "../../../../src/v1-old";
 
 describe("parseMRoomMessage", () => {
     it("should return an unmodified MessageEvent when using extensible events", () => {

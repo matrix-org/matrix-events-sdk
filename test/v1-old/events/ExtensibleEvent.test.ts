@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {EventType, ExtensibleEvent, IPartialEvent} from "../../src";
+import {EventType, ExtensibleEvent, IPartialEvent} from "../../../src/v1-old";
 
 class MockEvent extends ExtensibleEvent<any> {
     public constructor(wireEvent: IPartialEvent<any>) {
