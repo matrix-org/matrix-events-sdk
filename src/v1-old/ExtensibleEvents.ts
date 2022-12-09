@@ -16,8 +16,8 @@ limitations under the License.
 
 import {IPartialEvent} from "./IPartialEvent";
 import {ExtensibleEvent} from "./events/ExtensibleEvent";
-import {Optional} from "./types";
-import {NamespacedValue} from "./NamespacedValue";
+import {Optional} from "../types";
+import {NamespacedValue} from "../NamespacedValue";
 import {NamespacedMap} from "./NamespacedMap";
 import {InvalidEventError} from "./InvalidEventError";
 import {LEGACY_M_ROOM_MESSAGE, parseMRoomMessage} from "./interpreters/legacy/MRoomMessage";

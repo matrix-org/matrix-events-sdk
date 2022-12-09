@@ -25,7 +25,7 @@ import {
     PollResponseEvent,
     PollStartEvent,
     REFERENCE_RELATION,
-} from "../../../src/v1-old";
+} from "../../../src";
 
 const SAMPLE_POLL = new PollStartEvent({
     type: M_POLL_START.name,

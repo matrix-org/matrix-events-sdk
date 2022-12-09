@@ -1,5 +1,5 @@
-import {NamespacedValue} from "./NamespacedValue";
-import {Optional} from "./types";
+import {NamespacedValue} from "../NamespacedValue";
+import {Optional} from "../types";
 
 type NS = NamespacedValue<string, string>;
 

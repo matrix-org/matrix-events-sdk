@@ -14,12 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {NamespacedValue} from "./NamespacedValue";
-
-/**
- * Represents an optional type: can either be T or a falsy value.
- */
-export type Optional<T> = T | null | undefined;
+import {NamespacedValue} from "../NamespacedValue";
+import {Optional} from "../types";
 
 /**
  * Applies the same behaviour as `Partial<T>`, but using `Optional<T>` instead.

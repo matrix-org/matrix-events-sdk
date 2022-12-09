@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {UnstableValue} from "../NamespacedValue";
+import {UnstableValue} from "../../NamespacedValue";
 import {EitherAnd, TSNamespace} from "../types";
 import {M_MESSAGE_EVENT_CONTENT} from "./message_types";
 import {REFERENCE_RELATION, RELATES_TO_RELATIONSHIP} from "./relationship_types";

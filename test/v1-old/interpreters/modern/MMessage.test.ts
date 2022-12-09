@@ -25,7 +25,7 @@ import {
     M_TEXT,
     NoticeEvent,
     parseMMessage,
-} from "../../../../src/v1-old";
+} from "../../../../src";
 
 describe("parseMMessage", () => {
     it("should return an unmodified MessageEvent", () => {

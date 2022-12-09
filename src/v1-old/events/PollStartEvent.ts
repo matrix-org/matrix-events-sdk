@@ -27,7 +27,7 @@ import {IPartialEvent} from "../IPartialEvent";
 import {MessageEvent} from "./MessageEvent";
 import {M_TEXT} from "./message_types";
 import {InvalidEventError} from "../InvalidEventError";
-import {NamespacedValue} from "../NamespacedValue";
+import {NamespacedValue} from "../../NamespacedValue";
 import {EventType, isEventTypeSame} from "../utility/events";
 import {ExtensibleEvent} from "./ExtensibleEvent";
 import {isNumberFinite} from "../types";

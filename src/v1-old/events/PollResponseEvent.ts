@@ -21,7 +21,7 @@ import {InvalidEventError} from "../InvalidEventError";
 import {PollStartEvent} from "./PollStartEvent";
 import {REFERENCE_RELATION} from "./relationship_types";
 import {EventType, isEventTypeSame} from "../utility/events";
-import {Optional} from "../types";
+import {Optional} from "../../types";
 
 /**
  * Represents a poll response event.

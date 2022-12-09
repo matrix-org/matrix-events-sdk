@@ -26,7 +26,7 @@ import {
     M_NOTICE_EVENT_CONTENT,
     M_TEXT,
     MessageEvent,
-} from "../../../src/v1-old";
+} from "../../../src";
 
 describe("MessageEvent", () => {
     it("should parse m.text", () => {

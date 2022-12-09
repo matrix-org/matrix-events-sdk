@@ -18,7 +18,7 @@
     "prepare": "husky install",
     "prepublishOnly": "yarn build",
     "clean": "rimraf lib",
-    "idx": "ctix single -p tsconfig.build.json --startAt src --output src/index.ts --overwrite --noBackup --useComment",
+    "idx": "ctix single -p tsconfig.build.json --startAt src --output src/index.ts --overwrite --noBackup --useComment && yarn format",
     "build": "yarn clean && yarn idx && tsc -p tsconfig.build.json",
     "start": "tsc -p tsconfig.build.json -w",
     "test": "jest",

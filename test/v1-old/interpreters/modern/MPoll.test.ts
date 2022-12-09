@@ -29,7 +29,7 @@ import {
     PollResponseEvent,
     PollStartEvent,
     REFERENCE_RELATION,
-} from "../../../../src/v1-old";
+} from "../../../../src";
 
 describe("parseMPoll", () => {
     it("should return an unmodified PollStartEvent", () => {

@@ -16,7 +16,7 @@ limitations under the License.
 
 import {ExtensibleEvent} from "./ExtensibleEvent";
 import {IPartialEvent} from "../IPartialEvent";
-import {isOptionalAString, isProvided, Optional} from "../types";
+import {isOptionalAString, isProvided} from "../types";
 import {InvalidEventError} from "../InvalidEventError";
 import {
     IMessageRendering,
@@ -28,6 +28,7 @@ import {
     M_TEXT,
 } from "./message_types";
 import {EventType, isEventTypeSame} from "../utility/events";
+import {Optional} from "../../types";
 
 /**
  * Represents a message event. Message events are the simplest form of event with

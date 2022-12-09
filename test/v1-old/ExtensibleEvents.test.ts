@@ -36,13 +36,12 @@ import {
     M_TEXT,
     MessageEvent,
     NoticeEvent,
-    Optional,
     PollEndEvent,
     PollResponseEvent,
     PollStartEvent,
     REFERENCE_RELATION,
-    UnstableValue,
-} from "../../src/v1-old";
+} from "../../src";
+import {Optional, UnstableValue} from "../../src";
 
 describe("ExtensibleEvents", () => {
     afterEach(() => {

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import {IPartialEvent} from "../../IPartialEvent";
-import {Optional} from "../../types";
+import {Optional} from "../../../types";
 import {
     M_POLL_END,
     M_POLL_END_EVENT_CONTENT,

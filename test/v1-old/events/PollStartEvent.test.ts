@@ -25,7 +25,7 @@ import {
     POLL_ANSWER,
     PollAnswerSubevent,
     PollStartEvent,
-} from "../../../src/v1-old";
+} from "../../../src";
 
 describe("PollAnswerSubevent", () => {
     // Note: throughout these tests we don't really bother testing that

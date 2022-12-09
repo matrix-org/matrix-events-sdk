@@ -26,7 +26,7 @@ import {
     M_NOTICE,
     M_NOTICE_EVENT_CONTENT,
     M_TEXT,
-} from "../../../src/v1-old";
+} from "../../../src";
 
 describe("EmoteEvent", () => {
     it("should parse m.text", () => {

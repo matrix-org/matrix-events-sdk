@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import {IPartialEvent} from "../../IPartialEvent";
-import {Optional} from "../../types";
+import {Optional} from "../../../types";
 import {MessageEvent} from "../../events/MessageEvent";
 import {M_EMOTE, M_MESSAGE_EVENT_CONTENT, M_NOTICE} from "../../events/message_types";
 import {EmoteEvent} from "../../events/EmoteEvent";

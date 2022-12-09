@@ -18,6 +18,7 @@ import {ArrayBlock} from "../ArrayBlock";
 import {Schema} from "ajv";
 import {AjvContainer} from "../../AjvContainer";
 import {InvalidBlockError} from "../InvalidBlockError";
+import {UnstableValue} from "../../NamespacedValue";
 
 /**
  * A representation of text within a markup block.
@@ -36,6 +37,8 @@ export type MarkupRepresentation = {
 export class MarkupBlock extends ArrayBlock<MarkupRepresentation> {
     public static readonly schema = ArrayBlock.schema;
     public static readonly validateFn = ArrayBlock.validateFn;
+
+    public static readonly type = new UnstableValue("m.markup", "org.matrix.msc1767.markup");
 
     /**
      * Schema definition for the markup representation (list item) specifically.

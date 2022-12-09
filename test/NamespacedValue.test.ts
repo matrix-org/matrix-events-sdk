@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {NamespacedValue, UnstableValue} from "../../src/v1-old";
+import {NamespacedValue, UnstableValue} from "../src";
 
 export const STABLE_VALUE = "org.example.stable";
 export const UNSTABLE_VALUE = "org.example.unstable";

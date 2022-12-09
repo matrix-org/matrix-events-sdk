@@ -29,5 +29,6 @@ export * from "./v1-old/ExtensibleEvents";
 export * from "./v1-old/InvalidEventError";
 export * from "./v1-old/IPartialEvent";
 export * from "./v1-old/NamespacedMap";
-export * from "./v1-old/NamespacedValue";
 export * from "./v1-old/types";
+export * from "./NamespacedValue";
+export * from "./types";

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {isEventTypeSame, NamespacedValue} from "../../../src/v1-old";
+import {isEventTypeSame, NamespacedValue} from "../../../src";
 
 describe("isEventTypeSame", () => {
     it("should match string and string", () => {

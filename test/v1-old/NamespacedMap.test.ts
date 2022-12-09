@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {NamespacedMap, NamespacedValue, UnstableValue} from "../../src/v1-old";
-import {STABLE_VALUE, UNSTABLE_VALUE} from "./NamespacedValue.test";
+import {NamespacedMap} from "../../src";
+import {NamespacedValue, UnstableValue} from "../../src";
+import {STABLE_VALUE, UNSTABLE_VALUE} from "../NamespacedValue.test";
 
 type TestableNamespacedMap<V> = {internalMap: Map<string, V>} & NamespacedMap<V>;
 function asTestableMap<V>(map: NamespacedMap<V>): TestableNamespacedMap<V> {
