@@ -18,7 +18,8 @@
     "prepare": "husky install",
     "prepublishOnly": "yarn build",
     "clean": "rimraf lib",
-    "build": "yarn clean && tsc -p tsconfig.build.json",
+    "idx": "ctix single -p tsconfig.build.json --startAt src --output src/index.ts --overwrite --noBackup --useComment",
+    "build": "yarn clean && yarn idx && tsc -p tsconfig.build.json",
     "start": "tsc -p tsconfig.build.json -w",
     "test": "jest",
     "format": "prettier --config .prettierrc \"{src,test}/**/*.ts\" --write",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@types/jest": "^29.2.3",
     "@types/node": "^16",
+    "ctix": "^1.7.0",
     "husky": "^8.0.2",
     "jest": "^29.3.1",
     "prettier": "^2.8.0",
