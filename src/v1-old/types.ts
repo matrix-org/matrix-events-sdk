@@ -53,11 +53,6 @@ export function isNumberFinite(n: unknown): n is number {
 }
 
 /**
- * Represents either just T1, just T2, or T1 and T2 mixed.
- */
-export type EitherAnd<T1, T2> = (T1 & T2) | T1 | T2;
-
-/**
  * Represents the stable and unstable values of a given namespace.
  */
 export type TSNamespace<N> = N extends NamespacedValue<infer S, infer U>

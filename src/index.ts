@@ -6,6 +6,7 @@ export * from "./v1-old/interpreters/legacy/MRoomMessage";
 export * from "./v1-old/interpreters/modern/MMessage";
 export * from "./v1-old/interpreters/modern/MPoll";
 export * from "./content_blocks/m/MarkupBlock";
+export * from "./content_blocks/m/NoticeBlock";
 export * from "./v1-old/events/EmoteEvent";
 export * from "./v1-old/events/ExtensibleEvent";
 export * from "./v1-old/events/message_types";

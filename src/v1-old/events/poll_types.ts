@@ -15,9 +15,10 @@ limitations under the License.
 */
 
 import {UnstableValue} from "../../NamespacedValue";
-import {EitherAnd, TSNamespace} from "../types";
+import {TSNamespace} from "../types";
 import {M_MESSAGE_EVENT_CONTENT} from "./message_types";
 import {REFERENCE_RELATION, RELATES_TO_RELATIONSHIP} from "./relationship_types";
+import {EitherAnd} from "../../types";
 
 /**
  * Identifier for a disclosed poll.

@@ -16,7 +16,7 @@ limitations under the License.
 
 import {IPartialEvent} from "../IPartialEvent";
 import {IPartialLegacyContent} from "../interpreters/legacy/MRoomMessage";
-import {EitherAnd} from "../types";
+import {EitherAnd} from "../../types";
 import {M_EMOTE, M_MESSAGE, M_MESSAGE_EVENT_CONTENT, M_NOTICE} from "../events/message_types";
 
 /**

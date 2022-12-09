@@ -90,7 +90,7 @@ export class MarkupBlock extends ArrayBlock<MarkupRepresentation> {
      * @param raw The block's value.
      */
     public constructor(raw: MarkupRepresentation[]) {
-        super("m.markup", raw);
+        super(MarkupBlock.type.stable!, raw);
         this.raw = raw.filter((r, i) => {
             const bool = MarkupBlock.representationValidateFn(r);
             if (!bool) {

@@ -15,7 +15,8 @@ limitations under the License.
 */
 
 import {UnstableValue} from "../../NamespacedValue";
-import {EitherAnd, OptionalPartial} from "../types";
+import {OptionalPartial} from "../types";
+import {EitherAnd} from "../../types";
 
 /**
  * The namespaced value for m.message

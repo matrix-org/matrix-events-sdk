@@ -18,3 +18,8 @@ limitations under the License.
  * Represents an optional type: can either be T or a falsy value.
  */
 export type Optional<T> = T | null | undefined;
+
+/**
+ * Represents either just T1, just T2, or T1 and T2 mixed.
+ */
+export type EitherAnd<T1, T2> = (T1 & T2) | T1 | T2;
