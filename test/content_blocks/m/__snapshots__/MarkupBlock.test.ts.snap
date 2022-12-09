@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MarkupBlock should remove representations mid-array if they are invalid 1`] = `
+[
+  {
+    "index": 2,
+    "representation": {
+      "body": "text here",
+      "mimetype": true,
+    },
+  },
+  [Error: m.markup[2]: mimetype should be a non-null string, or undefined (field not required)],
+]
+`;
+
+exports[`MarkupBlock should validate each representation has a defined body 1`] = `
+[
+  {
+    "index": 0,
+    "representation": {
+      "mimetype": "text/plain",
+    },
+  },
+  [Error: m.markup[0]: must have required property 'body'],
+]
+`;
+
+exports[`MarkupBlock should validate each representation has a valid body 1`] = `
+[
+  {
+    "index": 0,
+    "representation": {
+      "body": true,
+      "mimetype": "text/plain",
+    },
+  },
+  [Error: m.markup[0]: body should be a non-null string and is required],
+]
+`;
+
+exports[`MarkupBlock should validate each representation has a valid mimetype 1`] = `
+[
+  {
+    "index": 0,
+    "representation": {
+      "body": "text here",
+      "mimetype": true,
+    },
+  },
+  [Error: m.markup[0]: mimetype should be a non-null string, or undefined (field not required)],
+]
+`;
+
+exports[`MarkupBlock should validate each representation is an object 1`] = `
+[
+  {
+    "index": 0,
+    "representation": true,
+  },
+  [Error: m.markup[0]: must be object],
+]
+`;
