@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidBlockError} from "../../src/content_blocks/InvalidBlockError";
 import {ArrayBlock} from "../../src/content_blocks/ArrayBlock";
+import {testSharedContentBlockInputs} from "./BaseBlock.test";
 
 class TestArrayBlock extends ArrayBlock<any> {
     public constructor(raw: any) {
@@ -24,26 +24,10 @@ class TestArrayBlock extends ArrayBlock<any> {
 }
 
 describe("ArrayBlock", () => {
-    it("should retain the block name", () => {
-        const block = new TestArrayBlock([]);
-        expect(block.name).toStrictEqual("TestBlock");
-    });
-
-    it.each([null, undefined])("should reject null and undefined: %s", val => {
-        expect(() => new TestArrayBlock(val)).toThrow(
-            new InvalidBlockError(
-                "TestBlock",
-                "Block value must be defined. Use a null-capable parser instead of passing such a value.",
-            ),
-        );
-    });
+    testSharedContentBlockInputs("TestBlock", [1, 2], x => new TestArrayBlock(x));
 
     it.each([["values"], []])("should accept arrays: '%s'", (...val) => {
         const block = new TestArrayBlock(val);
         expect(block.raw).toStrictEqual(val);
-    });
-
-    it.each([42, "test", "", {}, false])("should reject non-arrays: '%s'", val => {
-        expect(() => new TestArrayBlock(val)).toThrow(new InvalidBlockError("TestBlock", "should be an array value"));
     });
 });

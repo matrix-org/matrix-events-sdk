@@ -16,21 +16,10 @@ limitations under the License.
 
 import {InvalidBlockError} from "../../../src/content_blocks/InvalidBlockError";
 import {EmoteBlock} from "../../../src/content_blocks/m/EmoteBlock";
+import {testSharedContentBlockInputs} from "../BaseBlock.test";
 
 describe("EmoteBlock", () => {
-    it("should have a sensible block name", () => {
-        const block = new EmoteBlock({"m.markup": [{body: "test"}]});
-        expect(block.name).toStrictEqual("m.emote");
-    });
-
-    it.each([null, undefined])("should reject null and undefined: %s", val => {
-        expect(() => new EmoteBlock(val as any)).toThrow(
-            new InvalidBlockError(
-                "m.emote",
-                "Block value must be defined. Use a null-capable parser instead of passing such a value.",
-            ),
-        );
-    });
+    testSharedContentBlockInputs("m.emote", {"m.markup": [{body: "test"}]}, x => new EmoteBlock(x));
 
     it("should locate a stable markup block", () => {
         const block = new EmoteBlock({"m.markup": [{body: "test"}]});
@@ -58,9 +47,5 @@ describe("EmoteBlock", () => {
         expect(() => new EmoteBlock({no_block: true} as any)).toThrow(
             new InvalidBlockError("m.emote", "schema does not apply to m.markup or org.matrix.msc1767.markup"),
         );
-    });
-
-    it.each([42, true, [], "test"])("should reject non-emotes: '%s'", val => {
-        expect(() => new EmoteBlock(val as any)).toThrow(new InvalidBlockError("m.emote", "should be an object value"));
     });
 });

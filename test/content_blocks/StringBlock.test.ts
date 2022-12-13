@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidBlockError} from "../../src/content_blocks/InvalidBlockError";
 import {StringBlock} from "../../src/content_blocks/StringBlock";
+import {testSharedContentBlockInputs} from "./BaseBlock.test";
 
 class TestStringBlock extends StringBlock {
     public constructor(raw: any) {
@@ -24,19 +24,7 @@ class TestStringBlock extends StringBlock {
 }
 
 describe("StringBlock", () => {
-    it("should retain the block name", () => {
-        const block = new TestStringBlock("test");
-        expect(block.name).toStrictEqual("TestBlock");
-    });
-
-    it.each([null, undefined])("should reject null and undefined: %s", val => {
-        expect(() => new TestStringBlock(val)).toThrow(
-            new InvalidBlockError(
-                "TestBlock",
-                "Block value must be defined. Use a null-capable parser instead of passing such a value.",
-            ),
-        );
-    });
+    testSharedContentBlockInputs("TestBlock", "nostring", x => new TestStringBlock(x));
 
     it("should accept strings", () => {
         const block = new TestStringBlock("test");
@@ -46,9 +34,5 @@ describe("StringBlock", () => {
     it("should accept empty strings", () => {
         const block = new TestStringBlock("");
         expect(block.raw).toStrictEqual("");
-    });
-
-    it.each([42, true, {}, []])("should reject non-strings: '%s'", val => {
-        expect(() => new TestStringBlock(val)).toThrow(new InvalidBlockError("TestBlock", "should be a string value"));
     });
 });

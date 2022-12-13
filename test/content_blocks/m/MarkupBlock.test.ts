@@ -14,23 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidBlockError} from "../../../src/content_blocks/InvalidBlockError";
 import {MarkupBlock} from "../../../src/content_blocks/m/MarkupBlock";
+import {testSharedContentBlockInputs} from "../BaseBlock.test";
 
 describe("MarkupBlock", () => {
-    it("should have a sensible block name", () => {
-        const block = new MarkupBlock([{body: "test"}]);
-        expect(block.name).toStrictEqual("m.markup");
-    });
-
-    it.each([null, undefined])("should reject null and undefined: %s", val => {
-        expect(() => new MarkupBlock(val as any)).toThrow(
-            new InvalidBlockError(
-                "m.markup",
-                "Block value must be defined. Use a null-capable parser instead of passing such a value.",
-            ),
-        );
-    });
+    testSharedContentBlockInputs("m.markup", [{body: "test"}], x => new MarkupBlock(x));
 
     it("should be able to identify the text and HTML representations", () => {
         const block = new MarkupBlock([
@@ -202,11 +190,5 @@ describe("MarkupBlock", () => {
         expect(block.representations).toBeDefined();
         expect(block.representations.length).toStrictEqual(3);
         expect(block.representations).toStrictEqual(block.raw);
-    });
-
-    it.each([42, true, {}, "test"])("should reject non-markups: '%s'", val => {
-        expect(() => new MarkupBlock(val as any)).toThrow(
-            new InvalidBlockError("m.markup", "should be an array value"),
-        );
     });
 });

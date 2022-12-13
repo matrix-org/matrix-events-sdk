@@ -24,19 +24,7 @@ class TestBaseBlock extends BaseBlock<any> {
 }
 
 describe("BaseBlock", () => {
-    it("should retain the block name", () => {
-        const block = new TestBaseBlock(42);
-        expect(block.name).toStrictEqual("TestBlock");
-    });
-
-    it.each([null, undefined])("should reject null and undefined: %s", val => {
-        expect(() => new TestBaseBlock(val)).toThrow(
-            new InvalidBlockError(
-                "TestBlock",
-                "Block value must be defined. Use a null-capable parser instead of passing such a value.",
-            ),
-        );
-    });
+    testSharedContentBlockInputs("TestBlock", undefined, x => new TestBaseBlock(x));
 
     it.each(["string", "", true, false, 42, 42.1, {hello: "world"}, [1, 2, 3], {}, []])(
         "should accept wire values: '%s'",
@@ -46,3 +34,56 @@ describe("BaseBlock", () => {
         },
     );
 });
+
+type SafeValuesConditional = string | number | boolean | object | SafeValuesConditional[] | undefined;
+
+export function testSharedContentBlockInputs(
+    blockName: string,
+    safeValue: SafeValuesConditional,
+    factory: (x: any) => BaseBlock<any>,
+) {
+    describe("internal", () => {
+        it("should have valid inputs", () => {
+            expect(blockName).toBeDefined();
+            expect(typeof blockName).toStrictEqual("string");
+            expect(blockName.length).toBeGreaterThan(0);
+
+            if (safeValue !== undefined) {
+                expect(safeValue).not.toBeNull();
+            }
+
+            expect(factory).toBeDefined();
+            expect(typeof factory).toStrictEqual("function");
+        });
+
+        it("should have a passing factory", () => {
+            const ev = factory(safeValue ?? 42);
+            expect(ev).toBeDefined();
+            // noinspection SuspiciousTypeOfGuard
+            expect(ev instanceof BaseBlock).toStrictEqual(true);
+        });
+    });
+
+    it("should retain the block name", () => {
+        const block = factory(safeValue ?? 42);
+        expect(block.name).toStrictEqual(blockName);
+    });
+
+    it.each([null, undefined])("should reject null and undefined: %s", val => {
+        expect(() => factory(val)).toThrow(
+            new InvalidBlockError(
+                blockName,
+                "Block value must be defined. Use a null-capable parser instead of passing such a value.",
+            ),
+        );
+    });
+
+    if (safeValue !== undefined) {
+        const toTest = ["string", "", true, false, 42, 42.1, {hello: "world"}, [1, 2, 3], {}, []].filter(x =>
+            Array.isArray(safeValue) ? !Array.isArray(x) : typeof x !== typeof safeValue,
+        );
+        it.each(toTest)("should reject invalid base types: '%s'", val => {
+            expect(() => factory(val as any)).toThrowError(InvalidBlockError);
+        });
+    }
+}

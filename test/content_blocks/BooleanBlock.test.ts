@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidBlockError} from "../../src/content_blocks/InvalidBlockError";
 import {BooleanBlock} from "../../src/content_blocks/BooleanBlock";
+import {testSharedContentBlockInputs} from "./BaseBlock.test";
 
 class TestBooleanBlock extends BooleanBlock {
     public constructor(raw: any) {
@@ -24,28 +24,10 @@ class TestBooleanBlock extends BooleanBlock {
 }
 
 describe("BooleanBlock", () => {
-    it("should retain the block name", () => {
-        const block = new TestBooleanBlock(false);
-        expect(block.name).toStrictEqual("TestBlock");
-    });
-
-    it.each([null, undefined])("should reject null and undefined: %s", val => {
-        expect(() => new TestBooleanBlock(val)).toThrow(
-            new InvalidBlockError(
-                "TestBlock",
-                "Block value must be defined. Use a null-capable parser instead of passing such a value.",
-            ),
-        );
-    });
+    testSharedContentBlockInputs("TestBlock", true, x => new TestBooleanBlock(x));
 
     it.each([true, false])("should accept booleans: '%s'", val => {
         const block = new TestBooleanBlock(val);
         expect(block.raw).toStrictEqual(val);
-    });
-
-    it.each([42, "test", "", {}, []])("should reject non-booleans: '%s'", val => {
-        expect(() => new TestBooleanBlock(val)).toThrow(
-            new InvalidBlockError("TestBlock", "should be a boolean value"),
-        );
     });
 });

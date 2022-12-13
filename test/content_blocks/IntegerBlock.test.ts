@@ -16,6 +16,7 @@ limitations under the License.
 
 import {IntegerBlock} from "../../src/content_blocks/IntegerBlock";
 import {InvalidBlockError} from "../../src/content_blocks/InvalidBlockError";
+import {testSharedContentBlockInputs} from "./BaseBlock.test";
 
 class TestIntegerBlock extends IntegerBlock {
     public constructor(raw: any) {
@@ -24,29 +25,11 @@ class TestIntegerBlock extends IntegerBlock {
 }
 
 describe("IntegerBlock", () => {
-    it("should retain the block name", () => {
-        const block = new TestIntegerBlock(42);
-        expect(block.name).toStrictEqual("TestBlock");
-    });
-
-    it.each([null, undefined])("should reject null and undefined: %s", val => {
-        expect(() => new TestIntegerBlock(val)).toThrow(
-            new InvalidBlockError(
-                "TestBlock",
-                "Block value must be defined. Use a null-capable parser instead of passing such a value.",
-            ),
-        );
-    });
+    testSharedContentBlockInputs("TestBlock", -1, x => new TestIntegerBlock(x));
 
     it("should accept integers", () => {
         const block = new TestIntegerBlock(42);
         expect(block.raw).toStrictEqual(42);
-    });
-
-    it.each(["42", Number.NaN, true, {}, []])("should reject non-numbers: '%s'", val => {
-        expect(() => new TestIntegerBlock(val)).toThrow(
-            new InvalidBlockError("TestBlock", "should be an integer value"),
-        );
     });
 
     it("should decline floats", () => {

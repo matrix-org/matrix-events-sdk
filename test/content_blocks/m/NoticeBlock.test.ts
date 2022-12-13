@@ -16,21 +16,10 @@ limitations under the License.
 
 import {InvalidBlockError} from "../../../src/content_blocks/InvalidBlockError";
 import {NoticeBlock} from "../../../src/content_blocks/m/NoticeBlock";
+import {testSharedContentBlockInputs} from "../BaseBlock.test";
 
 describe("NoticeBlock", () => {
-    it("should have a sensible block name", () => {
-        const block = new NoticeBlock({"m.markup": [{body: "test"}]});
-        expect(block.name).toStrictEqual("m.notice");
-    });
-
-    it.each([null, undefined])("should reject null and undefined: %s", val => {
-        expect(() => new NoticeBlock(val as any)).toThrow(
-            new InvalidBlockError(
-                "m.notice",
-                "Block value must be defined. Use a null-capable parser instead of passing such a value.",
-            ),
-        );
-    });
+    testSharedContentBlockInputs("m.notice", {"m.markup": [{body: "test"}]}, x => new NoticeBlock(x));
 
     it("should locate a stable markup block", () => {
         const block = new NoticeBlock({"m.markup": [{body: "test"}]});
@@ -57,12 +46,6 @@ describe("NoticeBlock", () => {
     it("should error if a markup block is not present", () => {
         expect(() => new NoticeBlock({no_block: true} as any)).toThrow(
             new InvalidBlockError("m.notice", "schema does not apply to m.markup or org.matrix.msc1767.markup"),
-        );
-    });
-
-    it.each([42, true, [], "test"])("should reject non-notices: '%s'", val => {
-        expect(() => new NoticeBlock(val as any)).toThrow(
-            new InvalidBlockError("m.notice", "should be an object value"),
         );
     });
 });
