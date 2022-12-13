@@ -18,6 +18,11 @@ import Ajv, {Schema, SchemaObject} from "ajv";
 import AjvErrors from "ajv-errors";
 import {NamespacedValue} from "./NamespacedValue";
 
+/**
+ * Container for the ajv instance.
+ * @internal
+ * @protected
+ */
 export class AjvContainer {
     public static readonly ajv = new Ajv({
         allErrors: true,
