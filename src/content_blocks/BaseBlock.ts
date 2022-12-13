@@ -14,14 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {ContentBlockWire} from "./types_wire";
+import {WireContentBlock} from "./types_wire";
 import {InvalidBlockError} from "./InvalidBlockError";
 
 /**
  * The simplest form of a content block in its parsed form.
  * @module Content Blocks
  */
-export abstract class BaseBlock<T extends ContentBlockWire.Value> {
+export abstract class BaseBlock<T extends WireContentBlock.Value> {
     private _raw: T | undefined = undefined;
 
     public get raw(): T {

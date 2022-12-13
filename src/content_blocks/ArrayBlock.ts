@@ -16,7 +16,7 @@ limitations under the License.
 
 import {InvalidBlockError} from "./InvalidBlockError";
 import {BaseBlock} from "./BaseBlock";
-import {ContentBlockWire} from "./types_wire";
+import {WireContentBlock} from "./types_wire";
 import {Schema} from "ajv";
 import {AjvContainer} from "../AjvContainer";
 
@@ -24,7 +24,7 @@ import {AjvContainer} from "../AjvContainer";
  * Represents an array-based content block.
  * @module Content Blocks
  */
-export abstract class ArrayBlock<TItem extends ContentBlockWire.Value> extends BaseBlock<TItem[]> {
+export abstract class ArrayBlock<TItem extends WireContentBlock.Value> extends BaseBlock<TItem[]> {
     public static readonly schema: Schema = {
         type: "array",
         errorMessage: "should be an array value",

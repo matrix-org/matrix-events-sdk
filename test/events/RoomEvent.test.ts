@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import {InvalidEventError, RoomEvent} from "../../src";
-import {EventWire} from "../../src/events/types_wire";
+import {WireEvent} from "../../src/events/types_wire";
 
 class TestEvent extends RoomEvent<any> {
     public constructor(raw: any) {
@@ -36,8 +36,8 @@ describe("RoomEvent", () => {
  */
 export function testSharedRoomEventInputs(
     eventName: string,
-    factory: (raw: EventWire.RoomEvent) => RoomEvent,
-    safeContentInput: EventWire.BlockBasedContent,
+    factory: (raw: WireEvent.RoomEvent) => RoomEvent,
+    safeContentInput: WireEvent.BlockBasedContent,
 ) {
     describe("internal", () => {
         it("should have valid inputs", () => {
@@ -77,7 +77,7 @@ export function testSharedRoomEventInputs(
     });
 
     it.each([undefined, "", "with content"])("should handle valid event structures with state key of '%s'", skey => {
-        const raw: EventWire.RoomEvent = {
+        const raw: WireEvent.RoomEvent = {
             room_id: "!test:example.org",
             event_id: "$event",
             type: "org.example.test_event",
@@ -99,7 +99,7 @@ export function testSharedRoomEventInputs(
     });
 
     it("should retain the event name", () => {
-        const raw: EventWire.RoomEvent = {
+        const raw: WireEvent.RoomEvent = {
             room_id: "!test:example.org",
             event_id: "$event",
             type: "org.example.test_event",
@@ -287,7 +287,7 @@ export function testSharedRoomEventInputs(
     });
 
     it.each([-1670894499800, -1, 0])("should return a zero timestamp for negative timestamps: '%s'", val => {
-        const raw: EventWire.RoomEvent = {
+        const raw: WireEvent.RoomEvent = {
             room_id: "!test:example.org",
             event_id: "$event",
             type: "org.example.test_event",

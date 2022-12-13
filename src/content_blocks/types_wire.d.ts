@@ -18,7 +18,7 @@ limitations under the License.
  * The wire types for content blocks.
  * @module Content Blocks
  */
-export module ContentBlockWire {
+export module WireContentBlock {
     /**
      * Possible value types for a content block.
      * @module Content Blocks

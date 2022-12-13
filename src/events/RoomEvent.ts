@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {EventWire} from "./types_wire";
+import {WireEvent} from "./types_wire";
 import {Schema} from "ajv";
 import {AjvContainer} from "../AjvContainer";
 import {InvalidEventError} from "./InvalidEventError";
@@ -24,7 +24,7 @@ import {InvalidEventError} from "./InvalidEventError";
  * consumption by a parser.
  * @module Events
  */
-export abstract class RoomEvent<Content extends EventWire.BlockBasedContent = EventWire.BlockSpecificContent<{}>> {
+export abstract class RoomEvent<Content extends WireEvent.BlockBasedContent = WireEvent.BlockSpecificContent<{}>> {
     public static readonly schema: Schema = {
         type: "object",
         properties: {
@@ -96,7 +96,7 @@ export abstract class RoomEvent<Content extends EventWire.BlockBasedContent = Ev
      * @param raw The raw event itself.
      * @protected
      */
-    protected constructor(public readonly name: string, public readonly raw: EventWire.RoomEvent<Content>) {
+    protected constructor(public readonly name: string, public readonly raw: WireEvent.RoomEvent<Content>) {
         if (raw === null || raw === undefined) {
             throw new InvalidEventError(
                 this.name,

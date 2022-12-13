@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {ContentBlockWire} from "../content_blocks/types_wire";
+import {WireContentBlock} from "../content_blocks/types_wire";
 
 /**
  * The wire types for Matrix events.
  * @module Events
  */
-export module EventWire {
+export module WireEvent {
     /**
      * A Matrix event. Also called a ClientEvent by the Matrix Specification.
      * @module Events
@@ -41,7 +41,7 @@ export module EventWire {
      * @module Events
      */
     type BlockBasedContent = {
-        [k: string]: ContentBlockWire.Value;
+        [k: string]: WireContentBlock.Value;
     };
 
     /**
