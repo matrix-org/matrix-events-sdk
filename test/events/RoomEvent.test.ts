@@ -34,10 +34,10 @@ describe("RoomEvent", () => {
  * @param safeContentInput The content to supply on an event during a non-throwing
  * test. This should be the minimum to construct the event, not ideal conditions.
  */
-export function testSharedRoomEventInputs(
+export function testSharedRoomEventInputs<W extends object = any, I extends WireEvent.BlockBasedContent = any>(
     eventName: string,
-    factory: (raw: WireEvent.RoomEvent) => RoomEvent,
-    safeContentInput: WireEvent.BlockBasedContent,
+    factory: (raw: WireEvent.RoomEvent<W>) => RoomEvent<I>,
+    safeContentInput: W,
 ) {
     describe("internal", () => {
         it("should have valid inputs", () => {
@@ -77,7 +77,7 @@ export function testSharedRoomEventInputs(
     });
 
     it.each([undefined, "", "with content"])("should handle valid event structures with state key of '%s'", skey => {
-        const raw: WireEvent.RoomEvent = {
+        const raw: WireEvent.RoomEvent<W> = {
             room_id: "!test:example.org",
             event_id: "$event",
             type: "org.example.test_event",
@@ -99,7 +99,7 @@ export function testSharedRoomEventInputs(
     });
 
     it("should retain the event name", () => {
-        const raw: WireEvent.RoomEvent = {
+        const raw: WireEvent.RoomEvent<W> = {
             room_id: "!test:example.org",
             event_id: "$event",
             type: "org.example.test_event",
@@ -287,7 +287,7 @@ export function testSharedRoomEventInputs(
     });
 
     it.each([-1670894499800, -1, 0])("should return a zero timestamp for negative timestamps: '%s'", val => {
-        const raw: WireEvent.RoomEvent = {
+        const raw: WireEvent.RoomEvent<W> = {
             room_id: "!test:example.org",
             event_id: "$event",
             type: "org.example.test_event",

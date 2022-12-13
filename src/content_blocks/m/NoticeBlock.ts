@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {MarkupBlock, MarkupRepresentation} from "./MarkupBlock";
+import {MarkupBlock, WireMarkupBlock} from "./MarkupBlock";
 import {ObjectBlock} from "../ObjectBlock";
 import {EitherAnd} from "../../types";
 import {Schema} from "ajv";
@@ -22,9 +22,16 @@ import {AjvContainer} from "../../AjvContainer";
 import {UnstableValue} from "../../NamespacedValue";
 import {InvalidBlockError} from "../InvalidBlockError";
 
-type Primary = {[MarkupBlock.type.name]: MarkupRepresentation[]};
-type Secondary = {[MarkupBlock.type.altName]: MarkupRepresentation[]};
-type Value = EitherAnd<Primary, Secondary>;
+/**
+ * Types for notice blocks over the wire.
+ * @module Matrix Content Blocks
+ * @see NoticeBlock
+ */
+export module WireNoticeBlock {
+    type Primary = {[MarkupBlock.type.name]: WireMarkupBlock.Representation[]};
+    type Secondary = {[MarkupBlock.type.altName]: WireMarkupBlock.Representation[]};
+    export type Value = EitherAnd<Primary, Secondary>;
+}
 
 /**
  * A "notice" block, or a block meant to represent that the surrounding event can
@@ -32,14 +39,14 @@ type Value = EitherAnd<Primary, Secondary>;
  * @module Matrix Content Blocks
  * @see MarkupBlock
  */
-export class NoticeBlock extends ObjectBlock<Value> {
+export class NoticeBlock extends ObjectBlock<WireNoticeBlock.Value> {
     public static readonly schema: Schema = AjvContainer.eitherAnd(MarkupBlock.type, MarkupBlock.schema);
 
     public static readonly validateFn = AjvContainer.ajv.compile(NoticeBlock.schema);
 
     public static readonly type = new UnstableValue("m.notice", "org.matrix.msc1767.notice");
 
-    public constructor(raw: Value) {
+    public constructor(raw: WireNoticeBlock.Value) {
         super(NoticeBlock.type.stable!, raw);
         if (!NoticeBlock.validateFn(raw)) {
             throw new InvalidBlockError(this.name, NoticeBlock.validateFn.errors);

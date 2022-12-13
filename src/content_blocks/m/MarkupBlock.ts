@@ -21,20 +21,27 @@ import {InvalidBlockError} from "../InvalidBlockError";
 import {UnstableValue} from "../../NamespacedValue";
 
 /**
- * A representation of text within a markup block.
+ * Types for markup blocks over the wire.
  * @module Matrix Content Blocks
+ * @see MarkupBlock
  */
-export type MarkupRepresentation = {
-    body: string;
-    mimetype?: string;
-};
+export module WireMarkupBlock {
+    /**
+     * A representation of text within a markup block.
+     * @module Matrix Content Blocks
+     */
+    export type Representation = {
+        body: string;
+        mimetype?: string;
+    };
+}
 
 /**
  * A "markup" block, or a block meant to communicate human-readable and human-rendered
  * text, with optional mimetype.
  * @module Matrix Content Blocks
  */
-export class MarkupBlock extends ArrayBlock<MarkupRepresentation> {
+export class MarkupBlock extends ArrayBlock<WireMarkupBlock.Representation> {
     public static readonly schema = ArrayBlock.schema;
     public static readonly validateFn = ArrayBlock.validateFn;
 
@@ -78,7 +85,7 @@ export class MarkupBlock extends ArrayBlock<MarkupRepresentation> {
      * block's `raw` type, thus not being considered for rendering.
      */
     public readonly representationErrors = new Map<
-        {index: number; representation: MarkupRepresentation | unknown},
+        {index: number; representation: WireMarkupBlock.Representation | unknown},
         InvalidBlockError
     >();
 
@@ -89,7 +96,7 @@ export class MarkupBlock extends ArrayBlock<MarkupRepresentation> {
      * Errors can be found from representationErrors after creating the object.
      * @param raw The block's value.
      */
-    public constructor(raw: MarkupRepresentation[]) {
+    public constructor(raw: WireMarkupBlock.Representation[]) {
         super(MarkupBlock.type.stable!, raw);
         this.raw = raw.filter((r, i) => {
             const bool = MarkupBlock.representationValidateFn(r);
@@ -123,7 +130,7 @@ export class MarkupBlock extends ArrayBlock<MarkupRepresentation> {
     /**
      * The ordered representations for this markup block.
      */
-    public get representations(): MarkupRepresentation[] {
+    public get representations(): WireMarkupBlock.Representation[] {
         return this.raw;
     }
 }

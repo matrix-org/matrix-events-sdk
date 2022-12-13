@@ -2,24 +2,10 @@
 
 // created from ctix
 
-export * from "./v1-old/interpreters/legacy/MRoomMessage";
-export * from "./v1-old/interpreters/modern/MMessage";
-export * from "./v1-old/interpreters/modern/MPoll";
 export * from "./content_blocks/m/EmoteBlock";
 export * from "./content_blocks/m/MarkupBlock";
 export * from "./content_blocks/m/NoticeBlock";
-export * from "./v1-old/events/EmoteEvent";
-export * from "./v1-old/events/ExtensibleEvent";
-export * from "./v1-old/events/message_types";
-export * from "./v1-old/events/MessageEvent";
-export * from "./v1-old/events/NoticeEvent";
-export * from "./v1-old/events/poll_types";
-export * from "./v1-old/events/PollEndEvent";
-export * from "./v1-old/events/PollResponseEvent";
-export * from "./v1-old/events/PollStartEvent";
-export * from "./v1-old/events/relationship_types";
-export * from "./v1-old/utility/events";
-export * from "./v1-old/utility/MessageMatchers";
+export * from "./events/m/MessageEvent";
 export * from "./content_blocks/ArrayBlock";
 export * from "./content_blocks/BaseBlock";
 export * from "./content_blocks/BooleanBlock";
@@ -29,9 +15,5 @@ export * from "./content_blocks/ObjectBlock";
 export * from "./content_blocks/StringBlock";
 export * from "./events/InvalidEventError";
 export * from "./events/RoomEvent";
-export * from "./v1-old/ExtensibleEvents";
-export * from "./v1-old/IPartialEvent";
-export * from "./v1-old/NamespacedMap";
-export * from "./v1-old/types";
 export * from "./NamespacedValue";
 export * from "./types";

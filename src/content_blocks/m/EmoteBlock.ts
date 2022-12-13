@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {MarkupBlock, MarkupRepresentation} from "./MarkupBlock";
+import {MarkupBlock, WireMarkupBlock} from "./MarkupBlock";
 import {ObjectBlock} from "../ObjectBlock";
 import {EitherAnd} from "../../types";
 import {Schema} from "ajv";
@@ -22,9 +22,16 @@ import {AjvContainer} from "../../AjvContainer";
 import {UnstableValue} from "../../NamespacedValue";
 import {InvalidBlockError} from "../InvalidBlockError";
 
-type Primary = {[MarkupBlock.type.name]: MarkupRepresentation[]};
-type Secondary = {[MarkupBlock.type.altName]: MarkupRepresentation[]};
-type Value = EitherAnd<Primary, Secondary>;
+/**
+ * Types for emote blocks over the wire.
+ * @module Matrix Content Blocks
+ * @see EmoteBlock
+ */
+export module WireEmoteBlock {
+    type Primary = {[MarkupBlock.type.name]: WireMarkupBlock.Representation[]};
+    type Secondary = {[MarkupBlock.type.altName]: WireMarkupBlock.Representation[]};
+    export type Value = EitherAnd<Primary, Secondary>;
+}
 
 /**
  * An "emote" block, or a block meant to represent that the surrounding event can
@@ -32,14 +39,14 @@ type Value = EitherAnd<Primary, Secondary>;
  * @module Matrix Content Blocks
  * @see MarkupBlock
  */
-export class EmoteBlock extends ObjectBlock<Value> {
+export class EmoteBlock extends ObjectBlock<WireEmoteBlock.Value> {
     public static readonly schema: Schema = AjvContainer.eitherAnd(MarkupBlock.type, MarkupBlock.schema);
 
     public static readonly validateFn = AjvContainer.ajv.compile(EmoteBlock.schema);
 
     public static readonly type = new UnstableValue("m.emote", "org.matrix.msc1767.emote");
 
-    public constructor(raw: Value) {
+    public constructor(raw: WireEmoteBlock.Value) {
         super(EmoteBlock.type.stable!, raw);
         if (!EmoteBlock.validateFn(raw)) {
             throw new InvalidBlockError(this.name, EmoteBlock.validateFn.errors);
