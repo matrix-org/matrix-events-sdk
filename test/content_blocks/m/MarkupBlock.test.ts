@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {MarkupBlock} from "../../../src/content_blocks/m/MarkupBlock";
+import {MarkupBlock} from "../../../src";
 import {testSharedContentBlockInputs} from "../BaseBlock.test";
 
 describe("MarkupBlock", () => {

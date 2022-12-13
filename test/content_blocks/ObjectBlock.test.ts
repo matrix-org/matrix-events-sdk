@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {ObjectBlock} from "../../src/content_blocks/ObjectBlock";
+import {ObjectBlock} from "../../src";
 import {testSharedContentBlockInputs} from "./BaseBlock.test";
 
 class TestObjectBlock extends ObjectBlock<any> {

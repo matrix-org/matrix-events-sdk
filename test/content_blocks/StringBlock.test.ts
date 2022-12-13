@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {StringBlock} from "../../src/content_blocks/StringBlock";
+import {StringBlock} from "../../src";
 import {testSharedContentBlockInputs} from "./BaseBlock.test";
 
 class TestStringBlock extends StringBlock {

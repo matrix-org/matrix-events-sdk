@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {ArrayBlock} from "../../src/content_blocks/ArrayBlock";
+import {ArrayBlock} from "../../src";
 import {testSharedContentBlockInputs} from "./BaseBlock.test";
 
 class TestArrayBlock extends ArrayBlock<any> {

@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {IntegerBlock} from "../../src/content_blocks/IntegerBlock";
-import {InvalidBlockError} from "../../src/content_blocks/InvalidBlockError";
+import {IntegerBlock, InvalidBlockError} from "../../src";
 import {testSharedContentBlockInputs} from "./BaseBlock.test";
 
 class TestIntegerBlock extends IntegerBlock {

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {BooleanBlock} from "../../src/content_blocks/BooleanBlock";
+import {BooleanBlock} from "../../src";
 import {testSharedContentBlockInputs} from "./BaseBlock.test";
 
 class TestBooleanBlock extends BooleanBlock {

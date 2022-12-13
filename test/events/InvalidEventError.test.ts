@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidEventError} from "../../src/events/InvalidEventError";
+import {InvalidEventError} from "../../src";
 
 describe("InvalidEventError", () => {
     it("should use the block name in the error", () => {

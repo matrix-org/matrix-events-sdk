@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidBlockError} from "../../src/content_blocks/InvalidBlockError";
-import {BaseBlock} from "../../src/content_blocks/BaseBlock";
+import {BaseBlock, InvalidBlockError} from "../../src";
 
 class TestBaseBlock extends BaseBlock<any> {
     public constructor(raw: any) {

@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidBlockError} from "../../../src/content_blocks/InvalidBlockError";
-import {NoticeBlock} from "../../../src/content_blocks/m/NoticeBlock";
+import {InvalidBlockError, NoticeBlock} from "../../../src";
 import {testSharedContentBlockInputs} from "../BaseBlock.test";
 
 describe("NoticeBlock", () => {

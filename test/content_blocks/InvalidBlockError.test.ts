@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidBlockError} from "../../src/content_blocks/InvalidBlockError";
+import {InvalidBlockError} from "../../src";
 
 describe("InvalidBlockError", () => {
     it("should use the block name in the error", () => {
