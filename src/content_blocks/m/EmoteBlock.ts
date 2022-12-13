@@ -21,6 +21,7 @@ import {Schema} from "ajv";
 import {AjvContainer} from "../../AjvContainer";
 import {UnstableValue} from "../../NamespacedValue";
 import {InvalidBlockError} from "../InvalidBlockError";
+import {LazyValue} from "../../LazyValue";
 
 /**
  * Types for emote blocks over the wire.
@@ -46,6 +47,8 @@ export class EmoteBlock extends ObjectBlock<WireEmoteBlock.Value> {
 
     public static readonly type = new UnstableValue("m.emote", "org.matrix.msc1767.emote");
 
+    private lazyMarkup = new LazyValue(() => new MarkupBlock(MarkupBlock.type.findIn(this.raw)!));
+
     public constructor(raw: WireEmoteBlock.Value) {
         super(EmoteBlock.type.stable!, raw);
         if (!EmoteBlock.validateFn(raw)) {
@@ -54,6 +57,6 @@ export class EmoteBlock extends ObjectBlock<WireEmoteBlock.Value> {
     }
 
     public get markup(): MarkupBlock {
-        return new MarkupBlock(MarkupBlock.type.findIn(this.raw)!);
+        return this.lazyMarkup.value;
     }
 }

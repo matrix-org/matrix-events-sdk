@@ -19,6 +19,7 @@ import {Schema} from "ajv";
 import {AjvContainer} from "../../AjvContainer";
 import {InvalidBlockError} from "../InvalidBlockError";
 import {UnstableValue} from "../../NamespacedValue";
+import {LazyValue} from "../../LazyValue";
 
 /**
  * Types for markup blocks over the wire.
@@ -89,6 +90,11 @@ export class MarkupBlock extends ArrayBlock<WireMarkupBlock.Representation> {
         InvalidBlockError
     >();
 
+    private lazyText = new LazyValue(
+        () => this.raw.find(m => m.mimetype === undefined || m.mimetype === "text/plain")?.body,
+    );
+    private lazyHtml = new LazyValue(() => this.raw.find(m => m.mimetype === "text/html")?.body);
+
     /**
      * Creates a new MarkupBlock
      *
@@ -117,20 +123,20 @@ export class MarkupBlock extends ArrayBlock<WireMarkupBlock.Representation> {
      * The text representation of the block, if one is present.
      */
     public get text(): string | undefined {
-        return this.raw.find(m => m.mimetype === undefined || m.mimetype === "text/plain")?.body;
+        return this.lazyText.value;
     }
 
     /**
      * The HTML representation of the block, if one is present.
      */
     public get html(): string | undefined {
-        return this.raw.find(m => m.mimetype === "text/html")?.body;
+        return this.lazyHtml.value;
     }
 
     /**
      * The ordered representations for this markup block.
      */
     public get representations(): WireMarkupBlock.Representation[] {
-        return this.raw;
+        return [...this.raw]; // clone to prevent mutation
     }
 }

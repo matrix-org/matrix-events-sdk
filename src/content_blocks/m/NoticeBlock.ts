@@ -21,6 +21,7 @@ import {Schema} from "ajv";
 import {AjvContainer} from "../../AjvContainer";
 import {UnstableValue} from "../../NamespacedValue";
 import {InvalidBlockError} from "../InvalidBlockError";
+import {LazyValue} from "../../LazyValue";
 
 /**
  * Types for notice blocks over the wire.
@@ -46,6 +47,8 @@ export class NoticeBlock extends ObjectBlock<WireNoticeBlock.Value> {
 
     public static readonly type = new UnstableValue("m.notice", "org.matrix.msc1767.notice");
 
+    private lazyMarkup = new LazyValue(() => new MarkupBlock(MarkupBlock.type.findIn(this.raw)!));
+
     public constructor(raw: WireNoticeBlock.Value) {
         super(NoticeBlock.type.stable!, raw);
         if (!NoticeBlock.validateFn(raw)) {
@@ -54,6 +57,6 @@ export class NoticeBlock extends ObjectBlock<WireNoticeBlock.Value> {
     }
 
     public get markup(): MarkupBlock {
-        return new MarkupBlock(MarkupBlock.type.findIn(this.raw)!);
+        return this.lazyMarkup.value;
     }
 }

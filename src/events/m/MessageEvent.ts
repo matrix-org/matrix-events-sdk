@@ -22,6 +22,7 @@ import {AjvContainer} from "../../AjvContainer";
 import {UnstableValue} from "../../NamespacedValue";
 import {WireEvent} from "../types_wire";
 import {InvalidEventError} from "../InvalidEventError";
+import {LazyValue} from "../../LazyValue";
 
 /**
  * Types for message events over the wire.
@@ -45,6 +46,8 @@ export class MessageEvent extends RoomEvent<WireMessageEvent.ContentValue> {
 
     public static readonly type = new UnstableValue("m.message", "org.matrix.msc1767.message");
 
+    private lazyMarkup = new LazyValue(() => new MarkupBlock(MarkupBlock.type.findIn(this.content)!));
+
     public constructor(raw: WireEvent.RoomEvent<WireMessageEvent.ContentValue>) {
         super(MessageEvent.type.stable!, raw);
         if (!MessageEvent.contentValidateFn(this.content)) {
@@ -56,7 +59,7 @@ export class MessageEvent extends RoomEvent<WireMessageEvent.ContentValue> {
      * The markup block for the event.
      */
     public get markup(): MarkupBlock {
-        return new MarkupBlock(MarkupBlock.type.findIn(this.content)!);
+        return this.lazyMarkup.value;
     }
 
     /**

@@ -15,5 +15,6 @@ export * from "./content_blocks/ObjectBlock";
 export * from "./content_blocks/StringBlock";
 export * from "./events/InvalidEventError";
 export * from "./events/RoomEvent";
+export * from "./LazyValue";
 export * from "./NamespacedValue";
 export * from "./types";
