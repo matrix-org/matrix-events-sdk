@@ -19,7 +19,7 @@ import {ExtensibleEvent} from "./events/ExtensibleEvent";
 import {Optional} from "../types";
 import {NamespacedValue} from "../NamespacedValue";
 import {NamespacedMap} from "./NamespacedMap";
-import {InvalidEventError} from "./InvalidEventError";
+import {InvalidEventError} from "../events/InvalidEventError";
 import {LEGACY_M_ROOM_MESSAGE, parseMRoomMessage} from "./interpreters/legacy/MRoomMessage";
 import {parseMMessage} from "./interpreters/modern/MMessage";
 import {M_EMOTE, M_MESSAGE, M_NOTICE} from "./events/message_types";

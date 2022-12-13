@@ -17,7 +17,7 @@ limitations under the License.
 import {ExtensibleEvent} from "./ExtensibleEvent";
 import {M_POLL_RESPONSE, M_POLL_RESPONSE_EVENT_CONTENT, M_POLL_RESPONSE_SUBTYPE} from "./poll_types";
 import {IPartialEvent} from "../IPartialEvent";
-import {InvalidEventError} from "../InvalidEventError";
+import {InvalidEventError} from "../../events/InvalidEventError";
 import {PollStartEvent} from "./PollStartEvent";
 import {REFERENCE_RELATION} from "./relationship_types";
 import {EventType, isEventTypeSame} from "../utility/events";
@@ -63,7 +63,7 @@ export class PollResponseEvent extends ExtensibleEvent<M_POLL_RESPONSE_EVENT_CON
         const rel = this.wireContent["m.relates_to"];
         // noinspection SuspiciousTypeOfGuard
         if (!REFERENCE_RELATION.matches(rel?.rel_type) || typeof rel.event_id !== "string") {
-            throw new InvalidEventError("Relationship must be a reference to an event");
+            throw new InvalidEventError("PollResponseEventLegacy", "Relationship must be a reference to an event");
         }
 
         this.pollEventId = rel.event_id;

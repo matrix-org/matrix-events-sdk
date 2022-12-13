@@ -26,7 +26,7 @@ import {
 import {IPartialEvent} from "../IPartialEvent";
 import {MessageEvent} from "./MessageEvent";
 import {M_TEXT} from "./message_types";
-import {InvalidEventError} from "../InvalidEventError";
+import {InvalidEventError} from "../../events/InvalidEventError";
 import {NamespacedValue} from "../../NamespacedValue";
 import {EventType, isEventTypeSame} from "../utility/events";
 import {ExtensibleEvent} from "./ExtensibleEvent";
@@ -48,7 +48,7 @@ export class PollAnswerSubevent extends MessageEvent {
 
         const id = wireFormat.content.id;
         if (!id || typeof id !== "string") {
-            throw new InvalidEventError("Answer ID must be a non-empty string");
+            throw new InvalidEventError("PollStartEventLegacy", "Answer ID must be a non-empty string");
         }
         this.id = id;
     }
@@ -124,7 +124,7 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
         const poll = M_POLL_START.findIn<M_POLL_START_SUBTYPE>(this.wireContent);
 
         if (!poll?.question) {
-            throw new InvalidEventError("A question is required");
+            throw new InvalidEventError("PollStartEventLegacy", "A question is required");
         }
 
         this.question = new MessageEvent({type: "org.matrix.sdk.poll.question", content: poll.question});
@@ -139,7 +139,7 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
         this.maxSelections = isNumberFinite(poll.max_selections) && poll.max_selections > 0 ? poll.max_selections : 1;
 
         if (!Array.isArray(poll.answers)) {
-            throw new InvalidEventError("Poll answers must be an array");
+            throw new InvalidEventError("PollStartEventLegacy", "Poll answers must be an array");
         }
         const answers = poll.answers.slice(0, 20).map(
             a =>
@@ -149,7 +149,7 @@ export class PollStartEvent extends ExtensibleEvent<M_POLL_START_EVENT_CONTENT> 
                 }),
         );
         if (answers.length <= 0) {
-            throw new InvalidEventError("No answers available");
+            throw new InvalidEventError("PollStartEventLegacy", "No answers available");
         }
         this.answers = answers;
     }

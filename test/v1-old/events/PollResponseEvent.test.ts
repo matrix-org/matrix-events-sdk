@@ -74,7 +74,7 @@ describe("PollResponseEvent", () => {
             } as any, // force invalid type
         };
         expect(() => new PollResponseEvent(input)).toThrow(
-            new InvalidEventError("Relationship must be a reference to an event"),
+            new InvalidEventError("PollResponseEventLegacy", "Relationship must be a reference to an event"),
         );
     });
 
@@ -91,7 +91,7 @@ describe("PollResponseEvent", () => {
             } as any, // force invalid type
         };
         expect(() => new PollResponseEvent(input)).toThrow(
-            new InvalidEventError("Relationship must be a reference to an event"),
+            new InvalidEventError("PollResponseEventLegacy", "Relationship must be a reference to an event"),
         );
     });
 
@@ -109,7 +109,7 @@ describe("PollResponseEvent", () => {
             } as any, // force invalid type
         };
         expect(() => new PollResponseEvent(input)).toThrow(
-            new InvalidEventError("Relationship must be a reference to an event"),
+            new InvalidEventError("PollResponseEventLegacy", "Relationship must be a reference to an event"),
         );
     });
 

@@ -322,7 +322,7 @@ describe("ExtensibleEvents", () => {
 
     describe("parse errors", () => {
         function myForcedInvalidInterpreter(wireEvent: IPartialEvent<any>): ExtensibleEvent {
-            throw new InvalidEventError("deliberate throw of invalid type");
+            throw new InvalidEventError("InvalidEventTest", "deliberate throw of invalid type");
         }
 
         function myExplodingInterpreter(wireEvent: IPartialEvent<any>): ExtensibleEvent {

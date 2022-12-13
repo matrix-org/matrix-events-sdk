@@ -52,7 +52,7 @@ describe("PollAnswerSubevent", () => {
             } as any, // force invalid type
         };
         expect(() => new PollAnswerSubevent(input)).toThrow(
-            new InvalidEventError("Answer ID must be a non-empty string"),
+            new InvalidEventError("PollStartEventLegacy", "Answer ID must be a non-empty string"),
         );
     });
 
@@ -122,7 +122,9 @@ describe("PollStartEvent", () => {
                 [M_TEXT.name]: "FALLBACK Question here",
             } as any, // force invalid type
         };
-        expect(() => new PollStartEvent(input)).toThrow(new InvalidEventError("A question is required"));
+        expect(() => new PollStartEvent(input)).toThrow(
+            new InvalidEventError("PollStartEventLegacy", "A question is required"),
+        );
     });
 
     it("should fail to parse a missing question", () => {
@@ -141,7 +143,9 @@ describe("PollStartEvent", () => {
                 },
             } as any, // force invalid type
         };
-        expect(() => new PollStartEvent(input)).toThrow(new InvalidEventError("A question is required"));
+        expect(() => new PollStartEvent(input)).toThrow(
+            new InvalidEventError("PollStartEventLegacy", "A question is required"),
+        );
     });
 
     it("should fail to parse non-array answers", () => {
@@ -157,7 +161,9 @@ describe("PollStartEvent", () => {
                 } as any, // force invalid type
             },
         };
-        expect(() => new PollStartEvent(input)).toThrow(new InvalidEventError("Poll answers must be an array"));
+        expect(() => new PollStartEvent(input)).toThrow(
+            new InvalidEventError("PollStartEventLegacy", "Poll answers must be an array"),
+        );
     });
 
     it("should fail to parse invalid answers", () => {
@@ -189,7 +195,9 @@ describe("PollStartEvent", () => {
                 } as any, // force invalid type
             },
         };
-        expect(() => new PollStartEvent(input)).toThrow(new InvalidEventError("No answers available"));
+        expect(() => new PollStartEvent(input)).toThrow(
+            new InvalidEventError("PollStartEventLegacy", "No answers available"),
+        );
     });
 
     it("should truncate answers at 20", () => {

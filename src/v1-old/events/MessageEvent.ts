@@ -17,7 +17,7 @@ limitations under the License.
 import {ExtensibleEvent} from "./ExtensibleEvent";
 import {IPartialEvent} from "../IPartialEvent";
 import {isOptionalAString, isProvided} from "../types";
-import {InvalidEventError} from "../InvalidEventError";
+import {InvalidEventError} from "../../events/InvalidEventError";
 import {
     IMessageRendering,
     M_EMOTE,
@@ -70,12 +70,13 @@ export class MessageEvent extends ExtensibleEvent<M_MESSAGE_EVENT_CONTENT> {
         const mhtml = M_HTML.findIn<string>(this.wireContent);
         if (isProvided(mmessage)) {
             if (!Array.isArray(mmessage)) {
-                throw new InvalidEventError("m.message contents must be an array");
+                throw new InvalidEventError("MessageEventLegacy", "m.message contents must be an array");
             }
             const text = mmessage.find(r => !isProvided(r.mimetype) || r.mimetype === "text/plain");
             const html = mmessage.find(r => r.mimetype === "text/html");
 
-            if (!text) throw new InvalidEventError("m.message is missing a plain text representation");
+            if (!text)
+                throw new InvalidEventError("MessageEventLegacy", "m.message is missing a plain text representation");
 
             this.text = text.body;
             this.html = html?.body;
@@ -88,7 +89,7 @@ export class MessageEvent extends ExtensibleEvent<M_MESSAGE_EVENT_CONTENT> {
                 this.renderings.push({body: this.html, mimetype: "text/html"});
             }
         } else {
-            throw new InvalidEventError("Missing textual representation for event");
+            throw new InvalidEventError("MessageEventLegacy", "Missing textual representation for event");
         }
     }
 

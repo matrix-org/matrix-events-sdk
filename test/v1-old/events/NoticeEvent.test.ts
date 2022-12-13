@@ -90,7 +90,9 @@ describe("NoticeEvent", () => {
                 hello: "world",
             } as any, // force invalid type
         };
-        expect(() => new NoticeEvent(input)).toThrow(new InvalidEventError("Missing textual representation for event"));
+        expect(() => new NoticeEvent(input)).toThrow(
+            new InvalidEventError("MessageEventLegacy", "Missing textual representation for event"),
+        );
     });
 
     it("should fail to parse missing plain text in m.message", () => {
@@ -101,7 +103,7 @@ describe("NoticeEvent", () => {
             },
         };
         expect(() => new NoticeEvent(input)).toThrow(
-            new InvalidEventError("m.message is missing a plain text representation"),
+            new InvalidEventError("MessageEventLegacy", "m.message is missing a plain text representation"),
         );
     });
 
@@ -112,7 +114,9 @@ describe("NoticeEvent", () => {
                 [M_MESSAGE.name]: "invalid",
             } as any, // force invalid type
         };
-        expect(() => new NoticeEvent(input)).toThrow(new InvalidEventError("m.message contents must be an array"));
+        expect(() => new NoticeEvent(input)).toThrow(
+            new InvalidEventError("MessageEventLegacy", "m.message contents must be an array"),
+        );
     });
 
     describe("isEmote", () => {

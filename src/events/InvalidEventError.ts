@@ -14,11 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import {ErrorObject} from "ajv";
+
 /**
  * Thrown when an event is unforgivably unparsable.
+ * @module Events
  */
 export class InvalidEventError extends Error {
-    public constructor(message: string) {
-        super(message);
+    public constructor(eventName: string, message: string | ErrorObject[] | null | undefined) {
+        super(
+            `${eventName}: ${
+                typeof message === "string"
+                    ? message
+                    : message?.map(m => (m.message ? m.message : JSON.stringify(m))).join(", ") ?? "Validation failed"
+            }`,
+        );
     }
 }
