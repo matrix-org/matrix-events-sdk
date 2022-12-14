@@ -299,4 +299,21 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
         expect(ev).toBeDefined();
         expect(ev.timestamp).toStrictEqual(0);
     });
+
+    it("should support events with more information than requested", () => {
+        const raw: WireEvent.RoomEvent<W> = {
+            room_id: "!test:example.org",
+            event_id: "$event",
+            type: "org.example.test_event",
+            sender: "@user:example.org",
+            content: {
+                ...safeContentInput,
+                "org.matrix.sdk.events.test_value": 42,
+            },
+            origin_server_ts: 1670894499800,
+        };
+        const ev = factory(raw);
+        expect(ev).toBeDefined();
+        expect(ev.raw).toStrictEqual(raw);
+    });
 }
