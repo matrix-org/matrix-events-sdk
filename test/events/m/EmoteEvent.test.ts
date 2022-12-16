@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidEventError, EmoteEvent} from "../../../src";
+import {EmoteEvent, InvalidEventError, WireEvent} from "../../../src";
 import {testSharedRoomEventInputs} from "../RoomEvent.test";
-import {WireEvent} from "../../../src/events/types_wire";
 
 describe("EmoteEvent", () => {
     testSharedRoomEventInputs("m.emote", x => new EmoteEvent(x), {"m.markup": [{body: "test"}]});

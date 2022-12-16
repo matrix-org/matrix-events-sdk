@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidEventError, MessageEvent} from "../../../src";
+import {InvalidEventError, MessageEvent, WireEvent} from "../../../src";
 import {testSharedRoomEventInputs} from "../RoomEvent.test";
-import {WireEvent} from "../../../src/events/types_wire";
 
 describe("MessageEvent", () => {
     testSharedRoomEventInputs("m.message", x => new MessageEvent(x), {"m.markup": [{body: "test"}]});

@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {InvalidEventError, RoomEvent} from "../../src";
-import {WireEvent} from "../../src/events/types_wire";
+import {InvalidEventError, RoomEvent, WireEvent} from "../../src";
 
 class TestEvent extends RoomEvent<any> {
     public constructor(raw: any) {

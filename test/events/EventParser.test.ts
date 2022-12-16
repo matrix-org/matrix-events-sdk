@@ -29,10 +29,10 @@ import {
     RoomEvent,
     UnstableValue,
     WireEmoteBlock,
+    WireEvent,
     WireMessageEvent,
     WireNoticeBlock,
 } from "../../src";
-import {WireEvent} from "../../src/events/types_wire";
 
 type TestCustomEventContent = {
     "org.example.custom": {

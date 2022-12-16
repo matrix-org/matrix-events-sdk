@@ -23,5 +23,5 @@ export module WireContentBlock {
      * Possible value types for a content block.
      * @module Content Blocks
      */
-    type Value = string | boolean | number | object | Value[];
+    export type Value = string | boolean | number | object | Value[];
 }

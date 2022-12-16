@@ -25,7 +25,7 @@ export module WireEvent {
      * A Matrix event. Also called a ClientEvent by the Matrix Specification.
      * @module Events
      */
-    interface RoomEvent<Content extends object = object> {
+    export interface RoomEvent<Content extends object = object> {
         room_id: string;
         event_id: string;
         type: string;
@@ -40,7 +40,7 @@ export module WireEvent {
      * A simple `content` schema for content block-supporting events.
      * @module Events
      */
-    type BlockBasedContent = {
+    export type BlockBasedContent = {
         [k: string]: WireContentBlock.Value;
     };
 
@@ -49,5 +49,5 @@ export module WireEvent {
      * type system level.
      * @module Events
      */
-    type BlockSpecificContent<Blocks extends BlockBasedContent> = Blocks & {[k: string]: never};
+    export type BlockSpecificContent<Blocks extends BlockBasedContent> = Blocks & {[k: string]: never};
 }
