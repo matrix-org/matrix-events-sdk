@@ -70,7 +70,7 @@ export class MessageEvent extends RoomEvent<WireMessageEvent.ContentValue> {
     }
 
     public constructor(raw: WireEvent.RoomEvent<WireMessageEvent.ContentValue>) {
-        super(MessageEvent.type.stable!, raw);
+        super(MessageEvent.type.stable!, raw, false);
         if (!MessageEvent.contentValidateFn(this.content)) {
             throw new InvalidEventError(this.name, MessageEvent.contentValidateFn.errors);
         }

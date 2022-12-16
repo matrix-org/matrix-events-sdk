@@ -18,7 +18,7 @@ import {InvalidEventError, MessageEvent, WireEvent} from "../../../src";
 import {testSharedRoomEventInputs} from "../RoomEvent.test";
 
 describe("MessageEvent", () => {
-    testSharedRoomEventInputs("m.message", x => new MessageEvent(x), {"m.markup": [{body: "test"}]});
+    testSharedRoomEventInputs("m.message", undefined, x => new MessageEvent(x), {"m.markup": [{body: "test"}]});
 
     const templateEvent: WireEvent.RoomEvent = {
         room_id: "!test:example.org",

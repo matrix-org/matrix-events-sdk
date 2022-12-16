@@ -71,7 +71,7 @@ export class NoticeEvent extends RoomEvent<WireNoticeEvent.ContentValue> {
     }
 
     public constructor(raw: WireEvent.RoomEvent<WireMessageEvent.ContentValue>) {
-        super(NoticeEvent.type.stable!, raw);
+        super(NoticeEvent.type.stable!, raw, false);
         if (!NoticeEvent.contentValidateFn(this.content)) {
             throw new InvalidEventError(this.name, NoticeEvent.contentValidateFn.errors);
         }

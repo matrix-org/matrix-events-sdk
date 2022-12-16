@@ -17,27 +17,34 @@ limitations under the License.
 import {InvalidEventError, RoomEvent, WireEvent} from "../../src";
 
 class TestEvent extends RoomEvent<any> {
-    public constructor(raw: any) {
-        super("TestEvent", raw); // lie to TS
+    public constructor(raw: any, isState: boolean) {
+        super("TestEvent", raw, isState); // lie to TS
     }
 }
 
 describe("RoomEvent", () => {
-    testSharedRoomEventInputs("TestEvent", x => new TestEvent(x), {hello: "world"});
+    testSharedRoomEventInputs("TestEvent", undefined, x => new TestEvent(x, false), {hello: "world"});
+    testSharedRoomEventInputs("TestEvent", "non-empty", x => new TestEvent(x, true), {hello: "world"});
+    testSharedRoomEventInputs("TestEvent", "", x => new TestEvent(x, true), {hello: "world"});
 });
 
 /**
  * Runs all the validation tests which can be shared across all event type classes.
  * @param eventName The event name, for error matching.
+ * @param safeStateKey Undefined to denote the event cannot be a state event, a
+ * string otherwise.
  * @param factory The factory to create a RoomEvent.
  * @param safeContentInput The content to supply on an event during a non-throwing
  * test. This should be the minimum to construct the event, not ideal conditions.
  */
 export function testSharedRoomEventInputs<W extends object = any, I extends WireEvent.BlockBasedContent = any>(
     eventName: string,
+    safeStateKey: undefined | string,
     factory: (raw: WireEvent.RoomEvent<W>) => RoomEvent<I>,
     safeContentInput: W,
 ) {
+    testStateEventCharacteristics(eventName, safeStateKey, factory, safeContentInput);
+
     describe("internal", () => {
         it("should have valid inputs", () => {
             expect(eventName).toBeDefined();
@@ -59,6 +66,7 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
                 sender: "@user:example.org",
                 content: safeContentInput,
                 origin_server_ts: 1670894499800,
+                state_key: safeStateKey,
             });
             expect(ev).toBeDefined();
             // noinspection SuspiciousTypeOfGuard
@@ -75,28 +83,6 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
         );
     });
 
-    it.each([undefined, "", "with content"])("should handle valid event structures with state key of '%s'", skey => {
-        const raw: WireEvent.RoomEvent<W> = {
-            room_id: "!test:example.org",
-            event_id: "$event",
-            type: "org.example.test_event",
-            state_key: skey,
-            sender: "@user:example.org",
-            content: safeContentInput,
-            origin_server_ts: 1670894499800,
-        };
-        const ev = factory(raw);
-        expect(ev).toBeDefined();
-        expect(ev.raw).toStrictEqual(raw);
-        expect(ev.roomId).toStrictEqual(raw.room_id);
-        expect(ev.eventId).toStrictEqual(raw.event_id);
-        expect(ev.type).toStrictEqual(raw.type);
-        expect(ev.stateKey).toStrictEqual(raw.state_key);
-        expect(ev.sender).toStrictEqual(raw.sender);
-        expect(ev.timestamp).toStrictEqual(raw.origin_server_ts);
-        expect(ev.content).toStrictEqual(raw.content);
-    });
-
     it("should retain the event name", () => {
         const raw: WireEvent.RoomEvent<W> = {
             room_id: "!test:example.org",
@@ -105,6 +91,7 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
             sender: "@user:example.org",
             content: safeContentInput,
             origin_server_ts: 1670894499800,
+            state_key: safeStateKey,
         };
         const ev = factory(raw);
         expect(ev.name).toStrictEqual(eventName);
@@ -137,6 +124,7 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
                 sender: "@user:example.org",
                 content: safeContentInput,
                 origin_server_ts: 1670894499800,
+                state_key: safeStateKey,
             }),
         ).toThrow(
             new InvalidEventError(
@@ -169,6 +157,7 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
                 sender: "@user:example.org",
                 content: safeContentInput,
                 origin_server_ts: 1670894499800,
+                state_key: safeStateKey,
             }),
         ).toThrow(
             new InvalidEventError(eventName, "The event ID should be a string prefixed with `$`, and is required"),
@@ -184,6 +173,7 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
                 sender: "@user:example.org",
                 content: safeContentInput,
                 origin_server_ts: 1670894499800,
+                state_key: safeStateKey,
             }),
         ).toThrow(
             new InvalidEventError(
@@ -234,6 +224,7 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
                 sender: val as any,
                 content: safeContentInput,
                 origin_server_ts: 1670894499800,
+                state_key: safeStateKey,
             }),
         ).toThrow(
             new InvalidEventError(
@@ -252,6 +243,7 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
                 sender: "@user:example.org",
                 content: safeContentInput,
                 origin_server_ts: val as any,
+                state_key: safeStateKey,
             }),
         ).toThrow(new InvalidEventError(eventName, "The event timestamp should be a number, and is required"));
     });
@@ -266,6 +258,7 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
                 content: safeContentInput,
                 origin_server_ts: 1670894499800,
                 unsigned: val as any,
+                state_key: safeStateKey,
             }),
         ).toThrow(new InvalidEventError(eventName, "The event's unsigned content should be a defined object"));
     });
@@ -279,6 +272,7 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
                 sender: "@user:example.org",
                 content: val as any,
                 origin_server_ts: 1670894499800,
+                state_key: safeStateKey,
             }),
         ).toThrow(
             new InvalidEventError(eventName, "The event content should at least be a defined object, and is required"),
@@ -293,6 +287,7 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
             sender: "@user:example.org",
             content: safeContentInput,
             origin_server_ts: val,
+            state_key: safeStateKey,
         };
         const ev = factory(raw);
         expect(ev).toBeDefined();
@@ -310,9 +305,93 @@ export function testSharedRoomEventInputs<W extends object = any, I extends Wire
                 "org.matrix.sdk.events.test_value": 42,
             },
             origin_server_ts: 1670894499800,
+            state_key: safeStateKey,
         };
         const ev = factory(raw);
         expect(ev).toBeDefined();
         expect(ev.raw).toStrictEqual(raw);
     });
+}
+
+function testStateEventCharacteristics<W extends object = any, I extends WireEvent.BlockBasedContent = any>(
+    eventName: string,
+    safeStateKey: undefined | string,
+    factory: (raw: WireEvent.RoomEvent<W>) => RoomEvent<I>,
+    safeContentInput: W,
+) {
+    describe("internal", () => {
+        it("should have valid inputs", () => {
+            expect(eventName).toBeDefined();
+            expect(typeof eventName).toStrictEqual("string");
+            expect(eventName.length).toBeGreaterThan(0);
+
+            expect(factory).toBeDefined();
+            expect(typeof factory).toStrictEqual("function");
+        });
+
+        // Note: unlike other repeatable tests, we don't validate that the factory actually works
+        // because we expect it to end up throwing for the values we give it.
+    });
+
+    it.each(safeStateKey !== undefined ? [safeStateKey] : [undefined])(
+        "should handle valid event structures with state key of '%s'",
+        skey => {
+            const raw: WireEvent.RoomEvent<W> = {
+                room_id: "!test:example.org",
+                event_id: "$event",
+                type: "org.example.test_event",
+                state_key: skey,
+                sender: "@user:example.org",
+                content: safeContentInput,
+                origin_server_ts: 1670894499800,
+            };
+            const ev = factory(raw);
+            expect(ev).toBeDefined();
+            expect(ev.raw).toStrictEqual(raw);
+            expect(ev.roomId).toStrictEqual(raw.room_id);
+            expect(ev.eventId).toStrictEqual(raw.event_id);
+            expect(ev.type).toStrictEqual(raw.type);
+            expect(ev.stateKey).toStrictEqual(raw.state_key);
+            expect(ev.sender).toStrictEqual(raw.sender);
+            expect(ev.timestamp).toStrictEqual(raw.origin_server_ts);
+            expect(ev.content).toStrictEqual(raw.content);
+        },
+    );
+
+    if (safeStateKey !== undefined) {
+        it("should reject events without a state key", () => {
+            const ev: WireEvent.RoomEvent<any> = {
+                room_id: "!test:example.org",
+                event_id: "$event",
+                type: "org.example.not_used",
+                sender: "@user:example.org",
+                content: {},
+                origin_server_ts: 1670894499800,
+            };
+            expect(() => factory(ev)).toThrow(
+                new InvalidEventError(
+                    eventName,
+                    "This event is only allowed to be a state event and must be converted accordingly.",
+                ),
+            );
+        });
+    } else {
+        it.each(["", "not_empty"])("should reject state events with state key: '%s'", val => {
+            const ev: WireEvent.RoomEvent<any> = {
+                room_id: "!test:example.org",
+                event_id: "$event",
+                type: "org.example.not_used",
+                state_key: val,
+                sender: "@user:example.org",
+                content: {},
+                origin_server_ts: 1670894499800,
+            };
+            expect(() => factory(ev)).toThrow(
+                new InvalidEventError(
+                    eventName,
+                    "This event is not allowed to be a state event and must be converted accordingly.",
+                ),
+            );
+        });
+    }
 }

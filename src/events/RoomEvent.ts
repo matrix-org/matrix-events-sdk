@@ -94,9 +94,16 @@ export abstract class RoomEvent<Content extends WireEvent.BlockBasedContent = Wi
      * whole event schema.
      * @param name The name of the event. Used for debugging.
      * @param raw The raw event itself.
+     * @param isStateEvent True (default: false) if the event type is expected to be a
+     * state event. The event will be strictly checked to ensure compliance with this
+     * field.
      * @protected
      */
-    protected constructor(public readonly name: string, public readonly raw: WireEvent.RoomEvent<Content>) {
+    protected constructor(
+        public readonly name: string,
+        public readonly raw: WireEvent.RoomEvent<Content>,
+        isStateEvent = false,
+    ) {
         if (raw === null || raw === undefined) {
             throw new InvalidEventError(
                 this.name,
@@ -105,6 +112,17 @@ export abstract class RoomEvent<Content extends WireEvent.BlockBasedContent = Wi
         }
         if (!RoomEvent.validateFn(raw)) {
             throw new InvalidEventError(this.name, RoomEvent.validateFn.errors);
+        }
+        if (!isStateEvent && raw.state_key !== undefined) {
+            throw new InvalidEventError(
+                this.name,
+                "This event is not allowed to be a state event and must be converted accordingly.",
+            );
+        } else if (isStateEvent && raw.state_key === undefined) {
+            throw new InvalidEventError(
+                this.name,
+                "This event is only allowed to be a state event and must be converted accordingly.",
+            );
         }
     }
 

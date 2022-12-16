@@ -71,7 +71,7 @@ export class EmoteEvent extends RoomEvent<WireEmoteEvent.ContentValue> {
     }
 
     public constructor(raw: WireEvent.RoomEvent<WireMessageEvent.ContentValue>) {
-        super(EmoteEvent.type.stable!, raw);
+        super(EmoteEvent.type.stable!, raw, false);
         if (!EmoteEvent.contentValidateFn(this.content)) {
             throw new InvalidEventError(this.name, EmoteEvent.contentValidateFn.errors);
         }

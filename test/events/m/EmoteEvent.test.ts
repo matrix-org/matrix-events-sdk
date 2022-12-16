@@ -18,7 +18,7 @@ import {EmoteEvent, InvalidEventError, WireEvent} from "../../../src";
 import {testSharedRoomEventInputs} from "../RoomEvent.test";
 
 describe("EmoteEvent", () => {
-    testSharedRoomEventInputs("m.emote", x => new EmoteEvent(x), {"m.markup": [{body: "test"}]});
+    testSharedRoomEventInputs("m.emote", undefined, x => new EmoteEvent(x), {"m.markup": [{body: "test"}]});
 
     const templateEvent: WireEvent.RoomEvent = {
         room_id: "!test:example.org",
