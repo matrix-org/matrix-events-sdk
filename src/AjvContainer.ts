@@ -19,9 +19,7 @@ import AjvErrors from "ajv-errors";
 import {NamespacedValue} from "./NamespacedValue";
 
 /**
- * Container for the ajv instance.
- * @internal
- * @protected
+ * Container for the ajv instance, the SDK's schema validator of choice.
  */
 export class AjvContainer {
     public static readonly ajv = new Ajv({
