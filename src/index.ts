@@ -15,6 +15,7 @@ export * from "./content_blocks/IntegerBlock";
 export * from "./content_blocks/InvalidBlockError";
 export * from "./content_blocks/ObjectBlock";
 export * from "./content_blocks/StringBlock";
+export {type ParsedEventFactory, type UnknownEventParser, EventParser} from "./events/EventParser";
 export * from "./events/InvalidEventError";
 export * from "./events/RoomEvent";
 export * from "./LazyValue";

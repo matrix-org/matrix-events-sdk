@@ -23,6 +23,8 @@ import {Schema} from "ajv";
 import {AjvContainer} from "../../AjvContainer";
 import {LazyValue} from "../../LazyValue";
 import {InvalidEventError} from "../InvalidEventError";
+import {addInternalKnownEventParser, addInternalUnknownEventParser, InternalOrderCategorization} from "../EventParser";
+import {EmoteBlock, WireEmoteBlock} from "../../content_blocks/m/EmoteBlock";
 
 /**
  * Types for emote events over the wire.
@@ -44,6 +46,29 @@ export class EmoteEvent extends RoomEvent<WireEmoteEvent.ContentValue> {
     public static readonly type = new UnstableValue("m.emote", "org.matrix.msc1767.emote");
 
     private lazyMarkup = new LazyValue(() => new MarkupBlock(MarkupBlock.type.findIn(this.content)!));
+
+    static {
+        // Register the event type as a default event type
+        addInternalKnownEventParser(
+            EmoteEvent.type,
+            (x: WireEvent.RoomEvent<WireEmoteEvent.ContentValue>) => new EmoteEvent(x),
+        );
+
+        // Also register an unknown event parser for handling
+        addInternalUnknownEventParser(InternalOrderCategorization.RichTextOrFile, x => {
+            const possibleBlock = EmoteBlock.type.findIn(x.content);
+            if (!!possibleBlock) {
+                const block = new EmoteBlock(possibleBlock as WireEmoteBlock.Value);
+                return new EmoteEvent({
+                    ...x,
+                    type: EmoteEvent.type.name,
+                    content: block.raw, // extract the `m.markup` block out of the `m.emote` block
+                });
+            } else {
+                return undefined; // not likely to be parsable by us
+            }
+        });
+    }
 
     public constructor(raw: WireEvent.RoomEvent<WireMessageEvent.ContentValue>) {
         super(EmoteEvent.type.stable!, raw);

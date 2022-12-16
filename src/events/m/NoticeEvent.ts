@@ -23,6 +23,8 @@ import {Schema} from "ajv";
 import {AjvContainer} from "../../AjvContainer";
 import {LazyValue} from "../../LazyValue";
 import {InvalidEventError} from "../InvalidEventError";
+import {addInternalKnownEventParser, addInternalUnknownEventParser, InternalOrderCategorization} from "../EventParser";
+import {NoticeBlock, WireNoticeBlock} from "../../content_blocks/m/NoticeBlock";
 
 /**
  * Types for notice events over the wire.
@@ -44,6 +46,29 @@ export class NoticeEvent extends RoomEvent<WireNoticeEvent.ContentValue> {
     public static readonly type = new UnstableValue("m.notice", "org.matrix.msc1767.notice");
 
     private lazyMarkup = new LazyValue(() => new MarkupBlock(MarkupBlock.type.findIn(this.content)!));
+
+    static {
+        // Register the event type as a default event type
+        addInternalKnownEventParser(
+            NoticeEvent.type,
+            (x: WireEvent.RoomEvent<WireNoticeEvent.ContentValue>) => new NoticeEvent(x),
+        );
+
+        // Also register an unknown event parser for handling
+        addInternalUnknownEventParser(InternalOrderCategorization.RichTextOrFile, x => {
+            const possibleBlock = NoticeBlock.type.findIn(x.content);
+            if (!!possibleBlock) {
+                const block = new NoticeBlock(possibleBlock as WireNoticeBlock.Value);
+                return new NoticeEvent({
+                    ...x,
+                    type: NoticeEvent.type.name,
+                    content: block.raw, // extract the `m.markup` block out of the `m.notice` block
+                });
+            } else {
+                return undefined; // not likely to be parsable by us
+            }
+        });
+    }
 
     public constructor(raw: WireEvent.RoomEvent<WireMessageEvent.ContentValue>) {
         super(NoticeEvent.type.stable!, raw);

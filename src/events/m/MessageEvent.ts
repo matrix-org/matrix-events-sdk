@@ -23,6 +23,7 @@ import {UnstableValue} from "../../NamespacedValue";
 import {WireEvent} from "../types_wire";
 import {InvalidEventError} from "../InvalidEventError";
 import {LazyValue} from "../../LazyValue";
+import {addInternalKnownEventParser, addInternalUnknownEventParser, InternalOrderCategorization} from "../EventParser";
 
 /**
  * Types for message events over the wire.
@@ -47,6 +48,26 @@ export class MessageEvent extends RoomEvent<WireMessageEvent.ContentValue> {
     public static readonly type = new UnstableValue("m.message", "org.matrix.msc1767.message");
 
     private lazyMarkup = new LazyValue(() => new MarkupBlock(MarkupBlock.type.findIn(this.content)!));
+
+    static {
+        // Register the event type as a default event type
+        addInternalKnownEventParser(
+            MessageEvent.type,
+            (x: WireEvent.RoomEvent<WireMessageEvent.ContentValue>) => new MessageEvent(x),
+        );
+
+        // Also register an unknown event parser for handling
+        addInternalUnknownEventParser(InternalOrderCategorization.TextOnly, x => {
+            if (MarkupBlock.type.findIn(x.content)) {
+                return new MessageEvent({
+                    ...x,
+                    type: MessageEvent.type.name,
+                });
+            } else {
+                return undefined; // not likely to be parsable by us
+            }
+        });
+    }
 
     public constructor(raw: WireEvent.RoomEvent<WireMessageEvent.ContentValue>) {
         super(MessageEvent.type.stable!, raw);
