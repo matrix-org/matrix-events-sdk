@@ -20,6 +20,7 @@ export {type ParsedEventFactory, type UnknownEventParser, EventParser} from "./e
 export * from "./events/InvalidEventError";
 export * from "./events/RoomEvent";
 export * from "./events/types_wire";
+export * from "./AjvContainer";
 export * from "./LazyValue";
 export * from "./NamespacedValue";
 export * from "./types";
