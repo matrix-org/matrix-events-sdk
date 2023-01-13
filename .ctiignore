@@ -1,0 +1,5 @@
+{
+    "src/events/EventParser.ts": ["addInternalKnownEventParser", "addInternalUnknownEventParser", "InternalOrderCategorization"],
+    "**/*.d.ts": "*",
+    "test/**": "*"
+}

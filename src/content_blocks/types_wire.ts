@@ -1,5 +1,5 @@
 /*
-Copyright 2021 - 2022 The Matrix.org Foundation C.I.C.
+Copyright 2022 The Matrix.org Foundation C.I.C.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,11 +15,13 @@ limitations under the License.
 */
 
 /**
- * Represents an optional type: can either be T or a falsy value.
+ * The wire types for content blocks.
+ * @module Content Blocks
  */
-export type Optional<T> = T | null | undefined;
-
-/**
- * Represents either just T1, just T2, or T1 and T2 mixed.
- */
-export type EitherAnd<T1, T2> = (T1 & T2) | T1 | T2;
+export module WireContentBlock {
+    /**
+     * Possible value types for a content block.
+     * @module Content Blocks
+     */
+    export type Value = string | boolean | number | object | Value[];
+}

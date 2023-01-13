@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AjvContainer eitherAnd should generate an appropriate schema type 1`] = `
+{
+  "anyOf": [
+    {
+      "errorMessage": {
+        "properties": {
+          "stable": "stable is required",
+        },
+      },
+      "properties": {
+        "stable": {
+          "properties": {
+            "test": {
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      },
+      "required": [
+        "stable",
+      ],
+      "type": "object",
+    },
+    {
+      "errorMessage": {
+        "properties": {
+          "unstable": "unstable is required",
+        },
+      },
+      "properties": {
+        "unstable": {
+          "properties": {
+            "test": {
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      },
+      "required": [
+        "unstable",
+      ],
+      "type": "object",
+    },
+    {
+      "errorMessage": {
+        "properties": {
+          "stable": "stable is required",
+          "unstable": "unstable is required",
+        },
+      },
+      "properties": {
+        "stable": {
+          "properties": {
+            "test": {
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+        "unstable": {
+          "properties": {
+            "test": {
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      },
+      "required": [
+        "stable",
+        "unstable",
+      ],
+      "type": "object",
+    },
+  ],
+  "errorMessage": "schema does not apply to stable or unstable",
+}
+`;
